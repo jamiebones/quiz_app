@@ -1,0 +1,4 @@
+export default {
+  secret:
+    "fhfyyfyrr8888484hfnnfnfjfkkkdkdhhhhhhhhhhhhhhhhhhh66666666666666666633333333333333333333333333331111111111djooyy777777ggfgggg55444dddffggssawqqsdfggghhbhhoooppphhhvcvdfxxzewew4rfgghhhhdjuidieieejejjejh444+++++%%%%%%^^^GGGGHHHHHHsfdfdfdfdf434343434343434dbdghgggdgdteteeeyyeyeyeyeyeggddbddgdghhwwuwuwuwuwuwuuwsszzwzezdfzfzgzhzhzzjdhhyeyey77y4h4hg4g4g4g4g4fgfcdwzwsx",
+};

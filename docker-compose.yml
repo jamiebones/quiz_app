@@ -1,0 +1,82 @@
+version: "3.8"
+
+services:
+  cbt_client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: dockerfile.dev
+    restart: always
+    ports:
+      - "3001:3000"
+    stdin_open: true
+    tty: true
+    volumes:
+      - "./client:/app"
+      - /app/node_modules
+      - $HOME/uploads:/app/public/assets
+    environment:
+      - CHOKIDAR_USEPOLLING= true
+      - "CI= true"
+
+  api_server:
+    container_name: app_server
+    build:
+      context: ./server
+      dockerfile: dockerfile.dev
+    volumes:
+      - /home/jamie/node_modules
+      - ./server:/home/jamie
+      - $HOME/uploads:/home/jamie/uploads
+    depends_on:
+      - mongodb_cbt
+    restart: always
+    ports:
+      - 8000:8000
+    environment:
+      DB_HOST: mongodb_cbt ## same as the database service name
+      DB_PORT: 27017
+      DB_USER: jamiebones
+      DB_DATABASE: CBT_Database
+      DB_PASSWORD: blazing147
+
+  mongodb_cbt:
+    hostname: mongodb_cbt
+    container_name: mongodb_cbt
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
+    restart: always
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: jamiebones
+      MONGO_INITDB_ROOT_PASSWORD: blazing147
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--journal",
+        "--dbpath",
+        "/data/db",
+        "--enableMajorityReadConcern",
+        "false",
+      ]
+    volumes:
+      - $HOME/cbt_data/mongodb_cbt:/data/db # This is where your volume will persist. e.g. VOLUME-DIR = ./volumes/mongodb
+      - $HOME/cbt_data/mongodb_cbt_configdb:/data/configdb
+
+  mongo-express_cbt:
+    image: mongo-express
+    container_name: mongo-express_cbt
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongodb_cbt
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb_cbt
+      ME_CONFIG_MONGODB_ADMINUSERNAME: jamiebones
+      ME_CONFIG_MONGODB_ADMINPASSWORD: blazing147
+      ME_CONFIG_BASICAUTH_USERNAME: jamiebones
+      ME_CONFIG_BASICAUTH_PASSWORD: blazing147

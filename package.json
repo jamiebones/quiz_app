@@ -1,0 +1,14 @@
+{
+  "name": "cbt_software",
+  "version": "1.0.0",
+  "description": "a software for taking computer based examination",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd ./server && npm start"
+  },
+  "author": "Osikhena James Oshomah",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "^0.16.9"
+  }
+}
