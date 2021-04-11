@@ -18,6 +18,12 @@ const SaveSpelling = gql`
   }
 `;
 
+const EditSpelling = gql`
+  mutation editSpellingQuestion($input: SpellingQuestionInput!, $questionId: ID!) {
+    editSpellingQuestion(input: $input, questionId: $questionId)
+  }
+`;
+
 const EditQuestion = gql`
   mutation editQuestion($input: QuestionInput!, $questionId: ID!) {
     editQuestion(input: $input, questionId: $questionId)
@@ -27,6 +33,12 @@ const EditQuestion = gql`
 const DeleteOneQuestion = gql`
   mutation deleteQuestion($questionId: ID!) {
     deleteQuestion(questionId: $questionId)
+  }
+`;
+
+const DeleteOneSpellingQuestion = gql`
+  mutation deleteQuestion($questionId: ID!) {
+    deleteSpellingQuestion(questionId: $questionId)
   }
 `;
 
@@ -49,8 +61,14 @@ const AddQuestionsArrayToScheduleExam = gql`
 `;
 
 const AddSpellingQuestionsArrayToScheduleExam = gql`
-  mutation addQuestions($questionsArray: [SpellingQuestionInput2!], $scheduleId: ID!) {
-    addSpellingQuestionsToExam(questionsArray: $questionsArray, scheduleId: $scheduleId)
+  mutation addQuestions(
+    $questionsArray: [SpellingQuestionInput2!]
+    $scheduleId: ID!
+  ) {
+    addSpellingQuestionsToExam(
+      questionsArray: $questionsArray
+      scheduleId: $scheduleId
+    )
   }
 `;
 
@@ -141,7 +159,6 @@ const SpellingExaminationEnded = gql`
   }
 `;
 
-
 const CreateCourseSubject = gql`
   mutation CreateCourseSubject($examName: String!, $examType: String!) {
     createExam(examName: $examName, examType: $examType)
@@ -195,5 +212,7 @@ export {
   ChangeUserPasswordMutation,
   SaveSpelling,
   CreateSpellingExaminationSchedule,
-  SpellingExaminationEnded
+  SpellingExaminationEnded,
+  DeleteOneSpellingQuestion,
+  EditSpelling
 };

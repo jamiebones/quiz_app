@@ -45,6 +45,7 @@ import StartSpellingExam from "./components/startSpellingExam";
 import SpellingExamSummary from "./components/spellingExamSummary";
 import DisplaySpellingQuizScriptComponent from "./components/displaySpellingScriptComponent";
 import ViewCanidateSpellingScripts from "./components/viewSpellingExaminationScript";
+import LoadSpellingQuestions from "./components/loadSpellingQuestions";
 import { useHistory } from "react-router-dom";
 import GlobalStyle from "./globalStyles";
 //import localStorage from "./localStorage";
@@ -109,7 +110,7 @@ function App(props) {
                         exact
                         path="/view_canidate_spelling_script"
                       />
-                      
+
                       <AuthorizedComponent
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
@@ -243,8 +244,19 @@ function App(props) {
                         authorizedRole={["super-admin"]}
                         component={LoadQuestionsComponent}
                         exact
-                        path="/load_question"
+                        path="/load_multi_choice_question"
                       />
+
+                      <AuthorizedComponent
+                        loading={loading}
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["super-admin"]}
+                        component={LoadSpellingQuestions}
+                        exact
+                        path="/load_spelling_question"
+                      />
+
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}

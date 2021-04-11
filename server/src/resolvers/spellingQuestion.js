@@ -65,7 +65,6 @@ export default {
           clue,
           examinationType,
           examId,
-          createdAt,
         } = input;
         await models.SpellingQuestion.updateOne(
           { _id: questionId },
@@ -74,8 +73,7 @@ export default {
             correctWord,
             clue,
             examinationType,
-            examId,
-            createdAt,
+            examId
           }
         );
         return true;

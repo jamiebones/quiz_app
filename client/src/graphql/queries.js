@@ -10,6 +10,18 @@ const GetAllExamination = gql`
   }
 `;
 
+const GetAllMultiChoiceExamination = gql`
+query getMultiChoiceExam($examType: String!) {
+  getAllMultiChoiceExam(examType: $examType) {
+    id
+    examName
+    examType
+  }
+}
+`;
+
+
+
 const GetAllQuestionsByExamID = gql`
   query getExamQuestions($examId: String!, $cursor: String, $limit: Int) {
     getExamQuestions(examId: $examId, cursor: $cursor, limit: $limit) {
@@ -385,6 +397,7 @@ const GetDifferentExamination = gql`
 export {
   GetAllSpellingQuestions,
   GetAllExamination,
+  GetAllMultiChoiceExamination,
   GetAllQuestionsByExamID,
   GetAllQuestions,
   GetExamScheduleByType,

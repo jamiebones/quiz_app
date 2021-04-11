@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { GetDifferentExamination } from "../graphql/queries";
-import { SaveSpelling } from "../graphql/mutation";
+import { SaveSpelling, EditSpelling } from "../graphql/mutation";
 import { useMutation, useLazyQuery } from "@apollo/client";
-
+import { useLocation, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 const SpellingQuestionStyles = styled.div`
@@ -39,6 +39,18 @@ const createInputBox = (number) => {
   return inputArray;
 };
 
+const createInputBoxWithWord = (word) => {
+  let inputArray = [];
+  for (let i = 0; i < word.length; i++) {
+    let obj = {
+      value: word[i],
+      index: i,
+    };
+    inputArray.push(obj);
+  }
+  return inputArray;
+};
+
 const SaveSpellingQuestion = () => {
   const [inputArray, setArrayInput] = useState([]);
   const [wordLength, setWordLength] = useState("");
@@ -52,14 +64,39 @@ const SaveSpellingQuestion = () => {
   const [examName, setExamName] = useState(null);
   const [errors, setErrors] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [editId, setEditId] = useState(null);
 
   const [examTypeQuery, examTypeResult] = useLazyQuery(GetDifferentExamination);
   const [saveSpellingMutation, saveSpellingResult] = useMutation(SaveSpelling);
+
+  const [editSpellingMutation, editSpellingResult] = useMutation(EditSpelling);
+  const location = useLocation();
+
+  //check if we are having an edit
+  const history = useHistory();
+  const question = location.state && location.state.question;
   const wordLengthFunction = () => {
     setInputLength(wordLength);
     let arr = createInputBox(wordLength);
     setArrayInput(arr);
   };
+
+  useEffect(() => {
+    //we are running an update we need to load stuffs here
+    //updating a question here
+    if (question) {
+      const { word, clue, correctWord, id, examinationType, examId } = question;
+      setInputLength(word.length);
+      setWordLength(word.length);
+      let arr = createInputBoxWithWord(word);
+      setArrayInput(arr);
+      setExamName(examinationType);
+      setExamId(examId);
+      setCorrectSpelling(correctWord);
+      setSpellingClue(clue);
+      setEditId(id);
+    }
+  }, []);
 
   useEffect(() => {
     examTypeQuery({
@@ -84,6 +121,24 @@ const SaveSpellingQuestion = () => {
       setErrors(saveSpellingResult.error);
     }
   }, [saveSpellingResult.data, saveSpellingResult.error]);
+
+  //edit question mutation
+  useEffect(() => {
+    if (editSpellingResult.data) {
+      setSubmitted(false);
+      setArrayInput([]);
+      setWordLength("");
+      setCorrectSpelling("");
+      setSpellingClue("");
+      alert("edit was successful");
+      history.push("/load_spelling_question");
+    }
+
+    if (editSpellingResult.error) {
+      setSubmitted(false);
+      setErrors(saveSpellingResult.error);
+    }
+  }, [editSpellingResult.data, editSpellingResult.error]);
 
   useEffect(() => {
     if (examTypeResult.loading) {
@@ -169,11 +224,20 @@ const SaveSpellingQuestion = () => {
     };
     try {
       setSubmitted(true);
-      await saveSpellingMutation({
-        variables: {
-          input: inputValue,
-        },
-      });
+      if (editId) {
+        await editSpellingMutation({
+          variables: {
+            input: inputValue,
+            questionId: editId,
+          },
+        });
+      } else {
+        await saveSpellingMutation({
+          variables: {
+            input: inputValue,
+          },
+        });
+      }
     } catch (error) {}
   };
 
@@ -186,23 +250,28 @@ const SaveSpellingQuestion = () => {
               {errors && <p className="text-center lead">{errors.message}</p>}
             </div>
 
-            <div className="form-group">
-              <select className="custom-select" onChange={handleExamChange}>
-                <option value="0">select examination type</option>
-                {loading && <option>loading data.......</option>}
-                {examTypeData.map(({ id, examName }) => {
-                  return (
-                    <option value={`${id}/${examName}`} key={id}>
-                      {examName}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
+            {editId === null && (
+              <div className="form-group">
+                <select className="custom-select" onChange={handleExamChange}>
+                  <option value="0">select examination type</option>
+                  {loading && <option>loading data.......</option>}
+                  {examTypeData.map(({ id, examName }) => {
+                    return (
+                      <option value={`${id}/${examName}`} key={id}>
+                        {examName}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            )}
 
             {examId && examName && (
               <React.Fragment>
-                <p className="lead">saving questions into {examName}</p>
+                {editId === null && (
+                  <p className="lead">saving questions into {examName}</p>
+                )}
+                {editId && <p className="lead">Editing Question</p>}
                 <div className="input-group word-length">
                   <input
                     type="text"
@@ -246,7 +315,7 @@ const SaveSpellingQuestion = () => {
                 {inputArray.length > 0 && (
                   <React.Fragment>
                     <div className="form-group">
-                      <label for="correctSpelling">Correct spelling</label>
+                      <label htmlFor="correctSpelling">Correct spelling</label>
                       <input
                         type="text"
                         className="form-control"
@@ -259,7 +328,7 @@ const SaveSpellingQuestion = () => {
                     </div>
 
                     <div className="form-group">
-                      <label for="spellingClue">Clue</label>
+                      <label htmlFor="spellingClue">Clue</label>
                       <input
                         type="text"
                         className="form-control"
@@ -272,16 +341,29 @@ const SaveSpellingQuestion = () => {
                     </div>
 
                     <div className="text-center">
-                      <button
-                        disabled={submitted}
-                        className="btn btn-success"
-                        onClick={handleQuestionSubmission}
-                      >
-                        {" "}
-                        {!submitted
-                          ? "Save Spelling Questions"
-                          : "Saving please wait...."}
-                      </button>
+                      {editId ? (
+                        <button
+                          disabled={submitted}
+                          className="btn btn-warning"
+                          onClick={handleQuestionSubmission}
+                        >
+                          {" "}
+                          {!submitted
+                            ? "Edit Question"
+                            : "editing please wait...."}
+                        </button>
+                      ) : (
+                        <button
+                          disabled={submitted}
+                          className="btn btn-success"
+                          onClick={handleQuestionSubmission}
+                        >
+                          {" "}
+                          {!submitted
+                            ? "Save Spelling Questions"
+                            : "Saving please wait...."}
+                        </button>
+                      )}
                     </div>
                   </React.Fragment>
                 )}

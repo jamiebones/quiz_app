@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useQuery, useMutation, useLazyQuery } from "@apollo/client";
-import { GetDifferentExamination, GetAllQuestions } from "../graphql/queries";
-import { DeleteOneQuestion } from "../graphql/mutation";
-import ShowQuestionComponent from "./showQuestionComponent";
+import { useMutation, useLazyQuery } from "@apollo/client";
+import {
+  GetDifferentExamination,
+  GetAllSpellingQuestions,
+} from "../graphql/queries";
+import { DeleteOneSpellingQuestion } from "../graphql/mutation";
+import { useLocation } from "react-router-dom";
 import Loading from "../common/loading";
 import styled from "styled-components";
-import EditButton from "./editButton";
 
 const LoadQuestionsStyle = styled.div``;
 
@@ -25,16 +27,24 @@ const LoadQuestionsComponent = ({ history }) => {
   const [questions, setQuestions] = useState({});
   const [totalQuestion, setTotalQuestion] = useState(0);
   const [queryRan, setQueryRan] = useState(false);
-
-  const [questionsQuery, questionsQueryResult] = useLazyQuery(GetAllQuestions);
+  const [submitted, setSubmitted] = useState(false);
+  const location = useLocation();
+  const details = location.state && location.state.details;
+  const [questionsQuery, questionsQueryResult] = useLazyQuery(
+    GetAllSpellingQuestions
+  );
   const [examsQuery, examsQueryResult] = useLazyQuery(GetDifferentExamination);
 
-  const [deleteQuestion, deleteQuestionResult] = useMutation(DeleteOneQuestion);
+  const [deleteQuestion, deleteQuestionResult] = useMutation(
+    DeleteOneSpellingQuestion
+  );
+
+ 
 
   useEffect(() => {
     examsQuery({
       variables: {
-        examType: "multiple choice questions",
+        examType: "spelling examination",
       },
     });
   }, []);
@@ -55,8 +65,6 @@ const LoadQuestionsComponent = ({ history }) => {
     }
   }, [examsQueryResult.data, examsQueryResult.error]);
 
- 
-
   useEffect(() => {
     if (questionsQueryResult.error) {
       setErrors(questionsQueryResult.error.message);
@@ -65,8 +73,10 @@ const LoadQuestionsComponent = ({ history }) => {
     }
 
     if (questionsQueryResult.data) {
-      setQuestions(questionsQueryResult.data.getAllQuestions.questions);
-      setTotalQuestion(questionsQueryResult.data.getAllQuestions.totalQuestion);
+      setQuestions(questionsQueryResult.data.getAllSpellingQuestions.questions);
+      setTotalQuestion(
+        questionsQueryResult.data.getAllSpellingQuestions.totalQuestion
+      );
       setLoading(false);
     }
   }, [questionsQueryResult.error, questionsQueryResult.data]);
@@ -75,12 +85,14 @@ const LoadQuestionsComponent = ({ history }) => {
     if (deleteQuestionResult.error) {
       setErrors(deleteQuestionResult.error.message);
       setLoading(true);
+      setSubmitted(false);
     }
 
     if (deleteQuestionResult.data) {
-      if (deleteQuestionResult.data.deleteQuestion) {
+      if (deleteQuestionResult.data.deleteSpellingQuestion) {
         window.alert("question deleted successfully");
         setLoading(false);
+        setSubmitted(false);
       }
     }
   }, [deleteQuestionResult.error, deleteQuestionResult.data]);
@@ -99,12 +111,13 @@ const LoadQuestionsComponent = ({ history }) => {
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
-            getAllQuestions: {
-              totalQuestion: fetchMoreResult.getAllQuestions.totalQuestion,
+            getAllSpellingQuestions: {
+              totalQuestion:
+                fetchMoreResult.getAllSpellingQuestions.totalQuestion,
               __typename: "QuestionsTotal",
               questions: [
                 //...prev.getAllQuestions.questions,
-                ...fetchMoreResult.getAllQuestions.questions,
+                ...fetchMoreResult.getAllSpellingQuestions.questions,
               ],
             },
           });
@@ -131,15 +144,36 @@ const LoadQuestionsComponent = ({ history }) => {
     } catch (error) {}
   };
 
-  const handleButtonAction = (question) => {
-    history.push("/edit_question", {
-      question: question,
+  const handleEditSpelling = ({
+    word,
+    clue,
+    correctWord,
+    id,
+    examinationType,
+    examId,
+    index,
+    questionsLength,
+  }) => {
+    history.push("/add_spelling_question", {
+      question: {
+        word,
+        clue,
+        correctWord,
+        id,
+        examinationType,
+        examId,
+        index,
+        questionsLength,
+      },
     });
   };
 
   const handleQuestionDeleteAction = async ({ questionId, index }) => {
+    const confirmDelete = window.confirm("Are you sure?");
+    if (!confirmDelete) return;
     //delete the question here
     try {
+      setSubmitted(true);
       setLoading(true);
       await deleteQuestion({
         variables: {
@@ -147,7 +181,7 @@ const LoadQuestionsComponent = ({ history }) => {
         },
         refetchQueries: [
           {
-            query: GetAllQuestions,
+            query: GetAllSpellingQuestions,
             variables: {
               examId: selectedExamId,
               offset: questions.length * (index - 1),
@@ -191,32 +225,80 @@ const LoadQuestionsComponent = ({ history }) => {
           </div>
 
           {questions && questions.length > 0 ? (
-            questions.map((question, index) => {
-              return (
-                <React.Fragment key={index}>
-                  <ShowQuestionComponent
-                    question={question}
-                    components={[
-                      EditButton({
-                        variables: question,
-                        style: "info",
-                        buttonName: "Edit Question",
-                        action: handleButtonAction,
-                      }),
-                      EditButton({
-                        variables: {
-                          questionId: question.id,
-                          index: index + 1,
-                        },
-                        style: "danger",
-                        buttonName: "Delete Question",
-                        action: handleQuestionDeleteAction,
-                      }),
-                    ]}
-                  />
-                </React.Fragment>
-              );
-            })
+            <table className="table">
+              <caption>Spelling Questions</caption>
+              <thead className="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Spelling Word</th>
+                  <th scope="col">Correct Word</th>
+                  <th scope="col">Clue</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {questions.map(
+                  (
+                    { word, clue, correctWord, id, examinationType, examId },
+                    index
+                  ) => {
+                    return (
+                      <tr key={index}>
+                        <th scope="row">{index + 1}</th>
+                        <td>
+                          <p>{word.toUpperCase()}</p>
+                        </td>
+                        <td>
+                          <p>{correctWord.toUpperCase()}</p>
+                        </td>
+                        <td>
+                          <p>{clue}</p>
+                        </td>
+                        <td>
+                          <div
+                            className="btn-group"
+                            role="group"
+                            aria-label="Basic example"
+                          >
+                            <button
+                              type="button"
+                              className="btn btn-warning"
+                              onClick={() =>
+                                handleEditSpelling({
+                                  word,
+                                  clue,
+                                  correctWord,
+                                  id,
+                                  examinationType,
+                                  examId,
+                                  index: index + 1,
+                                  questionsLength: questions.length,
+                                })
+                              }
+                            >
+                              Edit
+                            </button>
+                            <button
+                              disabled={submitted}
+                              type="button"
+                              onClick={() =>
+                                handleQuestionDeleteAction({
+                                  questionId: id,
+                                  index: index + 1,
+                                })
+                              }
+                              className="btn btn-danger"
+                            >
+                              {submitted ? "please wait..." : "Delete"}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
+              </tbody>
+            </table>
           ) : (
             <div>
               {queryRan && (

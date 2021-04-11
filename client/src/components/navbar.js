@@ -382,9 +382,16 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
 
                 <li
                   className="subitem"
-                  onClick={() => history.push("/load_question")}
+                  onClick={() => history.push("/load_multi_choice_question")}
                 >
-                  <a>View Questions</a>
+                  <a>View Multi Choice Questions</a>
+                </li>
+
+                <li
+                  className="subitem"
+                  onClick={() => history.push("/load_spelling_question")}
+                >
+                  <a>View Spelling Questions</a>
                 </li>
               </ul>
             </li>
