@@ -8,12 +8,13 @@ export default gql`
     getAllExamSchedule: [ExamSchedule!]
     getActiveExamSchedule: [ExamSchedule]
     activeExamination: [ExamSchedule!]!
-    
   }
 
   extend type Mutation {
     createMultipleExamSchedule(input: MultipleExamScheduleInput!): Boolean
     createSpellingExamSchedule(input: SpellingExamScheduleInput!): Boolean
+    createEssayExamSchedule(input: EssayExamScheduleInput!): Boolean
+
     addQuestionsToExam(
       questionsArray: [QuestionInput2!]
       scheduleId: ID!
@@ -31,12 +32,9 @@ export default gql`
   }
 
   union ActiveExamDetails = ActiveExamSuccessful | Error
-  union QuestionTypes = SpellingQuestion | Question
-  
+  union QuestionTypes = SpellingQuestion | Question | EssayExamQuestion
 
- 
-
-  input MultipleExamScheduleInput {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+  input MultipleExamScheduleInput {
     numberofQuestions: Int!
     examinationName: String!
     active: Boolean
@@ -47,7 +45,7 @@ export default gql`
     questionType: String!
   }
 
-  input SpellingExamScheduleInput {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+  input SpellingExamScheduleInput {
     numberofQuestions: Int!
     examinationName: String!
     active: Boolean
@@ -58,13 +56,22 @@ export default gql`
     questionType: String!
   }
 
+  input EssayExamScheduleInput {
+    numberofQuestions: Int!
+    examinationName: String!
+    active: Boolean
+    examinationDuration: Int!
+    questions: [EssayExamQuestionInput]
+    examTypeID: ID!
+    examTypeName: String!
+    questionType: String!
+  }
 
   type Error {
     message: String!
     type: String!
   }
 
- 
   type ExamSchedule {
     id: ID!
     numberofQuestions: Int!

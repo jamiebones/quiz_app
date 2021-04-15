@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import {
   CreateExaminationSchedule,
   CreateSpellingExaminationSchedule,
+  CreateEssayExaminationSchedule,
 } from "../graphql/mutation";
 import ExaminationTypeComponent from "../common/examinationTypeComponent";
 import styled from "styled-components";
@@ -38,6 +39,25 @@ const CreateExaminationScheduleComponent = () => {
   const [createSpellingSchedule, createSpellingScheduleResult] = useMutation(
     CreateSpellingExaminationSchedule
   );
+
+  const [createEssaySchedule, createEssayScheduleResult] = useMutation(
+    CreateEssayExaminationSchedule
+  );
+
+  useEffect(() => {
+    if (createEssayScheduleResult.error) {
+      setErrors(createEssayScheduleResult.error.message);
+      setProcessing(!processing);
+    }
+    if (createEssayScheduleResult.data) {
+      setProcessing(!processing);
+      setTotalQuestions("");
+      setScheduleExamName("");
+      setHours("");
+      setMinutes("");
+      window.alert("Examination schedule created successfully");
+    }
+  }, [createEssayScheduleResult.error, createEssayScheduleResult.data]);
 
   useEffect(() => {
     if (createSpellingScheduleResult.error) {
@@ -127,6 +147,14 @@ const CreateExaminationScheduleComponent = () => {
 
         break;
       case "short answer exam":
+        try {
+          setProcessing(!processing);
+          await createEssaySchedule({
+            variables: {
+              input: scheduleObj,
+            },
+          });
+        } catch (error) {}
         break;
       case "essay exam":
         break;
@@ -171,7 +199,7 @@ const CreateExaminationScheduleComponent = () => {
           <ExaminationTypeComponent
             selectedExamTypeFunc={selectedExamTypeFunc}
             selectedExamNameFunc={selectedExamNameFunc}
-            display={1}
+            display="all"
           />
           <form onSubmit={handleFormSubmit}>
             <div className="mb-3">

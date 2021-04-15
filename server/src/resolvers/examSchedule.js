@@ -52,6 +52,16 @@ export default {
         throw new Error(error.message);
       }
     },
+    createEssayExamSchedule: async (_, { input }, { models }) => {
+      try {
+        const newSchedule = models.ExamSchedule(input);
+        await newSchedule.save();
+        return true;
+      } catch (error) {
+        console.log("the errorfrom the console is:", error);
+        throw new Error(error.message);
+      }
+    },
     changeExamStatus: async (_, { examId, status }, { models }) => {
       try {
         const findSchedule = await models.ExamSchedule.findById(examId);
@@ -188,6 +198,9 @@ export default {
       }
       if (obj.word) {
         return "SpellingQuestion";
+      }
+      if (obj.possibleAnswers) {
+        return "EssayExamQuestion";
       }
     },
   },

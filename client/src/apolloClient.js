@@ -3,7 +3,6 @@ import {
   ApolloClient,
   ApolloLink,
   HttpLink,
-
 } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
 import { onError } from "@apollo/client/link/error";
@@ -15,7 +14,7 @@ const cache = new InMemoryCache({
     UserDetailsResult: ["User", "Error"],
     ActiveExamDetails: ["ActiveExamSuccessful", "Error"],
     ExamTakenDetails: ["ExamTakenSuccess", "Error"],
-    QuestionTypes: ["SpellingQuestion", "Question"],
+    QuestionTypes: ["SpellingQuestion", "Question", "EssayExamQuestion"],
     ScriptTypes: ["ScriptQuestion", "SpellingScriptQuestion"],
   },
 });
@@ -25,12 +24,11 @@ const port = process.env.PORT || 8000;
 let httpLink = new HttpLink({ uri: `http://localhost:${port}/graphql` });
 
 const uploadLink = createUploadLink({
-  uri: 'http://localhost:8000/graphql', // Apollo Server is served from port 4000
+  uri: "http://localhost:8000/graphql", // Apollo Server is served from port 4000
   headers: {
-    "keep-alive": "true"
-  }
-})
-
+    "keep-alive": "true",
+  },
+});
 
 // if (process.env.NODE_ENV === "production") {
 //   httpLink = new HttpLink({
@@ -65,8 +63,6 @@ const authLink = setContext((_, { headers, ...rest }) => {
 });
 
 //this is to remove __typename field from the mutation
-
-
 
 const client = new ApolloClient({
   cache,

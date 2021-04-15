@@ -63,6 +63,14 @@ const CreateSpellingExaminationSchedule = gql`
   }
 `;
 
+const CreateEssayExaminationSchedule = gql`
+  mutation createExamSchedule($input: EssayExamScheduleInput!) {
+    createEssayExamSchedule(input: $input)
+  }
+`;
+
+
+
 const AddQuestionsArrayToScheduleExam = gql`
   mutation addQuestions($questionsArray: [QuestionInput2!], $scheduleId: ID!) {
     addQuestionsToExam(questionsArray: $questionsArray, scheduleId: $scheduleId)
@@ -225,4 +233,5 @@ export {
   DeleteOneSpellingQuestion,
   EditSpelling,
   SaveEssayQuestion,
+  CreateEssayExaminationSchedule
 };
