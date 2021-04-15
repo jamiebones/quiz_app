@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useLazyQuery } from "@apollo/client";
-import {
-  AutoGenerateQuestions,
-  AutoGenerateSpellingQuestions,
-} from "../graphql/queries";
-import {
-  AddQuestionsArrayToScheduleExam,
-  AddSpellingQuestionsArrayToScheduleExam,
-} from "../graphql/mutation";
+import { AutoGenerateEssayQuestions } from "../graphql/queries";
+import { AddEssayQuestionsArrayToScheduleExam } from "../graphql/mutation";
 import styled from "styled-components";
-import LoadQuestionsComponent from "../common/loadQuestionsComponent";
+import LoadEssayQuestionsComponent from "../common/loadEssayQuestionComponent";
 import ExaminationTypeComponent from "../common/examinationTypeComponent";
 
 const AddQuestionStyles = styled.div`
@@ -51,9 +45,9 @@ const AddEssayQuestionsToExam = () => {
   const [scheduleArray, setScheduleArray] = useState([]);
   const [examScheduleDetails, setExamScheduleDetails] = useState(null);
 
-  //auto generate multi choice questions
+  //auto generate essay questions
   const [autoGenerateFunc, autoGenResult] = useLazyQuery(
-    AutoGenerateQuestions,
+    AutoGenerateEssayQuestions,
     {
       variables: {
         examId: examData && examData.examId,
@@ -62,32 +56,16 @@ const AddEssayQuestionsToExam = () => {
     }
   );
 
-  //auto generate spelling questions
-  const [autoGenerateSpellingFunc, autoGenSpellingResult] = useLazyQuery(
-    AutoGenerateSpellingQuestions,
-    {
-      variables: {
-        examId: examData && examData.examId,
-        number: examScheduleDetails && examScheduleDetails.numberofQuestions,
-      },
-    }
-  );
-  //add multi choice questions to exam
-  const [addQuestionToExam, addQuestionsToExamResult] = useMutation(
-    AddQuestionsArrayToScheduleExam
+  //add essay questions to exam
+  const [addEssayQuestionToExam, addQuestionsToExamResult] = useMutation(
+    AddEssayQuestionsArrayToScheduleExam
   );
 
-  //add multi choice mutation questions to exam
-  const [
-    addSpellingQuestionToExam,
-    addSpellingQuestionsToExamResult,
-  ] = useMutation(AddSpellingQuestionsArrayToScheduleExam);
-
-  //auto generate multi choice effect questions
+  //auto generate essay questions
   useEffect(() => {
     if (autoGenResult.data) {
       //set the questions selected here
-      const autoQuestions = autoGenResult.data.autoGenQuestions;
+      const autoQuestions = autoGenResult.data.autoGenEssayQuestions;
       setAutoProcessing(!autoProcessing);
       setSelectedQuestion(autoQuestions);
     }
@@ -97,21 +75,7 @@ const AddEssayQuestionsToExam = () => {
     }
   }, [autoGenResult.data, autoGenResult.error]);
 
-  //auto generate spellings effect questions
-  useEffect(() => {
-    if (autoGenSpellingResult.data) {
-      //set the questions selected here
-      const autoQuestions = autoGenSpellingResult.data.autoGenSpellingQuestions;
-      setAutoProcessing(!autoProcessing);
-      setSelectedQuestion(autoQuestions);
-    }
-    if (autoGenSpellingResult.error) {
-      setErrors(autoGenSpellingResult.error);
-      setAutoProcessing(!autoProcessing);
-    }
-  }, [autoGenSpellingResult.data, autoGenSpellingResult.error]);
-
-  //add multi choice question to exam mutation
+  //add essay question to exam mutation
   useEffect(() => {
     if (addQuestionsToExamResult.error) {
       setProcessing(!processing);
@@ -121,32 +85,12 @@ const AddEssayQuestionsToExam = () => {
 
     if (
       addQuestionsToExamResult.data &&
-      addQuestionsToExamResult.data.addQuestionsToExam
+      addQuestionsToExamResult.data.addEssayQuestionsToExam
     ) {
       setProcessing(!processing);
       window.alert("questions added successfully");
     }
   }, [addQuestionsToExamResult.error, addQuestionsToExamResult.data]);
-
-  //add spelling questions to exam mutation
-  useEffect(() => {
-    if (addSpellingQuestionsToExamResult.error) {
-      setProcessing(!processing);
-      setSubmitted(!submitted);
-      setErrors(addSpellingQuestionsToExamResult.error.message);
-    }
-
-    if (
-      addSpellingQuestionsToExamResult.data &&
-      addSpellingQuestionsToExamResult.data.addSpellingQuestionsToExam
-    ) {
-      setProcessing(!processing);
-      window.alert("questions added successfully");
-    }
-  }, [
-    addSpellingQuestionsToExamResult.error,
-    addSpellingQuestionsToExamResult.data,
-  ]);
 
   const handleLoadQuestions = (e) => {
     e.preventDefault();
@@ -195,59 +139,38 @@ const AddEssayQuestionsToExam = () => {
       );
     }
 
-    switch (examType) {
-      case "multiple choice questions":
-        const arrayOfQuestions = selectedQuestion.map(
-          ({
-            explanation,
-            answers,
-            examId,
-            examinationType,
-            questionImageUrl,
-            question,
-            id,
-          }) => {
-            const questionObj = {
-              answers,
-              examId: examId,
-              examinationType,
-              explanation,
-              question,
-              questionImageUrl,
-              id,
-            };
-            return questionObj;
-          }
-        );
-        await addQuestionToExam({
-          variables: {
-            questionsArray: arrayOfQuestions,
-            scheduleId: examScheduleDetails.id,
-          },
-        });
-        break;
-      case "spelling examination":
-        const arrayOfSpellingQuestions = selectedQuestion.map(
-          ({ word, correctWord, examId, examinationType, clue, id }) => {
-            const questionObj = {
-              word,
-              correctWord,
-              examId,
-              examinationType,
-              clue,
-              id,
-            };
-            return questionObj;
-          }
-        );
-        await addSpellingQuestionToExam({
-          variables: {
-            questionsArray: arrayOfSpellingQuestions,
-            scheduleId: examScheduleDetails.id,
-          },
-        });
-        break;
-    }
+    const arrayOfEssayQuestions = selectedQuestion.map(
+      ({
+        type,
+        question,
+        clue,
+        possibleAnswers,
+        mediaUrl,
+        examId,
+        examinationType,
+        mediaType,
+        id,
+      }) => {
+        const questionObj = {
+          type,
+          question,
+          clue,
+          possibleAnswers,
+          mediaUrl,
+          examId: examId,
+          examinationType,
+          mediaType,
+          id,
+        };
+        return questionObj;
+      }
+    );
+    await addEssayQuestionToExam({
+      variables: {
+        questionsArray: arrayOfEssayQuestions,
+        scheduleId: examScheduleDetails.id,
+      },
+    });
   };
 
   const autoGenerateQuestionsToAdd = (e) => {
@@ -258,11 +181,8 @@ const AddEssayQuestionsToExam = () => {
     if (examId && number) {
       setAutoProcessing(!autoProcessing);
       switch (examType) {
-        case "multiple choice questions":
+        case "short answer exam":
           autoGenerateFunc();
-          break;
-        case "spelling examination":
-          autoGenerateSpellingFunc();
           break;
       }
     }
@@ -282,6 +202,7 @@ const AddEssayQuestionsToExam = () => {
       examName,
       examSchedules,
     });
+    
     if (examSchedules) {
       setScheduleArray(examSchedules);
     } else {
@@ -306,7 +227,7 @@ const AddEssayQuestionsToExam = () => {
     <AddQuestionStyles>
       <div className="row">
         <div className="col-md-4 offset-md-1">
-          <h4 className="text-center">Add Question to Examination</h4>
+          <h4 className="text-center">Add Essay Question to Examination</h4>
 
           <ExaminationTypeComponent
             selectedExamTypeFunc={selectedExamTypeFunc}
@@ -370,7 +291,7 @@ const AddEssayQuestionsToExam = () => {
               {examScheduleDetails && questionLoading && (
                 <React.Fragment>
                   <h5 className="text-center">Questions</h5>
-                  <LoadQuestionsComponent
+                  <LoadEssayQuestionsComponent
                     examId={examData && examData.examId}
                     handleQuestionClick={handleQuestionClick}
                     examType={examType}
@@ -385,11 +306,13 @@ const AddEssayQuestionsToExam = () => {
           {selectedQuestion && selectedQuestion.length > 0 && (
             <p className="text-center lead">
               Remaining questions:{" "}
-              {examScheduleDetails.numberofQuestions - +selectedQuestion.length}
+              {examScheduleDetails &&
+                examScheduleDetails.numberofQuestions -
+                  +selectedQuestion.length}
             </p>
           )}
           {selectedQuestion.length > 0 &&
-            selectedQuestion.map(({ word, question, id }, index) => {
+            selectedQuestion.map(({ question, id }, index) => {
               return (
                 <div
                   className="div-question-details"
@@ -401,7 +324,6 @@ const AddEssayQuestionsToExam = () => {
                     className="question-divs"
                     dangerouslySetInnerHTML={setHtml(question)}
                   />
-                  <p>{word}</p>
                 </div>
               );
             })}

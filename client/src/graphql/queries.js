@@ -11,16 +11,14 @@ const GetAllExamination = gql`
 `;
 
 const GetAllMultiChoiceExamination = gql`
-query getMultiChoiceExam($examType: String!) {
-  getAllMultiChoiceExam(examType: $examType) {
-    id
-    examName
-    examType
+  query getMultiChoiceExam($examType: String!) {
+    getAllMultiChoiceExam(examType: $examType) {
+      id
+      examName
+      examType
+    }
   }
-}
 `;
-
-
 
 const GetAllQuestionsByExamID = gql`
   query getExamQuestions($examId: String!, $cursor: String, $limit: Int) {
@@ -64,6 +62,43 @@ const GetAllQuestions = gql`
         explanation
       }
       totalQuestion
+    }
+  }
+`;
+
+const GetAllEssayQuestions = gql`
+  query getAllEssayQuestions($examId: String!, $offset: Int) {
+    getAllEssayQuestions(examId: $examId, offset: $offset) {
+      questions {
+        id
+        type
+        question
+        clue
+        possibleAnswers
+        mediaUrl
+        examId
+        examinationType
+        createdAt
+        mediaType
+      }
+      totalQuestion
+    }
+  }
+`;
+
+const AutoGenerateEssayQuestions = gql`
+  query AutoGenerateEssayQuestions($examId: ID!, $number: Int!) {
+    autoGenEssayQuestions(examId: $examId, number: $number) {
+      id
+      type
+      question
+      clue
+      possibleAnswers
+      mediaUrl
+      examId
+      examinationType
+      createdAt
+      mediaType
     }
   }
 `;
@@ -177,6 +212,18 @@ const GetActiveExamination = gql`
           clue
           examinationType
           examId
+        }
+
+        ... on EssayExamQuestion {
+          type
+          question
+          clue
+          possibleAnswers
+          mediaUrl
+          examId
+          examinationType
+          mediaType
+          id
         }
       }
       questionType
@@ -295,6 +342,17 @@ const GetAllScheduleExamination = gql`
           examinationType
           examId
         }
+        ... on EssayExamQuestion {
+          type
+          question
+          clue
+          possibleAnswers
+          mediaUrl
+          examId
+          examinationType
+          mediaType
+          id
+        }
       }
       questionType
       examTypeID
@@ -385,6 +443,18 @@ const GetDifferentExamination = gql`
             examinationType
             examId
           }
+
+          ... on EssayExamQuestion {
+            type
+            question
+            clue
+            possibleAnswers
+            mediaUrl
+            examId
+            examinationType
+            mediaType
+            id
+          }
         }
         questionType
         examTypeID
@@ -412,4 +482,6 @@ export {
   AutoGenerateQuestions,
   AutoGenerateSpellingQuestions,
   GetDifferentExamination,
+  AutoGenerateEssayQuestions,
+  GetAllEssayQuestions,
 };

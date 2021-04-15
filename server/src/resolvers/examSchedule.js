@@ -158,13 +158,33 @@ export default {
         throw new Error("Database Error");
       }
     },
+    addEssayQuestionsToExam: async (
+      _,
+      { questionsArray, scheduleId },
+      { models }
+    ) => {
+      try {
+        await models.ExamSchedule.updateOne(
+          { _id: scheduleId },
+          {
+            $addToSet: {
+              questions: questionsArray,
+            },
+          }
+        );
+
+        return true;
+      } catch (error) {
+        console.log(error);
+        throw new Error("Database Error");
+      }
+    },
     addSpellingQuestionsToExam: async (
       _,
       { questionsArray, scheduleId },
       { models }
     ) => {
       try {
-        console.log(questionsArray);
         await models.ExamSchedule.updateOne(
           { _id: scheduleId },
           {

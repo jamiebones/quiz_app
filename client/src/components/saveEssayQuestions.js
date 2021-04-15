@@ -71,6 +71,7 @@ const SaveEssayQuestionComponent = () => {
       setPossibleAnswers([]);
       setFileDetails(null);
       setFile(null);
+      setQuestion(null)
       fileRef.current.value = "";
       window.alert("question saved to database.");
     }
@@ -258,6 +259,7 @@ const SaveEssayQuestionComponent = () => {
             <select
               className="custom-width form-control"
               onChange={handleMediaChange}
+              value={mediaType}
             >
               <option value="0">select media type</option>
               <option value="video">video</option>

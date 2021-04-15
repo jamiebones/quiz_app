@@ -14,7 +14,10 @@ export default gql`
     createMultipleExamSchedule(input: MultipleExamScheduleInput!): Boolean
     createSpellingExamSchedule(input: SpellingExamScheduleInput!): Boolean
     createEssayExamSchedule(input: EssayExamScheduleInput!): Boolean
-
+    addEssayQuestionsToExam(
+      questionsArray: [EssayExamQuestionInput2!]
+      scheduleId: ID!
+    ): Boolean
     addQuestionsToExam(
       questionsArray: [QuestionInput2!]
       scheduleId: ID!
