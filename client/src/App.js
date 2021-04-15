@@ -46,6 +46,8 @@ import SpellingExamSummary from "./components/spellingExamSummary";
 import DisplaySpellingQuizScriptComponent from "./components/displaySpellingScriptComponent";
 import ViewCanidateSpellingScripts from "./components/viewSpellingExaminationScript";
 import LoadSpellingQuestions from "./components/loadSpellingQuestions";
+import SaveEssayQuestions from "./components/saveEssayQuestions";
+import AddEssayQuestionsToExam from "./components/addEssayQuestionsToExam";
 import { useHistory } from "react-router-dom";
 import GlobalStyle from "./globalStyles";
 //import localStorage from "./localStorage";
@@ -228,6 +230,7 @@ function App(props) {
                         exact
                         path="/add_question"
                       />
+
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -237,6 +240,17 @@ function App(props) {
                         exact
                         path="/add_spelling_question"
                       />
+
+                      <AuthorizedComponent
+                        loading={loading}
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["super-admin"]}
+                        component={SaveEssayQuestions}
+                        exact
+                        path="/add_essay_question"
+                      />
+
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -284,6 +298,17 @@ function App(props) {
                         exact
                         path="/add_questions_examination"
                       />
+
+                      <AuthorizedComponent
+                        loading={loading}
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["super-admin"]}
+                        component={AddEssayQuestionsToExam}
+                        exact
+                        path="/add_essay_questions_examination"
+                      />
+
                       <PublicRoute
                         component={LoginPage}
                         {...props}

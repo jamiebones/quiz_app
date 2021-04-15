@@ -9,6 +9,7 @@
   "author": "Osikhena James Oshomah",
   "license": "ISC",
   "dependencies": {
+    "graphql-upload": "^11.0.0",
     "xlsx": "^0.16.9"
   }
 }

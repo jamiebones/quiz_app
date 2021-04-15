@@ -333,6 +333,15 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
 
                 <li
                   className="subitem"
+                  onClick={() =>
+                    history.push("/add_essay_questions_examination")
+                  }
+                >
+                  <a>Add Essay Questions To Exam</a>
+                </li>
+
+                <li
+                  className="subitem"
                   onClick={() => history.push("/activate_exams")}
                 >
                   <a>Activate Exam</a>
@@ -371,6 +380,13 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
                   onClick={() => history.push("/add_spelling_question")}
                 >
                   <a>Add Spelling Questions</a>
+                </li>
+
+                <li
+                  className="subitem"
+                  onClick={() => history.push("/add_essay_question")}
+                >
+                  <a>Add Essay Questions</a>
                 </li>
 
                 <li

@@ -10,7 +10,7 @@ const EssayExamQuestionSchema = new Schema(
       type: Array,
       required: false,
     },
-    imageUrl: { type: String, required: false },
+    mediaUrl: { type: String, required: false },
     mediaType: {
       type: String,
       required: false,

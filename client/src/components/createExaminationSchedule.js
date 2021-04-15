@@ -171,6 +171,7 @@ const CreateExaminationScheduleComponent = () => {
           <ExaminationTypeComponent
             selectedExamTypeFunc={selectedExamTypeFunc}
             selectedExamNameFunc={selectedExamNameFunc}
+            display={1}
           />
           <form onSubmit={handleFormSubmit}>
             <div className="mb-3">

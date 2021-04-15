@@ -5,6 +5,7 @@ import { GetDifferentExamination } from "../graphql/queries";
 const ExaminationTypeComponent = ({
   selectedExamTypeFunc,
   selectedExamNameFunc,
+  display,
 }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
@@ -62,13 +63,49 @@ const ExaminationTypeComponent = ({
         <label className="form-label">Select examination type</label>
         <select className="custom-select" onChange={handleExamTypeChange}>
           <option value="0">select examination type</option>
-          <option value="multiple choice questions">
-            Multiple choice questions
-          </option>
-          <option value="spelling examination">Spelling examination </option>
-          <option value="short answer exam">Short answer type</option>
-          <option value="essay exam">Essay examination</option>
-          <option value="quantitative exam">Quantitative examination</option>
+          {display == "all" && (
+         <React.Fragment>
+              <option value="multiple choice questions">
+                Multiple choice questions
+              </option>
+              <option value="spelling examination">
+                Spelling examination{" "}
+              </option>
+
+              <option value="short answer exam">Short answer type</option>
+              <option value="essay exam">Essay examination</option>
+
+              <option value="quantitative exam">
+                Quantitative examination
+              </option>
+            </React.Fragment>
+          )}
+
+          {display == 1 && (
+            <React.Fragment>
+              <option value="multiple choice questions">
+                Multiple choice questions
+              </option>
+              <option value="spelling examination">
+                Spelling examination{" "}
+              </option>
+            </React.Fragment>
+          )}
+
+          {display == 2 && (
+            <React.Fragment>
+              <option value="short answer exam">Short answer type</option>
+              <option value="essay exam">Essay examination</option>
+            </React.Fragment>
+          )}
+
+          {display == 3 && (
+            <React.Fragment>
+              <option value="quantitative exam">
+                Quantitative examination
+              </option>
+            </React.Fragment>
+          )}
         </select>
       </div>
       <div className="form-group">

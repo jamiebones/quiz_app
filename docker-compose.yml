@@ -14,7 +14,6 @@ services:
     volumes:
       - "./client:/app"
       - /app/node_modules
-      - $HOME/uploads:/app/public/assets
     environment:
       - CHOKIDAR_USEPOLLING= true
       - "CI= true"
@@ -27,7 +26,7 @@ services:
     volumes:
       - /home/jamie/node_modules
       - ./server:/home/jamie
-      - $HOME/uploads:/home/jamie/uploads
+      - $HOME/uploads:/app/src/public
     depends_on:
       - mongodb_cbt
     restart: always
@@ -49,7 +48,7 @@ services:
     ports:
       - 27017:27017
     restart: always
-    environment: 
+    environment:
       MONGO_INITDB_ROOT_USERNAME: jamiebones
       MONGO_INITDB_ROOT_PASSWORD: blazing147
     entrypoint:

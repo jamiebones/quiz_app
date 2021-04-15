@@ -11,6 +11,7 @@ import models from "./models";
 import http from "http";
 import config from "./config";
 import uploadFile from "./middleware/uploadFile";
+import path from "path";
 
 const morgan = require("morgan");
 
@@ -19,7 +20,7 @@ StartUp();
 async function StartUp() {
   const app = express();
   app.use(cors());
-
+  app.use(express.static(path.join(__dirname, "public")));
   if (process.env.NODE_ENV === "production") {
     app.use(morgan("combined", { stream: config.winston.stream }));
   }

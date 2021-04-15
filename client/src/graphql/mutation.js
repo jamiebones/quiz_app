@@ -18,8 +18,17 @@ const SaveSpelling = gql`
   }
 `;
 
+const SaveEssayQuestion = gql`
+  mutation saveEssayQuestion($input: EssayExamQuestionInput!) {
+    saveEssayQuestion(input: $input)
+  }
+`;
+
 const EditSpelling = gql`
-  mutation editSpellingQuestion($input: SpellingQuestionInput!, $questionId: ID!) {
+  mutation editSpellingQuestion(
+    $input: SpellingQuestionInput!
+    $questionId: ID!
+  ) {
     editSpellingQuestion(input: $input, questionId: $questionId)
   }
 `;
@@ -214,5 +223,6 @@ export {
   CreateSpellingExaminationSchedule,
   SpellingExaminationEnded,
   DeleteOneSpellingQuestion,
-  EditSpelling
+  EditSpelling,
+  SaveEssayQuestion,
 };

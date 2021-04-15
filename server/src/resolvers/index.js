@@ -5,7 +5,8 @@ import ExamTakenResolvers from "./examTaken";
 import ExamScheduleResolvers from "./examSchedule";
 import UserResolvers from "./user";
 import DigitalAssetResolver from "./digitalAsset";
-import SpellingQuestionResolver from "./spellingQuestion"
+import SpellingQuestionResolver from "./spellingQuestion";
+import EssayExamQuestionResolver from "./essayExamQuestionResolvers";
 const customScalarResolver = {
   Date: GraphQLDateTime,
 };
@@ -18,5 +19,6 @@ export default [
   ExamScheduleResolvers,
   UserResolvers,
   DigitalAssetResolver,
-  SpellingQuestionResolver
+  SpellingQuestionResolver,
+  EssayExamQuestionResolver,
 ];

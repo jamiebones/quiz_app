@@ -38,7 +38,7 @@ const setHtml = (html) => {
   return { __html: html };
 };
 
-const AddQuestionsToExaminationComponent = () => {
+const AddEssayQuestionsToExam = () => {
   const [errors, setErrors] = useState(null);
   const [examType, setExamType] = useState([]);
   const [processing, setProcessing] = useState(false);
@@ -311,7 +311,7 @@ const AddQuestionsToExaminationComponent = () => {
           <ExaminationTypeComponent
             selectedExamTypeFunc={selectedExamTypeFunc}
             selectedExamNameFunc={selectedExamFunc}
-            display={1}
+            display={2}
           />
 
           <select className="form-control" onChange={handleScheduleExamChange}>
@@ -425,4 +425,4 @@ const AddQuestionsToExaminationComponent = () => {
   );
 };
 
-export default AddQuestionsToExaminationComponent;
+export default AddEssayQuestionsToExam;
