@@ -37,7 +37,6 @@ export default gql`
     examinationType: String
     mediaType: String
     mediaUrl: String
-    
   }
 
   input EssayExamQuestionInput2 {
@@ -55,5 +54,14 @@ export default gql`
   type EssayQuestionsTotal {
     questions: [EssayExamQuestion!]!
     totalQuestion: String!
+  }
+
+  input EssayQuestionScriptInput {
+    number: Int!
+    question: String!
+    clue: String
+    possibleAnswers: [String]
+    mediaType: String
+    mediaUrl: String
   }
 `;

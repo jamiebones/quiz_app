@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 import store from "store";
 
 const CountDownTimerStyles = styled.div`
-  text-align: center;
+  
   span {
     font-size: 30px;
   }

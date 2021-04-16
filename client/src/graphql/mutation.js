@@ -188,6 +188,12 @@ const SpellingExaminationEnded = gql`
   }
 `;
 
+const EssayExaminationEnded = gql`
+  mutation ExaminationEnded($submissionDetails: EssayExamFinishedInput!) {
+    EssayExamEnded(submissionDetails: $submissionDetails)
+  }
+`;
+
 const CreateCourseSubject = gql`
   mutation CreateCourseSubject($examName: String!, $examType: String!) {
     createExam(examName: $examName, examType: $examType)
@@ -247,4 +253,5 @@ export {
   SaveEssayQuestion,
   CreateEssayExaminationSchedule,
   AddEssayQuestionsArrayToScheduleExam,
+  EssayExaminationEnded,
 };

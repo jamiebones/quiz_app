@@ -9,7 +9,7 @@ const AudioComponent = ({ src, type }) => {
   return (
     <AudioComponentStyles>
       <audio controls>
-        <source src={src} type={type} />
+        <source src={src} type="audio/mpeg" />
         Your browser does not support the audio tag.
       </audio>
     </AudioComponentStyles>

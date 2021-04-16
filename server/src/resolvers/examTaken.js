@@ -72,6 +72,21 @@ export default {
 
       return true;
     },
+    essayExamEnded: async (_, { submissionDetails }, { models }) => {
+      //check if the person has an examination running already
+      const { examTakenId, score, scripts } = submissionDetails;
+      await models.ExamTaken.updateOne(
+        { _id: examTakenId },
+        {
+          examFinished: true,
+          timeExamEnded: new Date(),
+          score,
+          scripts,
+        }
+      );
+
+      return true;
+    },
   },
   ExamTakenDetails: {
     __resolveType(obj) {
@@ -90,6 +105,9 @@ export default {
       }
       if (obj.clue) {
         return "SpellingScriptQuestion";
+      }
+      if (obj.possibleAnswers) {
+        return "EssayQuestionScriptInput";
       }
     },
   },

@@ -12,6 +12,7 @@ export default gql`
     startExam(examDetails: ExamTakenInput!): ExamTakenDetails!
     examEnded(submissionDetails: ExamFinishedInput!): Boolean!
     spellingExamEnded(submissionDetails: SpellingExamFinishedInput!): Boolean!
+    essayExamEnded(submissionDetails: EssayExamFinishedInput!): Boolean!
   }
 
   union ExamTakenDetails = ExamTakenSuccess | Error
@@ -47,6 +48,14 @@ export default gql`
     timeExamEnded: Date
     score: Int
     scripts: [SpellingQuestionScriptInput]
+  }
+
+  input EssayExamFinishedInput {
+    examTakenId: ID!
+    examFinished: Boolean!
+    timeExamEnded: Date
+    score: Int
+    scripts: [EssayQuestionScriptInput]
   }
 
   type ExamTaken {

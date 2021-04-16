@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
 }
 
   body {
-    background-color: #fff0f1f5;
+    background-color: #fff0f1f1;
   }
 
   .card {
