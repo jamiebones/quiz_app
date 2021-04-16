@@ -48,6 +48,7 @@ import ViewCanidateSpellingScripts from "./components/viewSpellingExaminationScr
 import LoadSpellingQuestions from "./components/loadSpellingQuestions";
 import SaveEssayQuestions from "./components/saveEssayQuestions";
 import AddEssayQuestionsToExam from "./components/addEssayQuestionsToExam";
+import StartEssayExam from "./components/startEssayExam";
 import { useHistory } from "react-router-dom";
 import GlobalStyle from "./globalStyles";
 //import localStorage from "./localStorage";
@@ -112,7 +113,6 @@ function App(props) {
                         exact
                         path="/view_canidate_spelling_script"
                       />
-
                       <AuthorizedComponent
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
@@ -169,6 +169,15 @@ function App(props) {
                         exact
                         path="/exam/spelling/:examId"
                       />
+                      <AuthorizedComponent
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["student"]}
+                        component={StartEssayExam}
+                        exact
+                        path="/exam/short_essay/:examId"
+                      />
+                 
                       <AuthorizedComponent
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
@@ -230,7 +239,6 @@ function App(props) {
                         exact
                         path="/add_question"
                       />
-
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -240,7 +248,6 @@ function App(props) {
                         exact
                         path="/add_spelling_question"
                       />
-
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -250,7 +257,6 @@ function App(props) {
                         exact
                         path="/add_essay_question"
                       />
-
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -260,7 +266,6 @@ function App(props) {
                         exact
                         path="/load_multi_choice_question"
                       />
-
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -270,7 +275,6 @@ function App(props) {
                         exact
                         path="/load_spelling_question"
                       />
-
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -298,7 +302,6 @@ function App(props) {
                         exact
                         path="/add_questions_examination"
                       />
-
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -308,7 +311,6 @@ function App(props) {
                         exact
                         path="/add_essay_questions_examination"
                       />
-
                       <PublicRoute
                         component={LoginPage}
                         {...props}

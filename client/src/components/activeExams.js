@@ -96,6 +96,7 @@ const ActiveExams = ({ history }) => {
             history.replace(`/exam/spelling/${examId}`);
             break;
           case "short answer exam":
+            history.replace(`/exam/short_essay/${examId}`);
             break;
           case "essay exam":
             break;
