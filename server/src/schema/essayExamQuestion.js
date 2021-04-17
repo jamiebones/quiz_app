@@ -37,6 +37,8 @@ export default gql`
     examinationType: String
     mediaType: String
     mediaUrl: String
+    mediaFile:Upload
+    
   }
 
   input EssayExamQuestionInput2 {
@@ -63,5 +65,20 @@ export default gql`
     possibleAnswers: [String]
     mediaType: String
     mediaUrl: String
+    isCorrect: Boolean
+    yourAnswer: String
+    
+  }
+
+
+  type EssayQuestionScript {
+    number: Int!
+    question: String!
+    yourAnswer: String
+    clue: String
+    possibleAnswers: [String]
+    mediaType: String
+    mediaUrl: String
+    isCorrect: Boolean
   }
 `;

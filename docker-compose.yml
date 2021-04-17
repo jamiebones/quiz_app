@@ -26,7 +26,7 @@ services:
     volumes:
       - /home/jamie/node_modules
       - ./server:/app
-      - $HOME/uploads:/app/src/public
+      - $HOME/uploads:/app/uploads
     depends_on:
       - mongodb_cbt
     restart: always

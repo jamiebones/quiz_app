@@ -190,7 +190,7 @@ const SpellingExaminationEnded = gql`
 
 const EssayExaminationEnded = gql`
   mutation ExaminationEnded($submissionDetails: EssayExamFinishedInput!) {
-    EssayExamEnded(submissionDetails: $submissionDetails)
+    essayExamEnded(submissionDetails: $submissionDetails)
   }
 `;
 

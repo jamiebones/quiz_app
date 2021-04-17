@@ -42,9 +42,9 @@ const QuestionNumberDiv = ({ questionsArray = [] }) => {
 
   const scrollFunction = () => {
     if (window.pageYOffset > sticky) {
-      divRef.current.classList.add("sticky");
+      divRef && divRef.current && divRef.current.classList.add("sticky");
     } else {
-      divRef.current.classList.remove("sticky");
+      divRef && divRef.current && divRef.current.classList.remove("sticky");
     }
   };
 

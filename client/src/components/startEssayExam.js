@@ -170,7 +170,7 @@ const EssayExamQuestionComponent = () => {
     examIdVariable = examId ? examId : examIdinStore;
     if (examStartedVariable && examIdVariable) {
       //we are good we can gather things here
-      const { total, scripts } = methods.MarkSpellingExam(storedData);
+      const { total, scripts } = methods.MarkEssayExam(storedData);
       setScoreDetails({
         score: total,
         totalQuestions: scripts.length,
@@ -265,6 +265,18 @@ const EssayExamQuestionComponent = () => {
                 );
               }
             )}
+
+          <div className="text-center mb-3">
+            <button
+              className="btn btn-success"
+              disabled={submitting}
+              onClick={submitQuizHandler}
+            >
+              {submitting
+                ? "submitting please wait"
+                : "Submit Examination"}
+            </button>
+          </div>
         </div>
       </div>
     </EssayExamQuestionComponentStyles>

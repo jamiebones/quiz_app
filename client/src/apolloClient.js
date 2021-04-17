@@ -15,7 +15,11 @@ const cache = new InMemoryCache({
     ActiveExamDetails: ["ActiveExamSuccessful", "Error"],
     ExamTakenDetails: ["ExamTakenSuccess", "Error"],
     QuestionTypes: ["SpellingQuestion", "Question", "EssayExamQuestion"],
-    ScriptTypes: ["ScriptQuestion", "SpellingScriptQuestion"],
+    ScriptTypes: [
+      "ScriptQuestion",
+      "SpellingScriptQuestion",
+      "EssayQuestionScript",
+    ],
   },
 });
 

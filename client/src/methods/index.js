@@ -4,6 +4,7 @@ import Utils from "./utils";
 import GenerateScripts from "./generateScripts";
 import SaveBulkSpellingQuestions from "./saveBulkSpellingQuestions";
 import MarkSpellingExam from "./markSpellingScripts";
+import MarkEssayExam from "./markEssayExamination"
 
 export default {
   bulkMethods,
@@ -12,4 +13,5 @@ export default {
   GenerateScripts,
   SaveBulkSpellingQuestions,
   MarkSpellingExam,
+  MarkEssayExam
 };

@@ -49,6 +49,8 @@ import LoadSpellingQuestions from "./components/loadSpellingQuestions";
 import SaveEssayQuestions from "./components/saveEssayQuestions";
 import AddEssayQuestionsToExam from "./components/addEssayQuestionsToExam";
 import StartEssayExam from "./components/startEssayExam";
+import EssayExamSummary from "./components/essayExamSummary";
+import DisplayEssayQuizScriptComponent from "./components/displayEssayScriptComponent";
 import { useHistory } from "react-router-dom";
 import GlobalStyle from "./globalStyles";
 //import localStorage from "./localStorage";
@@ -177,7 +179,7 @@ function App(props) {
                         exact
                         path="/exam/short_essay/:examId"
                       />
-                 
+
                       <AuthorizedComponent
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
@@ -202,6 +204,16 @@ function App(props) {
                         exact
                         path="/spelling_examination_script/:examId"
                       />
+
+                      <AuthorizedComponent
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["super-admin", "student"]}
+                        component={DisplayEssayQuizScriptComponent}
+                        exact
+                        path="/essay_examination_script/:examId"
+                      />
+
                       <Route exact path="/try" component={TryPage} />
                       <AuthorizedComponent
                         loading={loading}
@@ -221,6 +233,17 @@ function App(props) {
                         exact
                         path="/exam_summary/spelling/:examId"
                       />
+
+                      <AuthorizedComponent
+                        loading={loading}
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["super-admin", "student"]}
+                        component={EssayExamSummary}
+                        exact
+                        path="/exam_summary/essay/:examId"
+                      />
+
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}

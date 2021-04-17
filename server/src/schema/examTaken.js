@@ -16,7 +16,7 @@ export default gql`
   }
 
   union ExamTakenDetails = ExamTakenSuccess | Error
-  union ScriptTypes = ScriptQuestion | SpellingScriptQuestion
+  union ScriptTypes = ScriptQuestion | SpellingScriptQuestion | EssayQuestionScript
 
   type ExamTakenSuccess {
     type: String

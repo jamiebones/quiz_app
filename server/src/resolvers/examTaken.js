@@ -102,12 +102,10 @@ export default {
     __resolveType(obj) {
       if (obj.correctOption) {
         return "ScriptQuestion";
-      }
-      if (obj.clue) {
+      } else if (obj.word) {
         return "SpellingScriptQuestion";
-      }
-      if (obj.possibleAnswers) {
-        return "EssayQuestionScriptInput";
+      } else {
+        return "EssayQuestionScript";
       }
     },
   },

@@ -266,6 +266,17 @@ const GetExaminationResult = gql`
           correctOption
           explanation
         }
+
+        ... on EssayQuestionScript {
+          number
+          question
+          yourAnswer
+          clue
+          possibleAnswers
+          mediaType
+          mediaUrl
+          isCorrect
+        }
       }
     }
   }
@@ -298,6 +309,18 @@ const GetCanidateExamResult = gql`
           answeredWord
           correctWord
         }
+
+        ... on EssayQuestionScript {
+          number
+          question
+          yourAnswer
+          clue
+          possibleAnswers
+          mediaType
+          mediaUrl
+          isCorrect
+        }
+
         ... on ScriptQuestion {
           number
           selectedOption
