@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
   .card {
     background: #fff;
     padding: 20px;
+    margin-bottom: 20px;
   }
 
 

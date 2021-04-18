@@ -1,4 +1,6 @@
 import methods from "../methods";
+import path from "path";
+import fs from "fs";
 
 export default {
   Query: {
@@ -37,6 +39,7 @@ export default {
       //query.sort({ createdAt: -1 });
       query.skip(offset);
       query.limit(20);
+      query.sort("-createdAt");
       const questions = await query.exec();
       return {
         questions,
@@ -45,11 +48,93 @@ export default {
     },
   },
   Mutation: {
-    deleteEssayQuestion: async (parent, { questionId }, { models }) => {
+    editEssayQuestion: async (parent, { input }, { models }) => {
       try {
+        const {
+          id,
+          question,
+          clue,
+          possibleAnswers,
+          mediaType,
+          mediaFile,
+        } = input;
+        if (mediaFile) {
+          const { createReadStream, filename } = await mediaFile;
+          const stream = createReadStream();
+          let pathObj = await methods.uploadFile({
+            stream,
+            filename,
+          });
+
+          const filter = { _id: id };
+          const update = {
+            question,
+            clue,
+            possibleAnswers,
+            mediaType,
+            mediaUrl: pathObj,
+          };
+          await models.EssayExamQuestion.findOneAndUpdate(filter, update);
+          return true;
+        } else {
+          const filter = { _id: id };
+          const update = {
+            question,
+            clue,
+            possibleAnswers,
+          };
+          await models.EssayExamQuestion.findOneAndUpdate(filter, update);
+          return true;
+        }
       } catch (error) {
         console.log(error);
-        return false;
+        throw error;
+      }
+    },
+    deleteEssayQuestion: async (parent, { questionId }, { models }) => {
+      try {
+        const questionToDelete = await models.EssayExamQuestion.findOne({
+          _id: questionId,
+        });
+        if (!questionToDelete) {
+          throw new Error("the question you want to delete does not exist");
+        }
+        //check if we have a media url and delete that
+        const mediaUrl = questionToDelete.mediaUrl;
+        //construct the path we want to use to delete the file
+        const filePath = path.resolve("./uploads") + "/" + mediaUrl;
+        //delete the file
+        fs.unlinkSync(filePath);
+        //delete the question entry here
+        await models.EssayExamQuestion.findByIdAndRemove(questionId);
+        return true;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+    deleteMedia: async (parent, { questionId, mediaUrl }, { models }) => {
+      try {
+        const question = await models.EssayExamQuestion.findOne({
+          _id: questionId,
+        });
+        if (!question) {
+          throw new Error("the question does not exist");
+        }
+
+        //construct the path we want to use to delete the file
+        const filePath = path.resolve("./uploads") + "/" + mediaUrl;
+        //delete the file
+        fs.unlinkSync(filePath);
+        //delete the question entry here
+        //update the question here
+        question.mediaType = "";
+        question.mediaUrl = "";
+        await question.save();
+        return true;
+      } catch (error) {
+        console.log(error);
+        throw error;
       }
     },
     saveEssayQuestion: async (parent, { input }, { models }) => {

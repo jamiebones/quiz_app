@@ -309,7 +309,7 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
 
           {authenticated && user && user.userType == "super-admin" && (
             <li className="item has-submenu">
-              <a tabIndex="0">Create Exam</a>
+              <a tabIndex="0">Create Exam / Subject</a>
               <ul className="submenu">
                 <li
                   className="subitem"
@@ -323,12 +323,19 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
                 >
                   <a>Create Examination</a>
                 </li>
+              </ul>
+            </li>
+          )}
 
+          {authenticated && user && user.userType == "super-admin" && (
+            <li className="item has-submenu">
+              <a tabIndex="0">Add Question To Examination</a>
+              <ul className="submenu">
                 <li
                   className="subitem"
                   onClick={() => history.push("/add_questions_examination")}
                 >
-                  <a>Add Questions To Exam</a>
+                  <a>Add Multi/Spelling Questions To Exam</a>
                 </li>
 
                 <li
@@ -338,13 +345,6 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
                   }
                 >
                   <a>Add Essay Questions To Exam</a>
-                </li>
-
-                <li
-                  className="subitem"
-                  onClick={() => history.push("/activate_exams")}
-                >
-                  <a>Activate Exam</a>
                 </li>
               </ul>
             </li>
@@ -370,9 +370,30 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
               <ul className="submenu">
                 <li
                   className="subitem"
+                  onClick={() => history.push("/upload_questions")}
+                >
+                  <a>Upload Questions</a>
+                </li>
+
+                <li
+                  className="subitem"
+                  onClick={() => history.push("/activate_exams")}
+                >
+                  <a>Activate Exam</a>
+                </li>
+              </ul>
+            </li>
+          )}
+
+          {authenticated && user && user.userType == "super-admin" && (
+            <li className="item has-submenu">
+              <a tabIndex="0">Add Questions</a>
+              <ul className="submenu">
+                <li
+                  className="subitem"
                   onClick={() => history.push("/add_question")}
                 >
-                  <a>Add Questions</a>
+                  <a>Add Multi Choice Questions</a>
                 </li>
 
                 <li
@@ -388,26 +409,33 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
                 >
                   <a>Add Essay Questions</a>
                 </li>
+              </ul>
+            </li>
+          )}
 
-                <li
-                  className="subitem"
-                  onClick={() => history.push("/upload_questions")}
-                >
-                  <a>Upload Questions</a>
-                </li>
-
+          {authenticated && user && user.userType == "super-admin" && (
+            <li className="item has-submenu">
+              <a tabIndex="0">Load Questions</a>
+              <ul className="submenu">
                 <li
                   className="subitem"
                   onClick={() => history.push("/load_multi_choice_question")}
                 >
-                  <a>View Multi Choice Questions</a>
+                  <a>Load Multi Choice Questions</a>
                 </li>
 
                 <li
                   className="subitem"
                   onClick={() => history.push("/load_spelling_question")}
                 >
-                  <a>View Spelling Questions</a>
+                  <a>Load Spelling Questions</a>
+                </li>
+
+                <li
+                  className="subitem"
+                  onClick={() => history.push("/load_essay_question")}
+                >
+                  <a>Load Essay Questions</a>
                 </li>
               </ul>
             </li>

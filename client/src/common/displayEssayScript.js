@@ -3,6 +3,7 @@ import styled from "styled-components";
 import moment from "moment";
 import ImageComponent from "./imageComponent";
 import settings from "../config";
+import methods from "../methods";
 const baseUrl = settings.API_URL;
 
 const DisplayEssayScriptStyles = styled.div`
@@ -91,7 +92,9 @@ const DisplayEssayScriptComponent = ({ scripts }) => {
                 <p>
                   Exam Duration :{" "}
                   <span className="spanDetails">
-                    {scripts.examDetails.duration}
+                    {methods.Utils.ConvertMinutesToHours(
+                      scripts.examDetails.duration
+                    )}
                   </span>
                 </p>
 
@@ -136,7 +139,7 @@ const DisplayEssayScriptComponent = ({ scripts }) => {
                 index
               ) => {
                 return (
-                  <div key={index}>
+                  <div key={index + number}>
                     <div className="question-panel">
                       <div>{number}).</div>
                       <div
@@ -186,7 +189,7 @@ const DisplayEssayScriptComponent = ({ scripts }) => {
                       Possible answers :
                       {possibleAnswers.map((ans) => {
                         return (
-                          <span className="possible-span">
+                          <span className="possible-span" key={ans}>
                             <b>
                               <i>{ans}</i>
                             </b>

@@ -11,7 +11,8 @@ export default gql`
   extend type Mutation {
     saveEssayQuestion(input: EssayExamQuestionInput!): Boolean
     deleteEssayQuestion(questionId: ID!): Boolean
-
+    deleteMedia(questionId: ID!, mediaUrl: String!): Boolean
+    editEssayQuestion(input: EssayExamQuestionInput2!): Boolean
     #addEssayQuestionsToExam
   }
 
@@ -43,14 +44,11 @@ export default gql`
 
   input EssayExamQuestionInput2 {
     id: ID!
-    type: String!
     question: String!
     clue: String
     possibleAnswers: [String]
-    examId: ID!
-    examinationType: String
     mediaType: String
-    mediaUrl: String
+    mediaFile:Upload
   }
 
   type EssayQuestionsTotal {

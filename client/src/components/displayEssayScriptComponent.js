@@ -6,6 +6,7 @@ import { useRouteMatch } from "react-router-dom";
 import Loading from "../common/loading";
 import DisplayEssayScriptComponent from "../common/displayEssayScript";
 
+
 const DisplayEssayScriptStyles = styled.div`
   p {
     font-size: 18px;
@@ -42,14 +43,6 @@ const DisplayEssayScriptStyles = styled.div`
   }
 `;
 
-const convertMinutesToHours = (minutesToConvert) => {
-  const hours = Math.floor(minutesToConvert / 60);
-  const minutes = minutesToConvert - hours * 60;
-  if (hours == 0) {
-    return `${minutes} minutes`;
-  }
-  return `${hours} hours ${minutes} minutes`;
-};
 
 const DisplayQuizScriptComponent = () => {
   const match = useRouteMatch("/essay_examination_script/:examId");

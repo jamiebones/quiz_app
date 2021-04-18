@@ -110,6 +110,19 @@ const ViewExamResult = () => {
           },
         });
         break;
+        case "short answer exam":
+          history.push(`/view_canidate_essay_script`, {
+            scripts: {
+              id,
+              timeExamStarted,
+              examDetails,
+              canidateDetails,
+              timeExamEnded,
+              score,
+              scripts,
+            },
+          });
+          break;
 
       default:
         break;

@@ -60,6 +60,14 @@ const DisablecurrentLoginUser = (currentLoginUser, username) => {
   return false;
 };
 
+const SetHtml = (html) => {
+  return { __html: html };
+};
+
+
+
+
+
 export default {
   CapFirstLetterOfEachWord,
   ExtractError,
@@ -67,4 +75,5 @@ export default {
   ReplaceSlash,
   ConvertMinutesToHours,
   DisablecurrentLoginUser,
+  SetHtml
 };

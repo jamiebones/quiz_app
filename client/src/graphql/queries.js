@@ -121,6 +121,7 @@ const GetAllSpellingQuestions = gql`
   }
 `;
 
+
 const GetExamScheduleByType = gql`
   query GetExamType($examTypeId: ID!) {
     getExamScheduleByType(examTypeId: $examTypeId) {

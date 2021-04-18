@@ -24,7 +24,7 @@ services:
       context: ./server
       dockerfile: dockerfile.dev
     volumes:
-      - /home/jamie/node_modules
+      - /app/node_modules
       - ./server:/app
       - $HOME/uploads:/app/uploads
     depends_on:

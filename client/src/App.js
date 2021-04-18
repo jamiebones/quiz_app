@@ -45,13 +45,17 @@ import StartSpellingExam from "./components/startSpellingExam";
 import SpellingExamSummary from "./components/spellingExamSummary";
 import DisplaySpellingQuizScriptComponent from "./components/displaySpellingScriptComponent";
 import ViewCanidateSpellingScripts from "./components/viewSpellingExaminationScript";
+import ViewCanidateEssayScripts from "./components/viewEssayExaminationScripts";
 import LoadSpellingQuestions from "./components/loadSpellingQuestions";
+import LoadEssayQuestion from "./components/loadEssayQuestions";
 import SaveEssayQuestions from "./components/saveEssayQuestions";
 import AddEssayQuestionsToExam from "./components/addEssayQuestionsToExam";
 import StartEssayExam from "./components/startEssayExam";
 import EssayExamSummary from "./components/essayExamSummary";
 import DisplayEssayQuizScriptComponent from "./components/displayEssayScriptComponent";
+import EditEssayQuestion from "./components/editEssayQuestions";
 import { useHistory } from "react-router-dom";
+
 import GlobalStyle from "./globalStyles";
 //import localStorage from "./localStorage";
 
@@ -119,6 +123,14 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
+                        component={ViewCanidateEssayScripts}
+                        exact
+                        path="/view_canidate_essay_script"
+                      />
+                      <AuthorizedComponent
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["super-admin"]}
                         component={UploadMedia}
                         exact
                         path="/upload_media"
@@ -179,7 +191,6 @@ function App(props) {
                         exact
                         path="/exam/short_essay/:examId"
                       />
-
                       <AuthorizedComponent
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
@@ -204,7 +215,6 @@ function App(props) {
                         exact
                         path="/spelling_examination_script/:examId"
                       />
-
                       <AuthorizedComponent
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
@@ -213,7 +223,6 @@ function App(props) {
                         exact
                         path="/essay_examination_script/:examId"
                       />
-
                       <Route exact path="/try" component={TryPage} />
                       <AuthorizedComponent
                         loading={loading}
@@ -233,7 +242,6 @@ function App(props) {
                         exact
                         path="/exam_summary/spelling/:examId"
                       />
-
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -243,7 +251,6 @@ function App(props) {
                         exact
                         path="/exam_summary/essay/:examId"
                       />
-
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -280,6 +287,17 @@ function App(props) {
                         exact
                         path="/add_essay_question"
                       />
+
+                      <AuthorizedComponent
+                        loading={loading}
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["super-admin"]}
+                        component={EditEssayQuestion }
+                        exact
+                        path="/edit_essay_question"
+                      />
+
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
@@ -298,6 +316,16 @@ function App(props) {
                         exact
                         path="/load_spelling_question"
                       />
+                      <AuthorizedComponent
+                        loading={loading}
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["super-admin"]}
+                        component={LoadEssayQuestion}
+                        exact
+                        path="/load_essay_question"
+                      />
+
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}

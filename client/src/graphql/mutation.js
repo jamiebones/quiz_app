@@ -24,6 +24,12 @@ const SaveEssayQuestion = gql`
   }
 `;
 
+const EditEssayQuestion = gql`
+  mutation saveEssayQuestion($input: EssayExamQuestionInput2!) {
+    editEssayQuestion(input: $input)
+  }
+`;
+
 const EditSpelling = gql`
   mutation editSpellingQuestion(
     $input: SpellingQuestionInput!
@@ -42,6 +48,18 @@ const EditQuestion = gql`
 const DeleteOneQuestion = gql`
   mutation deleteQuestion($questionId: ID!) {
     deleteQuestion(questionId: $questionId)
+  }
+`;
+
+const DeleteMedia  = gql`
+mutation deleteMedia($questionId: ID!, $mediaUrl: String!) {
+  deleteMedia(questionId: $questionId, mediaUrl: $mediaUrl)
+}
+`;
+
+const DeleteOneEssayQuestion = gql`
+  mutation deleteQuestion($questionId: ID!) {
+    deleteEssayQuestion(questionId: $questionId)
   }
 `;
 
@@ -254,4 +272,7 @@ export {
   CreateEssayExaminationSchedule,
   AddEssayQuestionsArrayToScheduleExam,
   EssayExaminationEnded,
+  DeleteOneEssayQuestion,
+  DeleteMedia,
+  EditEssayQuestion
 };
