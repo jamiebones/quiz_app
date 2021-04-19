@@ -12,12 +12,28 @@ import http from "http";
 import config from "./config";
 import uploadFile from "./middleware/uploadFile";
 import path from "path";
-
+import cluster from "cluster";
+import os from "os";
 const morgan = require("morgan");
 
-StartUp();
+if ( cluster.isMaster ){
+  const cpuCount = os.cpus().length;
+  for ( let i =0; i < cpuCount; i++ ){
+    cluster.fork();
+  }
+} else{
+  //run our server start up here
+  StartUpServer();
+}
 
-async function StartUp() {
+cluster.on("exit", (worker) => {
+  console.log(`i just died. ${worker.id} is no more`)
+  cluster.fork();
+})
+
+
+
+async function StartUpServer() {
   const app = express();
   app.use(cors());
   app.use(express.static(path.join(__dirname, "../uploads")));
