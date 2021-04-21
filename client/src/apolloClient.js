@@ -27,12 +27,23 @@ const port = process.env.PORT || 8000;
 
 let httpLink = new HttpLink({ uri: `http://localhost:${port}/graphql` });
 
-const uploadLink = createUploadLink({
-  uri: "http://localhost:8000/graphql", // Apollo Server is served from port 4000
-  headers: {
-    "keep-alive": "true",
-  },
-});
+
+let uploadLink;
+if ( process.env.NODE_ENV === "production") {
+  uploadLink = createUploadLink({
+    uri: `https://${window.location.hostname}/graphql`, // Apollo Server is served from port 4000
+    headers: {
+      "keep-alive": "true",
+    },
+  });
+} else{
+  uploadLink = createUploadLink({
+    uri: "http://localhost:9000/graphql", // Apollo Server is served from port 4000
+    headers: {
+      "keep-alive": "true",
+    },
+  });
+}
 
 // if (process.env.NODE_ENV === "production") {
 //   httpLink = new HttpLink({
@@ -67,10 +78,24 @@ const authLink = setContext((_, { headers, ...rest }) => {
 });
 
 //this is to remove __typename field from the mutation
+//this is to remove __typename field from the mutation
+const cleanTypeName = new ApolloLink((operation, forward) => {
+  if (operation.variables) {
+    const omitTypename = (key, value) =>
+      key === "__typename" ? undefined : value;
+    operation.variables = JSON.parse(
+      JSON.stringify(operation.variables),
+      omitTypename
+    );
+  }
+  return forward(operation).map((data) => {
+    return data;
+  });
+});
 
 const client = new ApolloClient({
   cache,
-  link: ApolloLink.from([errorLink, authLink, uploadLink]),
+  link: ApolloLink.from([cleanTypeName,errorLink, authLink, uploadLink]),
 });
 
 export default client;

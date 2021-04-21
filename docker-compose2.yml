@@ -6,26 +6,22 @@ services:
     build:
       context: ./client
       dockerfile: dockerfile.dev
-    restart: always
-    ports:
-      - "3001:3000"
-    stdin_open: true
-    tty: true
-    volumes:
-      - "./client:/app"
-      - /app/node_modules
+    restart: on-failure
+    depends_on:
+      - api_server
+    expose:
+      80
     environment:
-      - CHOKIDAR_USEPOLLING= true
-      - "CI= true"
+      - VIRTUAL_HOST: examtool.ml, www.examtool.ml
+      - LETSENCRYPT_HOST: examtool.ml
+      - LETSENCRYPT_EMAIL: jamiebones147@gmail.com
 
   api_server:
     container_name: app_server
     build:
       context: ./server
-      dockerfile: dockerfile.dev
+      dockerfile: dockerfile.prod
     volumes:
-      - /app/node_modules
-      - ./server:/app
       - $HOME/uploads:/app/uploads
     depends_on:
       - mongodb_cbt
@@ -43,11 +39,9 @@ services:
     hostname: mongodb_cbt
     container_name: mongodb_cbt
     image: mongo
-    expose:
-      - 27017
     ports:
-      - 27017:27017
-    restart: always
+      - 27900:27017
+    restart: on-failure
     environment:
       MONGO_INITDB_ROOT_USERNAME: jamiebones
       MONGO_INITDB_ROOT_PASSWORD: blazing147

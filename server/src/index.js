@@ -105,8 +105,8 @@ async function StartUpServer() {
   const httpServer = http.createServer(app);
   server.installSubscriptionHandlers(httpServer);
 
-  httpServer.listen({ port: 8000 }, () => {
-    console.log("Apollo Server on http://localhost:8000/graphql");
+  httpServer.listen({ port: 9000 }, () => {
+    console.log("Apollo Server on http://localhost:9000/graphql");
   });
   process.on("uncaughtException", function (err) {
     console.log("Uncaught Error: ", err);

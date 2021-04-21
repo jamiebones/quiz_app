@@ -58,6 +58,8 @@ export default gql`
     explanation: String
     id: ID!
   }
+
+  
   type QuestionConnection {
     edges: [Question!]!
     pageInfo: PageInfo!

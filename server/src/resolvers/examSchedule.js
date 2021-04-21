@@ -91,7 +91,7 @@ export default {
         };
       } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw error;
       }
     },
     editExamSchedule: async (
@@ -124,7 +124,7 @@ export default {
         return true;
       } catch (error) {
         console.log(error);
-        return false;
+        throw error;
       }
     },
     deleteExamSchedule: async (_, { examScheduleId }, { models }) => {
@@ -133,7 +133,7 @@ export default {
         return true;
       } catch (error) {
         console.log(error);
-        return false;
+        throw error;
       }
     },
     addQuestionsToExam: async (
@@ -142,7 +142,6 @@ export default {
       { models }
     ) => {
       try {
-        console.log(questionsArray);
         await models.ExamSchedule.updateOne(
           { _id: scheduleId },
           {
@@ -155,7 +154,7 @@ export default {
         return true;
       } catch (error) {
         console.log(error);
-        throw new Error("Database Error");
+        throw error;
       }
     },
     addEssayQuestionsToExam: async (
@@ -176,7 +175,7 @@ export default {
         return true;
       } catch (error) {
         console.log(error);
-        throw new Error("Database Error");
+        throw error;
       }
     },
     addSpellingQuestionsToExam: async (
@@ -197,7 +196,7 @@ export default {
         return true;
       } catch (error) {
         console.log(error);
-        throw new Error("Database Error");
+        throw error;
       }
     },
   },

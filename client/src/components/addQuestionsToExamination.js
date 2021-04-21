@@ -5,7 +5,7 @@ import {
   AutoGenerateSpellingQuestions,
 } from "../graphql/queries";
 import {
-  AddQuestionsArrayToScheduleExam,
+  AddQuestionsToScheduleExamination,
   AddSpellingQuestionsArrayToScheduleExam,
 } from "../graphql/mutation";
 import styled from "styled-components";
@@ -73,11 +73,11 @@ const AddQuestionsToExaminationComponent = () => {
     }
   );
   //add multi choice questions to exam
-  const [addQuestionToExam, addQuestionsToExamResult] = useMutation(
-    AddQuestionsArrayToScheduleExam
+  const [addQuestionToExamination, addQuestionsToExamResult] = useMutation(
+    AddQuestionsToScheduleExamination
   );
 
-  //add multi choice mutation questions to exam
+  //add multi spelling mutation questions to exam
   const [
     addSpellingQuestionToExam,
     addSpellingQuestionsToExamResult,
@@ -219,13 +219,19 @@ const AddQuestionsToExaminationComponent = () => {
             return questionObj;
           }
         );
-        await addQuestionToExam({
-          variables: {
-            questionsArray: arrayOfQuestions,
-            scheduleId: examScheduleDetails.id,
-          },
-        });
-        break;
+        try {
+          console.log("array of questions is", arrayOfQuestions);
+          await addQuestionToExamination({
+            variables: {
+              questionsArray: arrayOfQuestions,
+              scheduleId: examScheduleDetails.id,
+            },
+          });
+          break;
+        } catch (error) {
+          console.log(error);
+        }
+
       case "spelling examination":
         const arrayOfSpellingQuestions = selectedQuestion.map(
           ({ word, correctWord, examId, examinationType, clue, id }) => {
@@ -240,13 +246,17 @@ const AddQuestionsToExaminationComponent = () => {
             return questionObj;
           }
         );
-        await addSpellingQuestionToExam({
-          variables: {
-            questionsArray: arrayOfSpellingQuestions,
-            scheduleId: examScheduleDetails.id,
-          },
-        });
-        break;
+        try {
+          await addSpellingQuestionToExam({
+            variables: {
+              questionsArray: arrayOfSpellingQuestions,
+              scheduleId: examScheduleDetails.id,
+            },
+          });
+          break;
+        } catch (error) {
+          console.log(error);
+        }
     }
   };
 
@@ -273,6 +283,7 @@ const AddQuestionsToExaminationComponent = () => {
     setExamData(null);
     setExamScheduleDetails(null);
     setScheduleArray([]);
+    setSelectedQuestion([]);
     setExamType(examType);
   };
 
@@ -284,6 +295,7 @@ const AddQuestionsToExaminationComponent = () => {
     });
     if (examSchedules) {
       setScheduleArray(examSchedules);
+      setSelectedQuestion([]);
     } else {
       setScheduleArray([]);
     }
@@ -385,7 +397,9 @@ const AddQuestionsToExaminationComponent = () => {
           {selectedQuestion && selectedQuestion.length > 0 && (
             <p className="text-center lead">
               Remaining questions:{" "}
-              {examScheduleDetails.numberofQuestions - +selectedQuestion.length}
+              {examScheduleDetails &&
+                examScheduleDetails.numberofQuestions -
+                  +selectedQuestion.length}
             </p>
           )}
           {selectedQuestion.length > 0 &&
