@@ -9,7 +9,10 @@ import { SpellingExaminationEnded } from "../graphql/mutation";
 import store from "store";
 import methods from "../methods";
 import Modal from "react-modal";
-import { useRouteMatch, useLocation } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
+import settings from "../config";
+
+const baseUrl = settings.API_URL;
 Modal.setAppElement("#root");
 
 const customStyles = {
@@ -54,16 +57,34 @@ const QuestionPanelStyles = styled.div`
     margin: 20px 0 0 0px;
   }
   .spelling-div {
+    display: flex;
+    flex-direction: column;
   }
   .clue {
-    margin: 0 150px;
+    margin: 10px 105px;
     font-size: 20px;
   }
   .exam-label {
     font-size: 22px;
   }
   .exam-span {
-    float: right;
+    margin: 20px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .exam-div {
+    background-image: url("/assets/spelling_bee.png");
+    background-repeat: no-repeat;
+    background-position-x: right;
+  }
+  @media only screen and (max-width: 600px) {
+    .exam-div {
+      background-size: 90px;
+    }
+    .clue {
+    }
+    .input-row {
+    }
   }
 `;
 
@@ -165,12 +186,8 @@ const QuestionPanelSpelling = (props) => {
     if (data) {
       //redirect here to the summary page
       setSubmitting(!submitting);
-      store.remove("examStarted");
-      store.remove("examQuestions");
-      store.remove("currentIndex");
-      store.remove("duration");
-      store.remove("examId");
-      store.remove("questionData");
+      //clear the store value
+      methods.Utils.ClearStoreValue();
       props.history.replace(`/exam_summary/spelling/${examIdValue}`, {
         scoreDetails: scoreDetails,
       });
@@ -254,18 +271,19 @@ const QuestionPanelSpelling = (props) => {
               Exam Duration:
               <span className="exam-span">
                 {methods.Utils.ConvertMinutesToHours(examDuration)}
-                MINUTES
               </span>
             </p>
 
-            <CountDownTimer submitQuiz={submitQuizHandler} />
+            <div className="text-center">
+              <CountDownTimer submitQuiz={submitQuizHandler} />
+            </div>
           </div>
         </div>
 
         <div className="row">
           <div className="col-md-1"></div>
           <div className="col-xs-10 col-sm-10 col-md-10 card">
-            <div>
+            <div className="exam-div">
               {errors && <p className="lead text-danger">{errors}</p>}
               {storedData &&
                 storedData.map(({ number, clue, wordArray }, ind) => {
@@ -277,7 +295,7 @@ const QuestionPanelSpelling = (props) => {
                           wordArray.map(({ readOnly, value }, index) => {
                             return (
                               <input
-                                key={index}
+                                key={value + readOnly + index}
                                 disabled={readOnly}
                                 type="text"
                                 value={value === "*" ? "" : value}

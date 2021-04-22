@@ -89,11 +89,7 @@ const QuestionPanel = (props) => {
     if (data) {
       //redirect here to the summary page
       setSubmitting(!submitting);
-      store.remove("examStarted");
-      store.remove("examQuestions");
-      store.remove("currentIndex");
-      store.remove("duration");
-      store.remove("examId");
+      methods.Utils.ClearStoreValue();
       props.history.replace(`/exam_summary/${examIdValue}`);
     }
 

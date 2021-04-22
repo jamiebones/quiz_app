@@ -127,12 +127,7 @@ const EssayExamQuestionComponent = () => {
     if (data) {
       //redirect here to the summary page
       setSubmitting(!submitting);
-      store.remove("examStarted");
-      store.remove("examQuestions");
-      store.remove("currentIndex");
-      store.remove("duration");
-      store.remove("examId");
-      store.remove("questionData");
+      methods.Utils.ClearStoreValue();
       history.replace(`/exam_summary/essay/${examIdValue}`, {
         scoreDetails: scoreDetails,
       });

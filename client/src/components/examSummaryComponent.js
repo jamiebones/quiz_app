@@ -81,13 +81,7 @@ const ExamSummaryComponent = (props) => {
 
   useEffect(() => {
     //persists it to store here
-    store.remove("examStarted");
-    store.remove("examQuestions");
-    store.remove("currentIndex");
-    store.remove("duration");
-    store.remove("examId");
-    store.remove("totalQuestions");
-    store.remove("timer");
+    methods.Utils.ClearStoreValue();
   }, []);
 
  

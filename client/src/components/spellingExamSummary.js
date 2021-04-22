@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useRouteMatch, useLocation } from "react-router-dom";
+import methods from "../methods"
 
-import store from "store";
 
 const ExamSummaryStyles = styled.div`
   .summaryDiv {
@@ -71,13 +71,7 @@ const ExamSummaryComponent = (props) => {
 
   useEffect(() => {
     //persists it to store here
-    store.remove("examStarted");
-    store.remove("examQuestions");
-    store.remove("currentIndex");
-    store.remove("duration");
-    store.remove("examId");
-    store.remove("totalQuestions");
-    store.remove("timer");
+    methods.Utils.ClearStoreValue();
   }, []);
 
   const onUnloadFunction = () => {

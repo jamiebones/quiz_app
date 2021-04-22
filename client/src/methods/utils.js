@@ -1,3 +1,5 @@
+import store from "store";
+
 const ExtractError = (errorObject) => {
   const { graphQLErrors, networkError } = errorObject;
   const errorArray = [];
@@ -46,9 +48,9 @@ const ConvertMinutesToHours = (minutesToConvert) => {
   const hours = Math.floor(minutesToConvert / 60);
   const minutes = minutesToConvert - hours * 60;
   if (hours == 0) {
-    return `${minutes} minutes`;
+    return `${minutes} MINUTES`;
   }
-  return `${hours} hours ${minutes} minutes`;
+  return `${hours} HOURS ${minutes} MINUTES`;
 };
 
 const DisablecurrentLoginUser = (currentLoginUser, username) => {
@@ -64,9 +66,18 @@ const SetHtml = (html) => {
   return { __html: html };
 };
 
-
-
-
+const ClearStoreValue = () => {
+  //clear the value of the store
+  store.remove("examQuestions");
+  store.remove("currentIndex");
+  store.remove("examStarted");
+  store.remove("duration");
+  store.remove("examId");
+  store.remove("totalQuestions");
+  store.remove("questionData");
+  store.remove("examDetails");
+  store.remove("timer");
+};
 
 export default {
   CapFirstLetterOfEachWord,
@@ -75,5 +86,6 @@ export default {
   ReplaceSlash,
   ConvertMinutesToHours,
   DisablecurrentLoginUser,
-  SetHtml
+  SetHtml,
+  ClearStoreValue,
 };

@@ -7,7 +7,6 @@ const currentQuestionSelector = selector({
   key: "currentQuestionSelector",
   get: ({ get }) => {
     //let check our store if we can get the questions there
-    debugger
     const index = get(currentIndex);
     const examQuestions = get(questionState);
     const questionsFromStore = store.get("examQuestions");
