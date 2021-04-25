@@ -8,12 +8,24 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background-color: #fff0f1f1;
+    font-family: 'Roboto Slab', serif;
   }
 
   .card {
     background: #fff;
     padding: 20px;
     margin-bottom: 20px;
+    
+  }
+
+  .card-title {
+    
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 50px;
+
+    background-color: ##d4d4d4;
+
   }
 
 

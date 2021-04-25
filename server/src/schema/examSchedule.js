@@ -11,9 +11,9 @@ export default gql`
   }
 
   extend type Mutation {
-    createMultipleExamSchedule(input: MultipleExamScheduleInput!): Boolean
-    createSpellingExamSchedule(input: SpellingExamScheduleInput!): Boolean
-    createEssayExamSchedule(input: EssayExamScheduleInput!): Boolean
+    createMultipleExamSchedule(input: MultipleExamScheduleInput!): ExamSchedule
+    createSpellingExamSchedule(input: SpellingExamScheduleInput!): ExamSchedule
+    createEssayExamSchedule(input: EssayExamScheduleInput!): ExamSchedule
     addEssayQuestionsToExam(
       questionsArray: [EssayExamQuestionInput2!]
       scheduleId: ID!

@@ -14,7 +14,6 @@ import {
   convertFromHTML,
 } from "draft-js";
 
-
 const SaveEssayQuestionStyles = styled.div`
   .write-question {
     background-color: #c0c0c0;
@@ -56,7 +55,6 @@ const SaveEssayQuestionComponent = () => {
   const [saveQuestionFunc, saveQuestionResult] = useMutation(SaveEssayQuestion);
   const textAnswer = useRef();
   const fileRef = useRef();
-  
 
   useEffect(() => {
     if (saveQuestionResult.error) {
@@ -184,6 +182,7 @@ const SaveEssayQuestionComponent = () => {
         variables: {
           input: inputQuestion,
         },
+        context: { hasUpload: mediaType ? true : false },
       });
     } catch (error) {}
   };

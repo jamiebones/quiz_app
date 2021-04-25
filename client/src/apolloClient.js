@@ -25,7 +25,7 @@ const cache = new InMemoryCache({
 
 const port = process.env.PORT || 8000;
 
-let httpLink = new HttpLink({ uri: `http://localhost:${port}/graphql` });
+
 
 
 let uploadLink;
@@ -80,7 +80,7 @@ const authLink = setContext((_, { headers, ...rest }) => {
 //this is to remove __typename field from the mutation
 //this is to remove __typename field from the mutation
 const cleanTypeName = new ApolloLink((operation, forward) => {
-  if (operation.variables) {
+  if (operation.variables && !operation.getContext().hasUpload ) {
     const omitTypename = (key, value) =>
       key === "__typename" ? undefined : value;
     operation.variables = JSON.parse(
@@ -95,7 +95,7 @@ const cleanTypeName = new ApolloLink((operation, forward) => {
 
 const client = new ApolloClient({
   cache,
-  link: ApolloLink.from([cleanTypeName,errorLink, authLink, uploadLink]),
+  link: ApolloLink.from([cleanTypeName, errorLink, authLink, uploadLink]),
 });
 
 export default client;

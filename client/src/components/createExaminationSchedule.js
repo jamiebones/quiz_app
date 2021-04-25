@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useQuery, useMutation } from "@apollo/client";
+import { useMutation, useLazyQuery } from "@apollo/client";
 import {
   CreateExaminationSchedule,
   CreateSpellingExaminationSchedule,
   CreateEssayExaminationSchedule,
 } from "../graphql/mutation";
+
+import { GetDifferentExamination } from "../graphql/queries";
 import ExaminationTypeComponent from "../common/examinationTypeComponent";
+
 import styled from "styled-components";
 
 const CreateExaminationScheduleStyles = styled.div`
@@ -43,6 +46,8 @@ const CreateExaminationScheduleComponent = () => {
   const [createEssaySchedule, createEssayScheduleResult] = useMutation(
     CreateEssayExaminationSchedule
   );
+
+  const [examTypeQuery, examTypeResult] = useLazyQuery(GetDifferentExamination);
 
   useEffect(() => {
     if (createEssayScheduleResult.error) {
@@ -132,6 +137,14 @@ const CreateExaminationScheduleComponent = () => {
             variables: {
               input: scheduleObj,
             },
+            refetchQueries: [
+              {
+                query: GetDifferentExamination,
+                variables: {
+                  examType: selExamType
+                }
+              }
+            ]
           });
         } catch (error) {}
         break;
@@ -142,6 +155,14 @@ const CreateExaminationScheduleComponent = () => {
             variables: {
               input: scheduleObj,
             },
+            refetchQueries: [
+              {
+                query: GetDifferentExamination,
+                variables: {
+                  examType: selExamType
+                }
+              }
+            ]
           });
         } catch (error) {}
 
@@ -153,6 +174,14 @@ const CreateExaminationScheduleComponent = () => {
             variables: {
               input: scheduleObj,
             },
+            refetchQueries: [
+              {
+                query: GetDifferentExamination,
+                variables: {
+                  examType: selExamType
+                }
+              }
+            ]
           });
         } catch (error) {}
         break;

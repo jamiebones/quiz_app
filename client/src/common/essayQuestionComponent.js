@@ -5,7 +5,6 @@ import AudioComponent from "../common/audioComponent";
 import ImageComponent from "../common/imageComponent";
 import settings from "../config";
 
-
 const baseUrl = settings.API_URL;
 const EssayComponentStyles = styled.div`
   .number {
@@ -50,8 +49,13 @@ const EssayComponentStyles = styled.div`
     font-size: 20px;
     margin: 20px 0px;
   }
-  .hideMe{
-      display: none;
+  .hideMe {
+    display: none;
+  }
+  @media only screen and (max-width: 600px) {
+    input {
+      width: 100%;
+    }
   }
 `;
 
@@ -71,8 +75,6 @@ const EssayExamQuestionComponent = ({
     onChangeText,
   },
 }) => {
-
-
   const onTextAnswerChange = (e, index) => {
     const text = e.target.value;
     onChangeText({ value: text, index });
@@ -80,7 +82,7 @@ const EssayExamQuestionComponent = ({
 
   return (
     <EssayComponentStyles>
-      <div className="card div-panel" id={`${index+ 1}`}>
+      <div className="card div-panel" id={`${index + 1}`}>
         <div className="question-panel">
           <div className="number">{number}.</div>
           <div
@@ -121,7 +123,6 @@ const EssayExamQuestionComponent = ({
             </p>
           )}
         </div>
-
       </div>
     </EssayComponentStyles>
   );

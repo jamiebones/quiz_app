@@ -222,6 +222,7 @@ const SaveEssayQuestionComponent = () => {
         variables: {
           input: inputQuestion,
         },
+        context: { hasUpload: mediaType ? true : false },
         refetchQueries: [
           {
             query: GetAllEssayQuestions,
@@ -376,7 +377,7 @@ const SaveEssayQuestionComponent = () => {
 
             {oldmediaType === "image" && (
               <React.Fragment>
-                <ImageComponent src={`${baseUrl}/${oldmediaType}`} />
+                <ImageComponent src={`${baseUrl}/${oldmediaUrl}`} />
                 <button
                   className="btn btn-danger"
                   onClick={deleteMediaFromFile}

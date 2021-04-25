@@ -11,7 +11,7 @@ const CountDownTimerStyles = styled.div`
     font-size: 30px;
   }
   .timer {
-    font-size: 30px;
+    font-size: 50px;
     font-weight: bold;
     color: blue;
   }

@@ -30,12 +30,12 @@ const DisplaySpellingQuizScriptComponentStyles = styled.div`
     padding: 30px;
   }
   .text-name {
-    color: #7abbff !important;
+    color: #f8f8f5 !important;
   }
   .spanDetails {
     float: right;
     font-weight: bold;
-    color: #7c23f3;
+    color: #d28431;
   }
   .score {
     font-size: 35px;
@@ -44,17 +44,33 @@ const DisplaySpellingQuizScriptComponentStyles = styled.div`
   .space-well {
     letter-spacing: 20px;
   }
+  .exam-div {
+    width: 100%;
+    position: relative;
+  }
+
+  .exam-div::before {
+    content: "";
+    background-image: url("/assets/spelling_bee.png");
+    background-size: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.11;
+  }
 `;
 
 const DisplaySpellingScriptComponent = ({ scripts }) => {
   return (
     <DisplaySpellingQuizScriptComponentStyles>
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-md-10 offset-md-1">
           {
             scripts && (
               <React.Fragment>
-                <div className="details">
+                <div className="details card-title">
                   <h2 className="text-center text-name">
                     <b>{scripts.examDetails.examinationName.toUpperCase()}</b>
                   </h2>
@@ -100,7 +116,7 @@ const DisplaySpellingScriptComponent = ({ scripts }) => {
                 </p>
                 <hr />
                 <div className="row">
-                  <div className="col-md-8 offset-md-2 card">
+                  <div className="col-md-10 offset-md-1 card exam-div">
                     {scripts.scripts.map(
                       (
                         { number, clue, word, answeredWord, correctWord },
@@ -149,7 +165,7 @@ const DisplaySpellingScriptComponent = ({ scripts }) => {
                                     </span>
                                   </span>
                                   <br />
-                                  <span >
+                                  <span>
                                     right answer :{" "}
                                     <span className="space-well text-success">
                                       {correctWord}

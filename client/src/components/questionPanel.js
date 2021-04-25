@@ -49,7 +49,7 @@ const disableButtons = (e) => {
 };
 
 const QuestionPanel = (props) => {
-  const match = useRouteMatch("/exam/:examId");
+  const match = useRouteMatch("/exam/multi_choice/:examId");
   const [examinationEndedFunction, examinationEndedResult] = useMutation(
     ExaminationEnded
   );
@@ -90,7 +90,8 @@ const QuestionPanel = (props) => {
       //redirect here to the summary page
       setSubmitting(!submitting);
       methods.Utils.ClearStoreValue();
-      props.history.replace(`/exam_summary/${examIdValue}`);
+      console.log("exam id ", examId);
+      props.history.replace(`/exam_summary/${examId}`);
     }
 
     if (error) {

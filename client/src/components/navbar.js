@@ -441,7 +441,7 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
             </li>
           )}
 
-          {authenticated && user && user.userType == "super-admin" && (
+          {/* {authenticated && user && user.userType == "super-admin" && (
             <li className="item has-submenu">
               <a tabIndex="0">Media Files</a>
               <ul className="submenu">
@@ -453,7 +453,7 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
                 </li>
               </ul>
             </li>
-          )}
+          )} */}
 
           {authenticated ? (
             <li className="item button" onClick={handleLogOut}>

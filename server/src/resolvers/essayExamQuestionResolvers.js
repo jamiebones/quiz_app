@@ -153,13 +153,13 @@ export default {
         //we have an uploaded file
         try {
           const { createReadStream, filename } = await mediaFile;
+          console.log("filename", filename, "createReadStream", createReadStream)
           const stream = createReadStream();
           let pathObj = await methods.uploadFile({
             stream,
             filename,
           });
           //let us save the stuff in the
-          console.log("path location is ", pathObj);
           const essayQuestion = new models.EssayExamQuestion({
             type,
             question,
@@ -172,7 +172,8 @@ export default {
             mediaType: mediaType,
           });
           await essayQuestion.save();
-          return true;
+          return essayQuestion;
+          
         } catch (error) {
           console.log(error);
           throw new Error(error);

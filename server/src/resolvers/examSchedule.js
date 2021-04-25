@@ -23,7 +23,9 @@ export default {
       return examSchedules;
     },
     getAllExamSchedule: async (_, {}, { models }) => {
-      const allExamSchedules = await models.ExamSchedule.find({});
+      const query = models.ExamSchedule.find({});
+      query.sort({examTypeName: -1 })
+      const allExamSchedules = await query.exec();
       return allExamSchedules;
     },
     examScheduleDetails: async (_, { scheduleId }, { models }) => {
@@ -36,7 +38,7 @@ export default {
       try {
         const newSchedule = models.ExamSchedule(input);
         await newSchedule.save();
-        return true;
+        return newSchedule;
       } catch (error) {
         console.log("the errorfrom the console is:", error);
         throw new Error(error.message);
@@ -46,7 +48,7 @@ export default {
       try {
         const newSchedule = models.ExamSchedule(input);
         await newSchedule.save();
-        return true;
+        return newSchedule;
       } catch (error) {
         console.log("the errorfrom the console is:", error);
         throw new Error(error.message);
@@ -56,7 +58,7 @@ export default {
       try {
         const newSchedule = models.ExamSchedule(input);
         await newSchedule.save();
-        return true;
+        return newSchedule;
       } catch (error) {
         console.log("the errorfrom the console is:", error);
         throw new Error(error.message);

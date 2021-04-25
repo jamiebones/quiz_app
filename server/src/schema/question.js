@@ -69,7 +69,7 @@ export default gql`
     selectedOption: String
     correctOption: String
     explanation: String
-    question: String
+    question: String!
   }
   
   input ScriptQuestionInput {

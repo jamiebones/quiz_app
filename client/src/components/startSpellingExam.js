@@ -59,6 +59,7 @@ const QuestionPanelStyles = styled.div`
   .spelling-div {
     display: flex;
     flex-direction: column;
+    position: relative;
   }
   .clue {
     margin: 10px 105px;
@@ -73,13 +74,41 @@ const QuestionPanelStyles = styled.div`
     font-size: 14px;
   }
   .exam-div {
-    background-image: url("/assets/spelling_bee.png");
-    background-repeat: no-repeat;
-    background-position-x: right;
+    width: 100%;
+    position: relative;
   }
+
+  .exam-div::before {
+    content: "";
+    background-image: url("/assets/spelling_bee.png");
+    background-size: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.11;
+  }
+  .btn-exam {
+    position: relative;
+  }
+
+  .details {
+    background-color: #0b2f27;
+    color: #fff;
+    padding: 30px;
+  }
+  .text-name {
+    color: #f8f8f5 !important;
+  }
+  .spanDetails {
+    float: right;
+    font-weight: bold;
+    color: #d28431;
+  }
+
   @media only screen and (max-width: 600px) {
     .exam-div {
-      background-size: 90px;
     }
     .clue {
     }
@@ -235,6 +264,12 @@ const QuestionPanelSpelling = (props) => {
     }
   };
 
+  const handleSubmitQuiz = () => {
+    const confirmSubmit = window.confirm("Are you sure you want to submit now");
+    if (!confirmSubmit) return;
+    submitQuizHandler();
+  };
+
   const handleTextInputChange = ({ e, arrayPosition, wordPosition }) => {
     const value = e.target.value;
     if (value.length <= 1) {
@@ -253,27 +288,29 @@ const QuestionPanelSpelling = (props) => {
       <QuestionPanelStyles>
         <div className="row">
           <div className="col-md-10 offset-md-1">
-            <p className="exam-label">
-              Examination Name:
-              <span className="exam-span">
+            <div className="details card-title">
+              <h2 className="text-center text-name">
                 {examName && examName.toUpperCase()}
-              </span>
-            </p>
+              </h2>
 
-            <p className="exam-label">
-              Examination Type:
-              <span className="exam-span">
-                {examType && examType.toUpperCase()}
-              </span>
-            </p>
+              <p>
+                Examination Type:
+                <span className="spanDetails">
+                  {examType && examType.toUpperCase()}
+                </span>
+              </p>
+              <p>
+                Examination Time:
+                <span className="spanDetails">
+                  {methods.Utils.ConvertMinutesToHours(examDuration)}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
 
-            <p className="exam-label">
-              Exam Duration:
-              <span className="exam-span">
-                {methods.Utils.ConvertMinutesToHours(examDuration)}
-              </span>
-            </p>
-
+        <div className="row">
+          <div className="col-md-10 offset-md-1">
             <div className="text-center">
               <CountDownTimer submitQuiz={submitQuizHandler} />
             </div>
@@ -281,8 +318,8 @@ const QuestionPanelSpelling = (props) => {
         </div>
 
         <div className="row">
-          <div className="col-md-1"></div>
-          <div className="col-xs-10 col-sm-10 col-md-10 card">
+          <div className="col-xs-12 col-sm-10 
+          offset-sm-1 col-md-10 offset-md-1 card">
             <div className="exam-div">
               {errors && <p className="lead text-danger">{errors}</p>}
               {storedData &&
@@ -319,9 +356,9 @@ const QuestionPanelSpelling = (props) => {
                 })}
               <div className="text-center">
                 <button
-                  className="btn btn-success"
+                  className="btn btn-success btn-exam"
                   disabled={submitting}
-                  onClick={submitQuizHandler}
+                  onClick={handleSubmitQuiz}
                 >
                   {submitting
                     ? "submitting please wait"

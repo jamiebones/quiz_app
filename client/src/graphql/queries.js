@@ -327,6 +327,7 @@ const GetCanidateExamResult = gql`
           selectedOption
           correctOption
           explanation
+          question
         }
       }
     }

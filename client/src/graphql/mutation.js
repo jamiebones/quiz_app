@@ -20,7 +20,9 @@ const SaveSpelling = gql`
 
 const SaveEssayQuestion = gql`
   mutation saveEssayQuestion($input: EssayExamQuestionInput!) {
-    saveEssayQuestion(input: $input)
+    saveEssayQuestion(input: $input){
+      id
+    }
   }
 `;
 
@@ -71,19 +73,28 @@ const DeleteOneSpellingQuestion = gql`
 
 const CreateExaminationSchedule = gql`
   mutation createExamSchedule($input: MultipleExamScheduleInput!) {
-    createMultipleExamSchedule(input: $input)
+    createMultipleExamSchedule(input: $input){
+      id
+      examinationName
+    }
   }
 `;
 
 const CreateSpellingExaminationSchedule = gql`
   mutation createExamSchedule($input: SpellingExamScheduleInput!) {
-    createSpellingExamSchedule(input: $input)
+    createSpellingExamSchedule(input: $input){
+      id
+      examinationName
+    }
   }
 `;
 
 const CreateEssayExaminationSchedule = gql`
   mutation createExamSchedule($input: EssayExamScheduleInput!) {
-    createEssayExamSchedule(input: $input)
+    createEssayExamSchedule(input: $input){
+      id
+      examinationName
+    }
   }
 `;
 

@@ -68,6 +68,19 @@ const EssayExamQuestionComponentStyles = styled.div`
   .exam-label {
     font-size: 20px;
   }
+  .details {
+    background-color: #0b2f27;
+    color: #fff;
+    padding: 30px;
+  }
+  .text-name {
+    color: #f8f8f5 !important;
+  }
+  .spanDetails {
+    float: right;
+    font-weight: bold;
+    color: #d28431;
+  }
 `;
 
 const EssayExamQuestionComponent = () => {
@@ -190,30 +203,35 @@ const EssayExamQuestionComponent = () => {
     }
   };
 
+  const handleQuizSubmit = () => {
+    const confirmMe = window.confirm("Are you sure, you want to submit");
+    if (!confirmMe) return;
+    submitQuizHandler();
+  };
+
   return (
     <EssayExamQuestionComponentStyles>
       <div className="row">
         <div className="col-md-10 offset-md-1">
-          <p className="exam-label">
-            Examination Name:
-            <span className="exam-span">
-              <b>{examName && examName.toUpperCase()}</b>
-            </span>
-          </p>
+          <div className="details card-title">
+            <h2 className="text-center text-name">
+              {examName && examName.toUpperCase()}
+            </h2>
 
-          <p className="exam-label">
-            Examination Type:
-            <span className="exam-span">
-              <b>{examType && examType.toUpperCase()}</b>
-            </span>
-          </p>
+            <p>
+              Examination Type:
+              <span className="spanDetails">
+                <b>{examType && examType.toUpperCase()}</b>
+              </span>
+            </p>
 
-          <p className="exam-label">
-            Exam Duration:
-            <span className="exam-span">
-              <b>{methods.Utils.ConvertMinutesToHours(examDuration)}</b>
-            </span>
-          </p>
+            <p>
+              Exam Duration:
+              <span className="spanDetails">
+                <b>{methods.Utils.ConvertMinutesToHours(examDuration)}</b>
+              </span>
+            </p>
+          </div>
         </div>
       </div>
 
@@ -265,11 +283,9 @@ const EssayExamQuestionComponent = () => {
             <button
               className="btn btn-success"
               disabled={submitting}
-              onClick={submitQuizHandler}
+              onClick={handleQuizSubmit}
             >
-              {submitting
-                ? "submitting please wait"
-                : "Submit Examination"}
+              {submitting ? "submitting please wait" : "Submit Examination"}
             </button>
           </div>
         </div>

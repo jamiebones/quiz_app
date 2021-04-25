@@ -220,7 +220,7 @@ const AddQuestionsToExaminationComponent = () => {
           }
         );
         try {
-          console.log("array of questions is", arrayOfQuestions);
+        
           await addQuestionToExamination({
             variables: {
               questionsArray: arrayOfQuestions,
