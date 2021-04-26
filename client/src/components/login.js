@@ -40,7 +40,7 @@ const Login = (props) => {
       if (typename === "Error") {
         const message = loginUserResult.data.loginUser.message;
         setError(message);
-        setSubmitted(!submitted);
+        setSubmitted(false);
       } else {
         //we are good here we have the baggages here
         const {
@@ -59,7 +59,7 @@ const Login = (props) => {
         setAuthState(true);
         setcurrentLoginUser({ id, username, userType, name });
         setToken(token);
-        setSubmitted(!submitted);
+        setSubmitted(false);
 
         if (userType === "super-admin") {
           props.history.push("/dashboard");
@@ -69,13 +69,13 @@ const Login = (props) => {
       }
     }
     if (loginUserResult.error) {
-      setSubmitted(!submitted);
+      setSubmitted(false);
     }
   }, [loginUserResult, submitted]);
 
   const submitForm = (event) => {
     event.preventDefault();
-    setSubmitted(!submitted);
+    setSubmitted(true);
     loginUserFunction();
   };
 

@@ -25,18 +25,15 @@ const cache = new InMemoryCache({
 
 const port = process.env.PORT || 8000;
 
-
-
-
 let uploadLink;
-if ( process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
   uploadLink = createUploadLink({
     uri: `https://${window.location.hostname}/graphql`, // Apollo Server is served from port 4000
     headers: {
       "keep-alive": "true",
     },
   });
-} else{
+} else {
   uploadLink = createUploadLink({
     uri: "http://localhost:9000/graphql", // Apollo Server is served from port 4000
     headers: {
@@ -80,17 +77,16 @@ const authLink = setContext((_, { headers, ...rest }) => {
 //this is to remove __typename field from the mutation
 //this is to remove __typename field from the mutation
 const cleanTypeName = new ApolloLink((operation, forward) => {
-  if (operation.variables && !operation.getContext().hasUpload ) {
-    const omitTypename = (key, value) =>
-      key === "__typename" ? undefined : value;
+  
+  const omitTypename = (key, value) =>
+    key === "__typename" ? undefined : value;
+  if (operation.variables && !operation.getContext().hasUpload) {
     operation.variables = JSON.parse(
       JSON.stringify(operation.variables),
       omitTypename
     );
   }
-  return forward(operation).map((data) => {
-    return data;
-  });
+  return forward(operation);
 });
 
 const client = new ApolloClient({

@@ -147,6 +147,10 @@ const UsersTablePanel = ({
           </tbody>
         </table>
       </div>
+
+      {
+        processingData &&
+      
       <Modal
         isOpen={processingData}
         style={customStyles}
@@ -193,6 +197,7 @@ const UsersTablePanel = ({
           </div>
         </form>
       </Modal>
+      }
     </UsersTablePanelStyles>
   );
 };

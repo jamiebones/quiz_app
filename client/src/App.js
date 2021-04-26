@@ -16,48 +16,193 @@ import apolloClient from "./apolloClient";
 //importation of routes in the system starts here
 
 import Navigation from "./components/navbar";
-import QuestionPanel from "./components/questionPanel";
+
 import TryPage from "./components/try";
 
-import ExamSummaryComponent from "./components/examSummaryComponent";
-
-import UploadExaminationQuestion from "./components/uploadExaminationQuestions";
-import AddQuestion from "./components/saveNewQuestion";
-import LoadQuestionsComponent from "./components/loadQuestionsComponent";
-import EditQuestionComponent from "./components/editQuestionComponent";
-import CreateExaminationSchedule from "./components/createExaminationSchedule";
-import AddQuestionsToExaminationComponent from "./components/addQuestionsToExamination";
-import LoginPage from "./components/login";
 import PublicRoute from "./components/publicRoute";
-import Dashboard from "./components/dashboard";
-import ActiveExaminationPage from "./components/activeExams";
-import DisplayQuizScriptComponent from "./components/displayQuizScriptComponent";
+
 import AuthorizedComponent from "./components/authorized";
-import ViewExamResult from "./components/viewExamResult";
-import ViewCanidateExaminationScript from "./components/viewCanidateExaminationScripts";
-import CreateSubjectCourse from "./components/createSubjectCourse";
-import ActivateExamSchedule from "./components/activateScheduleExaminationPanel";
-import CreateUserAccount from "./components/createUserAccount";
-import UsersPanel from "./components/usersPanel";
-import UploadMedia from "./components/uploadMedia";
-import SaveSpellingQuestions from "./components/saveSpellingQuestions";
-import StartSpellingExam from "./components/startSpellingExam";
-import SpellingExamSummary from "./components/spellingExamSummary";
-import DisplaySpellingQuizScriptComponent from "./components/displaySpellingScriptComponent";
-import ViewCanidateSpellingScripts from "./components/viewSpellingExaminationScript";
-import ViewCanidateEssayScripts from "./components/viewEssayExaminationScripts";
-import LoadSpellingQuestions from "./components/loadSpellingQuestions";
-import LoadEssayQuestion from "./components/loadEssayQuestions";
-import SaveEssayQuestions from "./components/saveEssayQuestions";
-import AddEssayQuestionsToExam from "./components/addEssayQuestionsToExam";
-import StartEssayExam from "./components/startEssayExam";
-import EssayExamSummary from "./components/essayExamSummary";
-import DisplayEssayQuizScriptComponent from "./components/displayEssayScriptComponent";
-import EditEssayQuestion from "./components/editEssayQuestions";
+
 import { useHistory } from "react-router-dom";
 
+import Loadable from "react-loadable";
+import Loader from "./common/loadableLoader";
 import GlobalStyle from "./globalStyles";
 //import localStorage from "./localStorage";
+
+//loadable content start here start of code splitting by route
+const LoadableQuestionPanel = Loadable({
+  loader: () => import("./components/questionPanel"),
+  loading: Loader,
+  delay: 300,
+});
+
+const LoadableExamSummaryComponent = Loadable({
+  loader: () => import("./components/examSummaryComponent"),
+  loading: Loader,
+  delay: 300,
+});
+
+const LoadableUploadExaminationQuestion = Loadable({
+  loader: () => import("./components/uploadExaminationQuestions"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableAddQuestion = Loadable({
+  loader: () => import("./components/saveNewQuestion"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableLoadQuestionsComponent = Loadable({
+  loader: () => import("./components/loadQuestionsComponent"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableEditQuestionComponent = Loadable({
+  loader: () => import("./components/editQuestionComponent"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableCreateExaminationSchedule = Loadable({
+  loader: () => import("./components/createExaminationSchedule"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableAddQuestionsToExaminationComponent = Loadable({
+  loader: () => import("./components/addQuestionsToExamination"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableLoginPage = Loadable({
+  loader: () => import("./components/login"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableDashboard = Loadable({
+  loader: () => import("./components/dashboard"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableActiveExaminationPage = Loadable({
+  loader: () => import("./components/activeExams"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableDisplayQuizScriptComponent = Loadable({
+  loader: () => import("./components/displayQuizScriptComponent"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableViewExamResult = Loadable({
+  loader: () => import("./components/viewExamResult"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableViewCanidateExaminationScript = Loadable({
+  loader: () => import("./components/viewCanidateExaminationScripts"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableCreateSubjectCourse = Loadable({
+  loader: () => import("./components/createSubjectCourse"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableActivateExamSchedule = Loadable({
+  loader: () => import("./components/activateScheduleExaminationPanel"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableCreateUserAccount = Loadable({
+  loader: () => import("./components/createUserAccount"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableUsersPanel = Loadable({
+  loader: () => import("./components/usersPanel"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableUploadMedia = Loadable({
+  loader: () => import("./components/uploadMedia"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableSaveSpellingQuestions = Loadable({
+  loader: () => import("./components/saveSpellingQuestions"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableStartSpellingExam = Loadable({
+  loader: () => import("./components/startSpellingExam"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableSpellingExamSummary = Loadable({
+  loader: () => import("./components/spellingExamSummary"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableDisplaySpellingQuizScriptComponent = Loadable({
+  loader: () => import("./components/displaySpellingScriptComponent"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableDisplayEssayQuizScriptComponent = Loadable({
+  loader: () => import("./components/displayEssayScriptComponent"),
+  loading: Loader,
+  delay: 300,
+});
+
+const LoadableViewCanidateEssayScripts = Loadable({
+  loader: () => import("./components/viewEssayExaminationScripts"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableViewCanidateSpellingScripts = Loadable({
+  loader: () => import("./components/viewSpellingExaminationScript"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableLoadSpellingQuestions = Loadable({
+  loader: () => import("./components/loadSpellingQuestions"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableLoadEssayQuestion = Loadable({
+  loader: () => import("./components/loadEssayQuestions"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableSaveEssayQuestions = Loadable({
+  loader: () => import("./components/saveEssayQuestions"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableAddEssayQuestionsToExam = Loadable({
+  loader: () => import("./components/addEssayQuestionsToExam"),
+  loading: Loader,
+  delay: 300,
+});
+const LoadableStartEssayExam = Loadable({
+  loader: () => import("./components/startEssayExam"),
+  loading: Loader,
+  delay: 300,
+});
+
+const LoadableEssayExamSummary = Loadable({
+  loader: () => import("./components/essayExamSummary"),
+  loading: Loader,
+  delay: 300,
+});
+
+const LoadableEditEssayQuestion = Loadable({
+  loader: () => import("./components/editEssayQuestions"),
+  loading: Loader,
+  delay: 300,
+});
+
+//loadable content end here end of code splitting by route
 
 const AppStyles = styled.div`
   .mainComponent {
@@ -107,7 +252,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={ViewCanidateExaminationScript}
+                        component={LoadableViewCanidateExaminationScript}
                         exact
                         path="/view_canidate_script"
                       />
@@ -115,7 +260,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={ViewCanidateSpellingScripts}
+                        component={LoadableViewCanidateSpellingScripts}
                         exact
                         path="/view_canidate_spelling_script"
                       />
@@ -123,7 +268,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={ViewCanidateEssayScripts}
+                        component={LoadableViewCanidateEssayScripts}
                         exact
                         path="/view_canidate_essay_script"
                       />
@@ -131,7 +276,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={UploadMedia}
+                        component={LoadableUploadMedia}
                         exact
                         path="/upload_media"
                       />
@@ -139,7 +284,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={UsersPanel}
+                        component={LoadableUsersPanel}
                         exact
                         path="/users"
                       />
@@ -147,7 +292,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={CreateUserAccount}
+                        component={LoadableCreateUserAccount}
                         exact
                         path="/create_user_account"
                       />
@@ -155,7 +300,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={ActivateExamSchedule}
+                        component={LoadableActivateExamSchedule}
                         exact
                         path="/activate_exams"
                       />
@@ -163,7 +308,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={CreateSubjectCourse}
+                        component={LoadableCreateSubjectCourse}
                         exact
                         path="/create_subject"
                       />
@@ -171,7 +316,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["student"]}
-                        component={QuestionPanel}
+                        component={LoadableQuestionPanel}
                         exact
                         path="/exam/multi_choice/:examId"
                       />
@@ -179,7 +324,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["student"]}
-                        component={StartSpellingExam}
+                        component={LoadableStartSpellingExam}
                         exact
                         path="/exam/spelling/:examId"
                       />
@@ -187,7 +332,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["student"]}
-                        component={StartEssayExam}
+                        component={LoadableStartEssayExam}
                         exact
                         path="/exam/short_essay/:examId"
                       />
@@ -195,7 +340,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={ViewExamResult}
+                        component={LoadableViewExamResult}
                         exact
                         path="/exam_results"
                       />
@@ -203,7 +348,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin", "student"]}
-                        component={DisplayQuizScriptComponent}
+                        component={LoadableDisplayQuizScriptComponent}
                         exact
                         path="/examination_script/:examId"
                       />
@@ -211,7 +356,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin", "student"]}
-                        component={DisplaySpellingQuizScriptComponent}
+                        component={LoadableDisplaySpellingQuizScriptComponent}
                         exact
                         path="/spelling_examination_script/:examId"
                       />
@@ -219,7 +364,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin", "student"]}
-                        component={DisplayEssayQuizScriptComponent}
+                        component={LoadableDisplayEssayQuizScriptComponent}
                         exact
                         path="/essay_examination_script/:examId"
                       />
@@ -229,7 +374,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin", "student"]}
-                        component={ExamSummaryComponent}
+                        component={LoadableExamSummaryComponent}
                         exact
                         path="/exam_summary/:examId"
                       />
@@ -238,7 +383,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin", "student"]}
-                        component={SpellingExamSummary}
+                        component={LoadableSpellingExamSummary}
                         exact
                         path="/exam_summary/spelling/:examId"
                       />
@@ -247,7 +392,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin", "student"]}
-                        component={EssayExamSummary}
+                        component={LoadableEssayExamSummary}
                         exact
                         path="/exam_summary/essay/:examId"
                       />
@@ -256,7 +401,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={UploadExaminationQuestion}
+                        component={LoadableUploadExaminationQuestion}
                         exact
                         path="/upload_questions"
                       />
@@ -265,7 +410,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={AddQuestion}
+                        component={LoadableAddQuestion}
                         exact
                         path="/add_question"
                       />
@@ -274,7 +419,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={SaveSpellingQuestions}
+                        component={LoadableSaveSpellingQuestions}
                         exact
                         path="/add_spelling_question"
                       />
@@ -283,7 +428,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={SaveEssayQuestions}
+                        component={LoadableSaveEssayQuestions}
                         exact
                         path="/add_essay_question"
                       />
@@ -293,7 +438,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={EditEssayQuestion }
+                        component={LoadableEditEssayQuestion}
                         exact
                         path="/edit_essay_question"
                       />
@@ -303,7 +448,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={LoadQuestionsComponent}
+                        component={LoadableLoadQuestionsComponent}
                         exact
                         path="/load_multi_choice_question"
                       />
@@ -312,7 +457,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={LoadSpellingQuestions}
+                        component={LoadableLoadSpellingQuestions}
                         exact
                         path="/load_spelling_question"
                       />
@@ -321,7 +466,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={LoadEssayQuestion}
+                        component={LoadableLoadEssayQuestion}
                         exact
                         path="/load_essay_question"
                       />
@@ -331,7 +476,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={EditQuestionComponent}
+                        component={LoadableEditQuestionComponent}
                         exact
                         path="/edit_question"
                       />
@@ -340,7 +485,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={CreateExaminationSchedule}
+                        component={LoadableCreateExaminationSchedule}
                         exact
                         path="/create_examination_schedule"
                       />
@@ -349,7 +494,7 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={AddQuestionsToExaminationComponent}
+                        component={LoadableAddQuestionsToExaminationComponent}
                         exact
                         path="/add_questions_examination"
                       />
@@ -358,24 +503,28 @@ function App(props) {
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["super-admin"]}
-                        component={AddEssayQuestionsToExam}
+                        component={LoadableAddEssayQuestionsToExam}
                         exact
                         path="/add_essay_questions_examination"
                       />
                       <PublicRoute
-                        component={LoginPage}
+                        component={LoadableLoginPage}
                         {...props}
                         path={"/login"}
                         authenticated={isAuth}
                         exact
                       />
-                      <Route exact path="/dashboard" component={Dashboard} />
+                      <Route
+                        exact
+                        path="/dashboard"
+                        component={LoadableDashboard}
+                      />
                       <AuthorizedComponent
                         loading={loading}
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
                         authorizedRole={["student"]}
-                        component={ActiveExaminationPage}
+                        component={LoadableActiveExaminationPage}
                         exact
                         path="/exam_start_page"
                       />

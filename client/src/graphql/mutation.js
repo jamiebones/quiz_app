@@ -126,7 +126,7 @@ const AddSpellingQuestionsArrayToScheduleExam = gql`
 
 const AddEssayQuestionsArrayToScheduleExam = gql`
   mutation addEssayQuestions(
-    $questionsArray: [EssayExamQuestionInput2!]
+    $questionsArray: [EssayQuestionInputTypeForExamSchedule!]
     $scheduleId: ID!
   ) {
     addEssayQuestionsToExam(

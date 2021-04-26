@@ -5,7 +5,7 @@ import { AddEssayQuestionsArrayToScheduleExam } from "../graphql/mutation";
 import styled from "styled-components";
 import LoadEssayQuestionsComponent from "../common/loadEssayQuestionComponent";
 import ExaminationTypeComponent from "../common/examinationTypeComponent";
-
+import methods from "../methods"
 const AddQuestionStyles = styled.div`
   .div-details {
     margin: 20px 0px;
@@ -53,6 +53,7 @@ const AddEssayQuestionsToExam = () => {
         examId: examData && examData.examId,
         number: examScheduleDetails && examScheduleDetails.numberofQuestions,
       },
+      
     }
   );
 
@@ -170,6 +171,7 @@ const AddEssayQuestionsToExam = () => {
         questionsArray: arrayOfEssayQuestions,
         scheduleId: examScheduleDetails.id,
       },
+
     });
   };
 

@@ -222,7 +222,7 @@ const SaveEssayQuestionComponent = () => {
         variables: {
           input: inputQuestion,
         },
-        context: { hasUpload: mediaType ? true : false },
+        context: { hasUpload: true  },
         refetchQueries: [
           {
             query: GetAllEssayQuestions,

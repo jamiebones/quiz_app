@@ -38,8 +38,7 @@ export default gql`
     examinationType: String
     mediaType: String
     mediaUrl: String
-    mediaFile:Upload
-    
+    mediaFile: Upload
   }
 
   input EssayExamQuestionInput2 {
@@ -48,7 +47,7 @@ export default gql`
     clue: String
     possibleAnswers: [String]
     mediaType: String
-    mediaFile:Upload
+    mediaFile: Upload
   }
 
   type EssayQuestionsTotal {
@@ -65,9 +64,19 @@ export default gql`
     mediaUrl: String
     isCorrect: Boolean
     yourAnswer: String
-    
   }
 
+  input EssayQuestionInputTypeForExamSchedule {
+    type: String!
+    question: String!
+    clue: String
+    possibleAnswers: [String]
+    examId: ID!
+    examinationType: String
+    mediaType: String
+    mediaUrl: String
+    id: ID!
+  }
 
   type EssayQuestionScript {
     number: Int!
