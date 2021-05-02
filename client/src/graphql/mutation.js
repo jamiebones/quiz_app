@@ -265,8 +265,16 @@ const UploadBulkSpellingQuestions = gql`
     saveBulkSpellingQuestion(input: $input)
   }
 `;
+const CancelExamination = gql`
+  mutation cancelExamination($examId: ID!) {
+    cancelExamination(examId: $examId)
+  }
+`;
+
+
 
 export {
+  CancelExamination,
   UploadBulkSpellingQuestions,
   UploadBulkExaminationQuestions,
   SubmitQuestion,

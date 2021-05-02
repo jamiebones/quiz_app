@@ -14,6 +14,15 @@ export default {
       const result = await models.ExamTaken.findOne({ _id: examId });
       return result;
     },
+    getRunningExamination: async (_, {}, { models }) => {
+      //check if the person has an examination running already
+      const examRunning = await models.ExamTaken.find({
+        examFinished: false,
+        examStarted: true,
+      });
+
+      return examRunning;
+    },
   },
   Mutation: {
     startExam: async (_, { examDetails }, { models }) => {
@@ -85,6 +94,11 @@ export default {
         }
       );
 
+      return true;
+    },
+
+    cancelExamination: async (_, { examId }, { models }) => {
+      await models.ExamTaken.deleteOne({_id: examId});
       return true;
     },
   },

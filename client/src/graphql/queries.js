@@ -121,7 +121,6 @@ const GetAllSpellingQuestions = gql`
   }
 `;
 
-
 const GetExamScheduleByType = gql`
   query GetExamType($examTypeId: ID!) {
     getExamScheduleByType(examTypeId: $examTypeId) {
@@ -489,7 +488,26 @@ const GetDifferentExamination = gql`
   }
 `;
 
+const GetRunningExamination = gql`
+  query GetRunningExamination {
+    getRunningExamination {
+      id
+      timeExamStarted
+      canidateDetails {
+        username
+        name
+      }
+      examDetails {
+        examinationName
+        numberOfQuestions
+        duration
+      }
+    }
+  }
+`;
+
 export {
+  GetRunningExamination,
   GetAllSpellingQuestions,
   GetAllExamination,
   GetAllMultiChoiceExamination,

@@ -381,6 +381,13 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
                 >
                   <a>Activate Exam</a>
                 </li>
+
+                <li
+                  className="subitem"
+                  onClick={() => history.push("/view_running_examination")}
+                >
+                  <a>Running Examination</a>
+                </li>
               </ul>
             </li>
           )}

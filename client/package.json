@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "date-and-time": "^0.14.2",
+    "dayjs": "^1.10.4",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "graphql": "^15.5.0",
@@ -33,6 +34,7 @@
     "react-router-hash-link": "^2.4.0",
     "react-scripts": "4.0.1",
     "recoil": "^0.1.2",
+    "source-map-explorer": "^2.5.2",
     "store": "^2.0.12",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4",
@@ -42,7 +44,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer build/static/js/main.*"
   },
   "eslintConfig": {
     "extends": [

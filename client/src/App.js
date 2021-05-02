@@ -202,6 +202,12 @@ const LoadableEditEssayQuestion = Loadable({
   delay: 300,
 });
 
+const LoadableRunningExamination = Loadable({
+  loader: () => import("./components/viewRunningExaminations"),
+  loading: Loader,
+  delay: 300,
+});
+
 //loadable content end here end of code splitting by route
 
 const AppStyles = styled.div`
@@ -248,6 +254,15 @@ function App(props) {
                 <div className="row">
                   <div className="col-md-12">
                     <div className="mainComponent">
+                      <AuthorizedComponent
+                        currentLoginUser={currentLoginUser}
+                        authenticated={isAuth}
+                        authorizedRole={["super-admin"]}
+                        component={LoadableRunningExamination}
+                        exact
+                        path="/view_running_examination"
+                      />
+
                       <AuthorizedComponent
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}

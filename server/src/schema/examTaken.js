@@ -6,6 +6,7 @@ export default gql`
     getSpellingExamOfCanidate(examId: ID!): ExamTaken
     getAllCanidateExam(username: String!): [ExamTaken!]
     getExamResults(examScheduleId: ID!): [ExamTaken]
+    getRunningExamination: [ExamTaken]
   }
 
   extend type Mutation {
@@ -13,10 +14,14 @@ export default gql`
     examEnded(submissionDetails: ExamFinishedInput!): Boolean!
     spellingExamEnded(submissionDetails: SpellingExamFinishedInput!): Boolean!
     essayExamEnded(submissionDetails: EssayExamFinishedInput!): Boolean!
+    cancelExamination(examId: ID!): Boolean!
   }
 
   union ExamTakenDetails = ExamTakenSuccess | Error
-  union ScriptTypes = ScriptQuestion | SpellingScriptQuestion | EssayQuestionScript
+  union ScriptTypes =
+      ScriptQuestion
+    | SpellingScriptQuestion
+    | EssayQuestionScript
 
   type ExamTakenSuccess {
     type: String
@@ -71,7 +76,6 @@ export default gql`
     questionType: String
   }
 
- 
   input ExamDetailsInput {
     examinationName: String!
     examinationId: ID!
