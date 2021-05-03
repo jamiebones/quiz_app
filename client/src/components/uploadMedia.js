@@ -186,7 +186,7 @@ const UploadMedia = () => {
                     <label className="form-control">Select file</label>
                     <input
                       type="file"
-                      className="file"
+                      className="form-control-file"
                       onChange={onFileChange}
                       id="fileInput"
                       ref={fileRef}

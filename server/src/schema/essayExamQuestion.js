@@ -10,6 +10,7 @@ export default gql`
 
   extend type Mutation {
     saveEssayQuestion(input: EssayExamQuestionInput!): EssayExamQuestion
+    saveBulkEssayQuestion(input: [EssayExamQuestionInput]): String!
     deleteEssayQuestion(questionId: ID!): Boolean
     deleteMedia(questionId: ID!, mediaUrl: String!): Boolean
     editEssayQuestion(input: EssayExamQuestionInput2!): Boolean

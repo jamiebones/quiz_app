@@ -48,6 +48,16 @@ export default {
     },
   },
   Mutation: {
+    saveBulkEssayQuestion: async (_, args, { models }) => {
+      try {
+        const { input } = args;
+        const uploadResult = await models.EssayExamQuestion.insertMany(input);
+        return uploadResult.length;
+      } catch (error) {
+        console.log(error);
+        throw new Error(`Database Error`);
+      }
+    },
     editEssayQuestion: async (parent, { input }, { models }) => {
       try {
         const {

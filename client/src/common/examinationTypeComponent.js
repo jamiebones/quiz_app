@@ -95,16 +95,16 @@ const ExaminationTypeComponent = ({
           {display == 2 && (
             <React.Fragment>
               <option value="short answer exam">Short answer type</option>
-              <option value="essay exam">Essay examination</option>
+              {/* <option value="essay exam">Essay examination</option> */}
             </React.Fragment>
           )}
 
           {display == 3 && (
-            <React.Fragment>
+            {/* <React.Fragment>
               <option value="quantitative exam">
                 Quantitative examination
               </option>
-            </React.Fragment>
+            </React.Fragment> */}
           )}
         </select>
       </div>

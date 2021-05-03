@@ -265,6 +265,14 @@ const UploadBulkSpellingQuestions = gql`
     saveBulkSpellingQuestion(input: $input)
   }
 `;
+
+const UploadBulkEssayQuestions = gql`
+  mutation saveBulkEssayQuestion($input: [EssayExamQuestionInput]) {
+    saveBulkEssayQuestion(input: $input)
+  }
+`;
+
+
 const CancelExamination = gql`
   mutation cancelExamination($examId: ID!) {
     cancelExamination(examId: $examId)
@@ -274,6 +282,7 @@ const CancelExamination = gql`
 
 
 export {
+  UploadBulkEssayQuestions,
   CancelExamination,
   UploadBulkSpellingQuestions,
   UploadBulkExaminationQuestions,

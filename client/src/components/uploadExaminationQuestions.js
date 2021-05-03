@@ -4,6 +4,7 @@ import { GetDifferentExamination } from "../graphql/queries";
 import {
   UploadBulkExaminationQuestions,
   UploadBulkSpellingQuestions,
+  UploadBulkEssayQuestions,
 } from "../graphql/mutation";
 import * as XLSX from "xlsx";
 import methods from "../methods";
@@ -25,6 +26,10 @@ const UploadExaminationQuestions = () => {
 
   const [uploadSpellingQuestion, uploadSpellingQuestionResult] = useMutation(
     UploadBulkSpellingQuestions
+  );
+
+  const [uploadEssayQuestion, uploadEssayQuestionResult] = useMutation(
+    UploadBulkEssayQuestions
   );
 
   useEffect(() => {
@@ -52,12 +57,12 @@ const UploadExaminationQuestions = () => {
   useEffect(() => {
     if (uploadQuestionResult.error) {
       setErrors(uploadQuestionResult.error.message);
-      setSubmitted(!submitted);
+      setSubmitted(false);
     }
 
     if (uploadQuestionResult.data) {
       setErrors(null);
-      setSubmitted(!submitted);
+      setSubmitted(false);
       document.getElementById("uploadExcelFile").value = "";
       setSelectedExamId(null);
       setSelectedExamName(null);
@@ -70,12 +75,12 @@ const UploadExaminationQuestions = () => {
   useEffect(() => {
     if (uploadSpellingQuestionResult.error) {
       setErrors(uploadSpellingQuestionResult.error.message);
-      setSubmitted(!submitted);
+      setSubmitted(false);
     }
 
     if (uploadSpellingQuestionResult.data) {
       setErrors(null);
-      setSubmitted(!submitted);
+      setSubmitted(false);
       document.getElementById("uploadExcelFile").value = "";
       setSelectedExamId(null);
       setSelectedExamName(null);
@@ -84,6 +89,24 @@ const UploadExaminationQuestions = () => {
       );
     }
   }, [uploadSpellingQuestionResult.error, uploadSpellingQuestionResult.data]);
+
+  useEffect(() => {
+    if (uploadEssayQuestionResult.error) {
+      setErrors(uploadEssayQuestionResult.error.message);
+      setSubmitted(false);
+    }
+
+    if (uploadEssayQuestionResult.data) {
+      setErrors(null);
+      setSubmitted(false);
+      document.getElementById("uploadExcelFile").value = "";
+      setSelectedExamId(null);
+      setSelectedExamName(null);
+      window.alert(
+        `${uploadEssayQuestionResult.data.saveBulkEssayQuestion} questions saved in the database.`
+      );
+    }
+  }, [uploadEssayQuestionResult.error, uploadEssayQuestionResult.data]);
 
   const handleExamChange = (e) => {
     const value = e.target.value;
@@ -141,6 +164,7 @@ const UploadExaminationQuestions = () => {
     e.preventDefault();
     //get the array of questions
     //check if a question has an answer
+    setSubmitted(true);
     switch (examTypeSelection) {
       case "multiple choice questions":
         //we are good we can upload our questions to database
@@ -188,10 +212,18 @@ const UploadExaminationQuestions = () => {
         } catch (error) {}
         break;
       case "short answer exam":
-        break;
-      case "essay exam":
-        break;
-      case "quantitative exam":
+        const { payloadValue } = methods.SaveBulkEssayQuestions(
+          excelData,
+          selectedExamId,
+          selectedExamName
+        );
+        try {
+          await uploadEssayQuestion({
+            variables: {
+              input: payloadValue,
+            },
+          });
+        } catch (error) {}
         break;
 
       default:
@@ -201,7 +233,7 @@ const UploadExaminationQuestions = () => {
 
   return (
     <div className="row">
-      <div className="col-md-6 offset-md-3">
+      <div className="col-md-6 offset-md-3 card">
         {errors && <p className="lead text-danger">Error: {errors}</p>}
 
         <p className="text-center lead">Upload Questions From Excel Document</p>
@@ -216,10 +248,6 @@ const UploadExaminationQuestions = () => {
                 Spelling examination{" "}
               </option>
               <option value="short answer exam">Short answer type</option>
-              <option value="essay exam">Essay examination</option>
-              <option value="quantitative exam">
-                Quantitative examination
-              </option>
             </select>
           </div>
           <div className="form-group">
