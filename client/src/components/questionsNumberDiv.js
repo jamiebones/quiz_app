@@ -6,7 +6,11 @@ import store from "store";
 
 const QuestionNumberDivStyles = styled.div`
   margin-top: 40px;
-
+  .container-num{
+    display: flex;
+    flex-direction: column;
+    justify-contents: center;
+  }
   .div-number {
     width: 60px;
     height: 60px;
@@ -93,6 +97,7 @@ const QuestionsNumberDiv = () => {
   };
   return (
     <QuestionNumberDivStyles>
+      <div className="container-num">
       <div className="numberDiv">
         {questions &&
           questions.map(({ answers }, index) => {
@@ -157,6 +162,7 @@ const QuestionsNumberDiv = () => {
           <div className="code colorVisited"></div>
           <p>Visited</p>
         </div>
+      </div>
       </div>
     </QuestionNumberDivStyles>
   );

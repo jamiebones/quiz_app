@@ -5,8 +5,52 @@ import { LoginUser } from "../graphql/queries";
 import state from "../applicationState";
 import { useRecoilState } from "recoil";
 import store from "store";
-const LoginStyle = styled.div``;
+import Logo from "../assets/images/eruditelogo.png";
+const LoginStyle = styled.div`
+  .login-container {
+    height: 500px;
+    padding: 40px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background-color: #ecf0f3;
+    box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+  }
+  .brand-logo {
+    height: 100px;
+    width: 100px;
+    margin: auto;
+    background: url(${Logo});
+    border-radius: 50%;
+    box-sizing: border-box;
+    box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
+  }
+  .input {
+    background: #ecf0f3;
+    padding: 10px;
+    padding-left: 20px;
+    height: 50px;
+    font-size: 14px;
+    border-radius: 50px;
+    box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+  }
 
+  .login-button {
+    border: none;
+    margin-top: 20px;
+    background: #1da1f2;
+    height: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 900;
+    transition: 0.5s;
+    box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+    width: 100%;
+  }
+
+  .login-button:hover {
+    box-shadow: none;
+  }
+`;
 
 const Login = (props) => {
   const [isAuth, setAuthState] = useRecoilState(state.authState);
@@ -44,13 +88,8 @@ const Login = (props) => {
         setSubmitted(false);
       } else {
         //we are good here we have the baggages here
-        const {
-          id,
-          token,
-          username,
-          userType,
-          name,
-        } = loginUserResult.data.loginUser;
+        const { id, token, username, userType, name } =
+          loginUserResult.data.loginUser;
         store.set("authToken", token);
         store.set("isAuth", true);
         store.set(
@@ -97,42 +136,46 @@ const Login = (props) => {
   return (
     <LoginStyle>
       <div className="row">
-        <div className="col-md-6 offset-md-3">
+        <div className="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 offset-sm-3">
           <p className="text-danger">{error}</p>
-          <p className="lead text-center">Login</p>
-          <form onSubmit={submitForm}>
-            <div className="form-group">
-              <label htmlFor="name">Username </label>
-              <input
-                type="text"
-                className="form-control"
-                name="username"
-                aria-describedby="username"
-                value={username}
-                onChange={onInputChange}
-              />
-            </div>
 
-            <div className="form-group">
-              <label htmlFor="password">password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                onChange={onInputChange}
-                name="password"
-                value={password}
-              />
-            </div>
+          <div className="login-container">
+            <div className="brand-logo"></div>
+            <p className="text-center lead text-info">Login</p>
+            <form onSubmit={submitForm}>
+              <div className="form-group">
+                <label htmlFor="name">Username </label>
+                <input
+                  type="text"
+                  className="form-control input"
+                  name="username"
+                  aria-describedby="username"
+                  value={username}
+                  onChange={onInputChange}
+                />
+              </div>
 
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={submitted}
-            >
-              {submitted ? "bypassing security....." : "login"}
-            </button>
-          </form>
+              <div className="form-group">
+                <label htmlFor="password">password</label>
+                <input
+                  type="password"
+                  className="form-control input"
+                  id="password"
+                  onChange={onInputChange}
+                  name="password"
+                  value={password}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="login-button"
+                disabled={submitted}
+              >
+                {submitted ? "bypassing security....." : "login"}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </LoginStyle>

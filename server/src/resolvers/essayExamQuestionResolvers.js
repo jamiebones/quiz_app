@@ -163,7 +163,6 @@ export default {
         //we have an uploaded file
         try {
           const { createReadStream, filename } = await mediaFile;
-          console.log("filename", filename, "createReadStream", createReadStream)
           const stream = createReadStream();
           let pathObj = await methods.uploadFile({
             stream,
@@ -183,7 +182,6 @@ export default {
           });
           await essayQuestion.save();
           return essayQuestion;
-          
         } catch (error) {
           console.log(error);
           throw new Error(error);

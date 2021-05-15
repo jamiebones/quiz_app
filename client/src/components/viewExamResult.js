@@ -53,8 +53,10 @@ const ViewExamResult = () => {
 
       if (data.length > 0) {
         setExamResults(data);
+        setNoData(false);
       } else {
         setNoData(true);
+        setExamResults([]);
       }
       setProcessing(false);
     }
@@ -200,7 +202,7 @@ const ViewExamResult = () => {
           )}
 
           {examResults.length > 0 && (
-            <div className="table-responsive">
+            <div className="table-responsive card">
               <table className="table">
                 <thead>
                   <tr>

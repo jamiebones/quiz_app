@@ -6,14 +6,13 @@ import { useRecoilValue } from "recoil";
 import store from "store";
 
 const CountDownTimerStyles = styled.div`
-  
   span {
     font-size: 30px;
   }
   .timer {
-    font-size: 50px;
-    font-weight: bold;
+    font-size: 40px;
     color: blue;
+    background-color: white;
   }
 `;
 

@@ -147,7 +147,7 @@ export default {
         await models.ExamSchedule.updateOne(
           { _id: scheduleId },
           {
-            $addToSet: {
+            $set: {
               questions: questionsArray,
             },
           }
@@ -168,7 +168,7 @@ export default {
         await models.ExamSchedule.updateOne(
           { _id: scheduleId },
           {
-            $addToSet: {
+            $set: {
               questions: questionsArray,
             },
           }
@@ -189,7 +189,7 @@ export default {
         await models.ExamSchedule.updateOne(
           { _id: scheduleId },
           {
-            $addToSet: {
+            $set: {
               questions: questionsArray,
             },
           }

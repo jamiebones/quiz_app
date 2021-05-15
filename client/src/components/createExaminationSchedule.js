@@ -222,7 +222,7 @@ const CreateExaminationScheduleComponent = () => {
   return (
     <CreateExaminationScheduleStyles>
       <div className="row">
-        <div className="col-md-8 offset-md-2">
+        <div className="col-md-8 offset-md-2 card">
           <h3 className="text-center">Create New Examination Schedule</h3>
           {errors && <p className="lead text-danger">Error: {errors}</p>}
           <ExaminationTypeComponent

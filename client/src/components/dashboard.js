@@ -41,8 +41,8 @@ const DashBoardStyles = styled.div`
   .row {
     justify-content: center;
   }
-  .but-row{
-      margin-top: 60px;
+  .but-row {
+    margin-top: 60px;
   }
 `;
 
@@ -72,22 +72,24 @@ const DashBoard = () => {
           )}
           {loading && <Loading />}
         </div>
-        {metrics &&
-          metrics.length > 0 &&
-          metrics.map(({ type, value }, index) => {
-            return (
-              <div
-                className={`dash-panel one${index} col-md-3 offset-md-1`}
-                key={index}
-              >
-                <p className="dash-title">{type}</p>
+       
+          {metrics &&
+            metrics.length > 0 &&
+            metrics.map(({ type, value }, index) => {
+              return (
+                <div
+                  className={`dash-panel one${index} col-md-3 offset-md-1`}
+                  key={index}
+                >
+                  <p className="dash-title">{type}</p>
 
-                <p className="dash-value">{value}</p>
-              </div>
-            );
-          })}
+                  <p className="dash-value">{value}</p>
+                </div>
+              );
+            })}
+        
       </div>
-      <div className="row but-row">
+      <div className="row but-row card">
         <div
           className="btn-group"
           role="group"

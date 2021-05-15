@@ -18,6 +18,7 @@ import apolloClient from "./apolloClient";
 import Navigation from "./components/navbar";
 
 import TryPage from "./components/try";
+import Footer from "./common/footer";
 
 import PublicRoute from "./components/publicRoute";
 
@@ -213,6 +214,7 @@ const LoadableRunningExamination = Loadable({
 const AppStyles = styled.div`
   .mainComponent {
     margin-top: 50px;
+    margin-bottom: 70px;
   }
 `;
 
@@ -242,18 +244,18 @@ function App(props) {
     <ApolloProvider client={apolloClient}>
       <GlobalStyle />
       <Router>
-        <Navigation
-          authenticated={isAuth}
-          currentLoginUser={currentLoginUser}
-          history={useHistory()}
-        />
         <AppStyles>
-          <Switch>
-            <React.Fragment>
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="mainComponent">
+          <Navigation
+            authenticated={isAuth}
+            currentLoginUser={currentLoginUser}
+            history={useHistory()}
+          />
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="mainComponent">
+                  <Switch>
+                    <React.Fragment>
                       <AuthorizedComponent
                         currentLoginUser={currentLoginUser}
                         authenticated={isAuth}
@@ -543,12 +545,13 @@ function App(props) {
                         exact
                         path="/exam_start_page"
                       />
-                    </div>
-                  </div>
+                    </React.Fragment>
+                  </Switch>
+                  <Footer />
                 </div>
               </div>
-            </React.Fragment>
-          </Switch>
+            </div>
+          </div>
         </AppStyles>
       </Router>
     </ApolloProvider>

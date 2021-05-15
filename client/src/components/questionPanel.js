@@ -50,9 +50,8 @@ const disableButtons = (e) => {
 
 const QuestionPanel = (props) => {
   const match = useRouteMatch("/exam/multi_choice/:examId");
-  const [examinationEndedFunction, examinationEndedResult] = useMutation(
-    ExaminationEnded
-  );
+  const [examinationEndedFunction, examinationEndedResult] =
+    useMutation(ExaminationEnded);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState(null);
   const [examIdValue, setExamIdValue] = useState(null);
@@ -157,7 +156,10 @@ const QuestionPanel = (props) => {
             />
           </div>
           <div className="col-md-4">
-            <CountDownTimer submitQuiz={submitQuizHandler} />
+            <div className="text-center">
+              <CountDownTimer submitQuiz={submitQuizHandler} />
+            </div>
+
             <QuestionsNumberDiv />
           </div>
         </div>

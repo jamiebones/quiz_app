@@ -88,12 +88,12 @@ const AddQuestionsToExaminationComponent = () => {
     if (autoGenResult.data) {
       //set the questions selected here
       const autoQuestions = autoGenResult.data.autoGenQuestions;
-      setAutoProcessing(!autoProcessing);
+      setAutoProcessing(false);
       setSelectedQuestion(autoQuestions);
     }
     if (autoGenResult.error) {
       setErrors(autoGenResult.error);
-      setAutoProcessing(!autoProcessing);
+      setAutoProcessing(false);
     }
   }, [autoGenResult.data, autoGenResult.error]);
 
@@ -102,28 +102,28 @@ const AddQuestionsToExaminationComponent = () => {
     if (autoGenSpellingResult.data) {
       //set the questions selected here
       const autoQuestions = autoGenSpellingResult.data.autoGenSpellingQuestions;
-      setAutoProcessing(!autoProcessing);
+      setAutoProcessing(false);
       setSelectedQuestion(autoQuestions);
     }
     if (autoGenSpellingResult.error) {
       setErrors(autoGenSpellingResult.error);
-      setAutoProcessing(!autoProcessing);
+      setAutoProcessing(false);
     }
   }, [autoGenSpellingResult.data, autoGenSpellingResult.error]);
 
   //add multi choice question to exam mutation
   useEffect(() => {
     if (addQuestionsToExamResult.error) {
-      setProcessing(!processing);
-      setSubmitted(!submitted);
+      setProcessing(false);
+      setSubmitted(false);
       setErrors(addQuestionsToExamResult.error.message);
     }
-
     if (
       addQuestionsToExamResult.data &&
       addQuestionsToExamResult.data.addQuestionsToExam
     ) {
-      setProcessing(!processing);
+      setProcessing(false);
+      setSubmitted(false);
       window.alert("questions added successfully");
     }
   }, [addQuestionsToExamResult.error, addQuestionsToExamResult.data]);
@@ -131,8 +131,8 @@ const AddQuestionsToExaminationComponent = () => {
   //add spelling questions to exam mutation
   useEffect(() => {
     if (addSpellingQuestionsToExamResult.error) {
-      setProcessing(!processing);
-      setSubmitted(!submitted);
+      setProcessing(false);
+      setSubmitted(false);
       setErrors(addSpellingQuestionsToExamResult.error.message);
     }
 
@@ -140,7 +140,8 @@ const AddQuestionsToExaminationComponent = () => {
       addSpellingQuestionsToExamResult.data &&
       addSpellingQuestionsToExamResult.data.addSpellingQuestionsToExam
     ) {
-      setProcessing(!processing);
+      setSubmitted(false);
+      setProcessing(false);
       window.alert("questions added successfully");
     }
   }, [
@@ -220,7 +221,7 @@ const AddQuestionsToExaminationComponent = () => {
           }
         );
         try {
-        
+          setSubmitted(true);
           await addQuestionToExamination({
             variables: {
               questionsArray: arrayOfQuestions,
@@ -247,6 +248,7 @@ const AddQuestionsToExaminationComponent = () => {
           }
         );
         try {
+          setSubmitted(true);
           await addSpellingQuestionToExam({
             variables: {
               questionsArray: arrayOfSpellingQuestions,
@@ -266,12 +268,14 @@ const AddQuestionsToExaminationComponent = () => {
     const examId = examData && examData.examId;
     const number = examScheduleDetails && examScheduleDetails.numberofQuestions;
     if (examId && number) {
-      setAutoProcessing(!autoProcessing);
+      
       switch (examType) {
         case "multiple choice questions":
+          setAutoProcessing(true);
           autoGenerateFunc();
           break;
         case "spelling examination":
+          setAutoProcessing(true);
           autoGenerateSpellingFunc();
           break;
       }

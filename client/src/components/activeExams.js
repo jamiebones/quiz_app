@@ -24,16 +24,27 @@ const customStyles = {
 const ActiveExamStyles = styled.div`
   .div-panel {
     padding: 20px;
-    color: #fff;
-    background: #2a8e86;
-    min-height: 200px;
-    margin-bottom: 20px;
+    color: #c0c0c0;
+    background-color: #2a8e86;
+    height: 300px;
+    margin-bottom: 60px;
+    box-sizing :border-box;
+    box-shadow: 7px 7px 10px #2a9a87, -7px -7px 10px white;
+    border-radius: 20px;
+
+  }
+  .start-button{
+    position: absolute;
+    bottom: 37px;
+    left: 34%;
+    border-radius: 20px;
+    
   }
   p {
     font-size: 18px;
   }
   span {
-    font-size: 16px;
+    font-size: 14px;
     color: #010605;
     padding: 10px;
   }
@@ -239,7 +250,7 @@ const ActiveExams = ({ history }) => {
                     </p>
                     <div className="text-center">
                       <button
-                        className="btn btn-warning"
+                        className="btn btn-warning start-button"
                         onClick={(e) =>
                           startExamination(e, {
                             questions,

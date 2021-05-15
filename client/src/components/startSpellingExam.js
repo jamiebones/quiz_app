@@ -31,6 +31,19 @@ const QuestionPanelStyles = styled.div`
     background: #8e8383;
     padding: 20px;
   }
+  .exam-text {
+    font-size: 15px;
+  }
+
+  hr {
+    border: 1px solid #88b388;
+
+    width: 100%;
+  }
+
+  .btn-div {
+    margin-bottom: 20px;
+  }
 
   .btn-wl {
     cursor: pointer;
@@ -39,7 +52,6 @@ const QuestionPanelStyles = styled.div`
   .input-row {
     margin: 10px 0px;
     display: flex;
-    flex-wrap: wrap;
   }
   .input-spelling {
     margin: 10px;
@@ -53,6 +65,11 @@ const QuestionPanelStyles = styled.div`
     align-self: center;
     padding: 0 40px;
   }
+  .div-spellingWord {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .guide-div {
     margin: 20px 0 0 0px;
   }
@@ -60,6 +77,7 @@ const QuestionPanelStyles = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
+    justify-content: space-between;
   }
   .clue {
     margin: 10px 105px;
@@ -104,15 +122,45 @@ const QuestionPanelStyles = styled.div`
   .spanDetails {
     float: right;
     font-weight: bold;
-    color: #d28431;
+    color: #f9f4ef;
+    font-size: 12px;
   }
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 800px) {
     .exam-div {
     }
+
     .clue {
+      margin: 1px 55px;
+      font-size: 16px;
     }
     .input-row {
+      margin: 0px 5px;
+    }
+    .input-spelling {
+      font-size: 20px;
+      width: 50px;
+      height: 50px;
+    }
+    .number {
+      font-size: 24px;
+      align-self: center;
+      padding: 0 10px;
+    }
+
+    .spelling-div {
+    }
+    .div-spellingWord {
+      align-items: center;
+    }
+
+    .spanDetails {
+      text-align: left;
+      float: none;
+      padding: 5px;
+    }
+    .btn-div {
+      margin-bottom: 20px;
     }
   }
 `;
@@ -293,67 +341,72 @@ const QuestionPanelSpelling = (props) => {
                 {examName && examName.toUpperCase()}
               </h2>
 
-              <p>
-                Examination Type:
+              <p className="exam-text">
+                EXAMINATION TYPE:
                 <span className="spanDetails">
                   {examType && examType.toUpperCase()}
                 </span>
               </p>
-              <p>
-                Examination Time:
+              <p className="exam-text">
+                EXZMINATION TIME:
                 <span className="spanDetails">
                   {methods.Utils.ConvertMinutesToHours(examDuration)}
                 </span>
               </p>
+
+              <div className="text-center">
+                <CountDownTimer submitQuiz={submitQuizHandler} />
+              </div>
             </div>
           </div>
         </div>
 
         <div className="row">
-          <div className="col-md-10 offset-md-1">
-            <div className="text-center">
-              <CountDownTimer submitQuiz={submitQuizHandler} />
-            </div>
-          </div>
-        </div>
+          <div
+            className="col-sm-10 
+          offset-sm-1 col-md-10 offset-md-1"
+          >
+            <div className="exam-div card mb-4">
+              <div className="card-body">
+                {errors && <p className="lead text-danger">{errors}</p>}
+                {storedData &&
+                  storedData.map(({ number, clue, wordArray }, ind) => {
+                    return (
+                      <div className="spelling-div" key={ind}>
+                        <div className="input-row">
+                          <p className="number">{number + 1}. </p>
 
-        <div className="row">
-          <div className="col-xs-12 col-sm-10 
-          offset-sm-1 col-md-10 offset-md-1 card">
-            <div className="exam-div">
-              {errors && <p className="lead text-danger">{errors}</p>}
-              {storedData &&
-                storedData.map(({ number, clue, wordArray }, ind) => {
-                  return (
-                    <div className="spelling-div">
-                      <div className="input-row" key={ind}>
-                        <p className="number">{number + 1}. </p>
-                        {wordArray &&
-                          wordArray.map(({ readOnly, value }, index) => {
-                            return (
-                              <input
-                                key={value + readOnly + index}
-                                disabled={readOnly}
-                                type="text"
-                                value={value === "*" ? "" : value}
-                                placeholder={value === "*" ? "-" : ""}
-                                className="form-control input-spelling"
-                                onChange={(e) =>
-                                  handleTextInputChange({
-                                    e,
-                                    arrayPosition: ind,
-                                    wordPosition: index,
-                                  })
-                                }
-                              />
-                            );
-                          })}
+                          <div className="div-spellingWord">
+                            {wordArray &&
+                              wordArray.map(({ readOnly, value }, index) => {
+                                return (
+                                  <input
+                                    key={value + readOnly + index}
+                                    disabled={readOnly}
+                                    type="text"
+                                    value={value === "*" ? "" : value}
+                                    placeholder={value === "*" ? "-" : ""}
+                                    className="form-control input-spelling"
+                                    onChange={(e) =>
+                                      handleTextInputChange({
+                                        e,
+                                        arrayPosition: ind,
+                                        wordPosition: index,
+                                      })
+                                    }
+                                  />
+                                );
+                              })}
+                          </div>
+                        </div>
+                        <p className="clue">clue : {clue}</p>
+                        <hr />
                       </div>
-                      <p className="clue">clue : {clue}</p>
-                      <hr />
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+              </div>
+            </div>
+            <div className="btn-div">
               <div className="text-center">
                 <button
                   className="btn btn-success btn-exam"
@@ -367,7 +420,6 @@ const QuestionPanelSpelling = (props) => {
               </div>
             </div>
           </div>
-          <div className="col-md-1"></div>
         </div>
       </QuestionPanelStyles>
 

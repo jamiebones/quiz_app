@@ -9,14 +9,10 @@ const GlobalStyle = createGlobalStyle`
   body {
     background-color: #fff0f1f1;
     font-family: 'Roboto Slab', serif;
+    margin-bottom: 80px
   }
 
-  .card {
-    background: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    
-  }
+ 
 
   .card-title {
     
