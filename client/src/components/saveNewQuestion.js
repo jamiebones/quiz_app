@@ -293,8 +293,8 @@ const SaveNewQuestion = ({ editMode, questionToEdit, history }) => {
 
   return (
     <NewQuestionStyles>
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
+      <div className="row justify-content-center">
+        <div className="col-md-6 container-shadow">
           <p className="text-danger lead">{errors}</p>
           {!editMode && (
             <div className="form-group">

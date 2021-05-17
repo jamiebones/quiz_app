@@ -232,8 +232,8 @@ const UploadExaminationQuestions = () => {
   };
 
   return (
-    <div className="row">
-      <div className="col-md-6 offset-md-3 card">
+    <div className="row justify-content-center">
+      <div className="col-md-6 container-shadow">
         {errors && <p className="lead text-danger">Error: {errors}</p>}
 
         <p className="text-center lead">Upload Questions From Excel Document</p>

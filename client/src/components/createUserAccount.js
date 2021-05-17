@@ -111,8 +111,8 @@ const CreateUserAccount = () => {
   };
   return (
     <CreateUserAccountStyles>
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
+      <div className="row justify-content-center">
+        <div className="col-md-6 container-shadow">
           <h3 className="text-center text-primary">Create New User Account</h3>
           {errors && <p className="lead text-danger">{errors.message}</p>}
           <form onSubmit={submitUserFormDetails}>
@@ -122,7 +122,7 @@ const CreateUserAccount = () => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control input"
                 id="name"
                 name="name"
                 aria-describedby="usernameHelp"
@@ -139,7 +139,7 @@ const CreateUserAccount = () => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control input"
                 id="username"
                 name="username"
                 aria-describedby="usernameHelp"
@@ -156,7 +156,7 @@ const CreateUserAccount = () => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control input"
                 id="password"
                 name="password"
                 onChange={handleInputChange}

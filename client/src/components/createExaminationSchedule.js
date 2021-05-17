@@ -221,8 +221,8 @@ const CreateExaminationScheduleComponent = () => {
   };
   return (
     <CreateExaminationScheduleStyles>
-      <div className="row">
-        <div className="col-md-8 offset-md-2 card">
+      <div className="row justify-content-center">
+        <div className="col-md-8 container-shadow">
           <h3 className="text-center">Create New Examination Schedule</h3>
           {errors && <p className="lead text-danger">Error: {errors}</p>}
           <ExaminationTypeComponent
@@ -237,7 +237,7 @@ const CreateExaminationScheduleComponent = () => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control input"
                 id="examinationName"
                 value={scheduleExamName}
                 name="scheduleExamName"
@@ -256,7 +256,7 @@ const CreateExaminationScheduleComponent = () => {
               <input
                 type="number"
                 value={totalQuestions}
-                className="form-control sm-width"
+                className="form-control sm-width input"
                 id="totalQuestions"
                 name="totalQuestions"
                 aria-describedby="emailHelp"
@@ -272,7 +272,7 @@ const CreateExaminationScheduleComponent = () => {
                   <input
                     type="number"
                     name="hours"
-                    className="form-control"
+                    className="form-control input"
                     value={hours}
                     onChange={handleChange}
                   />
@@ -283,7 +283,7 @@ const CreateExaminationScheduleComponent = () => {
                   <input
                     type="number"
                     name="minutes"
-                    className="form-control"
+                    className="form-control input"
                     value={minutes}
                     onChange={handleChange}
                   />

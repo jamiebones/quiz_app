@@ -227,8 +227,8 @@ const AddEssayQuestionsToExam = () => {
 
   return (
     <AddQuestionStyles>
-      <div className="row">
-        <div className="col-md-4 offset-md-1">
+      <div className="row justify-content-center">
+        <div className="col-sm-6 col-md-4 col-lg-4">
           <h4 className="text-center">Add Essay Question to Examination</h4>
 
           <ExaminationTypeComponent

@@ -135,8 +135,8 @@ const Login = (props) => {
   };
   return (
     <LoginStyle>
-      <div className="row">
-        <div className="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 offset-sm-3">
+      <div className="row justify-content-center">
+        <div className="col-lg-3 col-md-6 col-sm-12">
           <p className="text-danger">{error}</p>
 
           <div className="login-container">

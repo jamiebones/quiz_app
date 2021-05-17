@@ -189,8 +189,8 @@ const SaveEssayQuestionComponent = () => {
 
   return (
     <SaveEssayQuestionStyles>
-      <div className="row">
-        <div className="col-md-8 offset-md-2">
+      <div className="row justify-content-center">
+        <div className="col-md-8 container-shadow">
           <h3 className="text-center">Add Essay Questions</h3>
           {errors && <p className="text-danger lead">{errors}</p>}
           <ExaminationTypeComponent

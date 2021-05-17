@@ -243,9 +243,9 @@ const SaveSpellingQuestion = () => {
 
   return (
     <SpellingQuestionStyles>
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <div className="card">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="container-shadow">
             <div className="text-center">
               {errors && <p className="text-center lead">{errors.message}</p>}
             </div>
