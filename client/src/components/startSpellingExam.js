@@ -334,9 +334,9 @@ const QuestionPanelSpelling = (props) => {
   return (
     <React.Fragment>
       <QuestionPanelStyles>
-        <div className="row">
-          <div className="col-md-10 offset-md-1">
-            <div className="details card-title">
+        <div className="row justify-content-center">
+          <div className="col-md-10 col-sm-12 col-lg-10">
+            <div className="details card-title container-shadow">
               <h2 className="text-center text-name">
                 {examName && examName.toUpperCase()}
               </h2>
@@ -361,12 +361,9 @@ const QuestionPanelSpelling = (props) => {
           </div>
         </div>
 
-        <div className="row">
-          <div
-            className="col-sm-10 
-          offset-sm-1 col-md-10 offset-md-1"
-          >
-            <div className="exam-div card mb-4">
+        <div className="row justify-content-center">
+          <div className="col-sm-10 col-md-10 col-lg-10">
+            <div className="exam-div mb-4 container-shadow">
               <div className="card-body">
                 {errors && <p className="lead text-danger">{errors}</p>}
                 {storedData &&
