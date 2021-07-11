@@ -97,8 +97,6 @@ const EssayExamQuestionComponent = () => {
   const examStartedinStore = store.get("examStarted");
   const [questions, setQuestionsData] = useState([]);
   const [scoreDetails, setScoreDetails] = useState(null);
-  const currentUser = useRecoilValue(state.currentLoginUserState);
-  const [user, setUser] = useState(null);
   const storedData = store.get("questionData");
   const { examName, examType, examDuration } = store.get("examDetails");
   let examId = match.params.examId;
@@ -108,7 +106,6 @@ const EssayExamQuestionComponent = () => {
   //effect to build up the questions
   useEffect(() => {
     const questionData = buildUpQuestions(questionsFromStore);
-    setUser(currentUser);
     setQuestionsData(questionData);
     const storedData = store.get("questionData");
     if (!storedData) {
@@ -183,7 +180,6 @@ const EssayExamQuestionComponent = () => {
         score: total,
         totalQuestions: scripts.length,
         examId: examIdVariable,
-        user: user,
       });
       const submissionObject = {
         examTakenId: examIdVariable,

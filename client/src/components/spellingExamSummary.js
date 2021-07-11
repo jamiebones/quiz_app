@@ -55,9 +55,10 @@ const ExamSummaryStyles = styled.div`
 
 const ExamSummaryComponent = (props) => {
   const location = useLocation();
-  console.log("location data", location);
+  const currentUserJson = props && props.currentLoginUser;
+  const currentUser = currentUserJson && JSON.parse(currentUserJson)
   const scoreDetails = location.state && location.state.scoreDetails;
-  const { score, totalQuestions, examId, user } = scoreDetails || {};
+  const { score, totalQuestions, examId} = scoreDetails || {};
   const match = useRouteMatch("/exam_summary/spelling/:examId");
   const total = totalQuestions;
   const percentageScore = ((score / total) * 100).toFixed(2);
@@ -85,7 +86,7 @@ const ExamSummaryComponent = (props) => {
             <div className="summaryBoard">
               <p className="text-center lead">Result Summary</p>
               <p className="user">
-                Name : <span>{user && user.name && user.name.toUpperCase()}</span>
+                Name : <span>{currentUser && currentUser.name.toUpperCase()}</span>
               </p>
 
               <p className="score">

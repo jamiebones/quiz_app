@@ -61,6 +61,7 @@ const QuestionPanel = (props) => {
   const questionsFromStore = store.get("examQuestions");
   const examIdinStore = store.get("examId");
   const examStartedinStore = store.get("examStarted");
+  const [scoreDetails, setScoreDetails ] = useState(null)
 
   let examId = match.params.examId;
 
@@ -88,9 +89,11 @@ const QuestionPanel = (props) => {
     if (data) {
       //redirect here to the summary page
       setSubmitting(!submitting);
-      methods.Utils.ClearStoreValue();
+      //methods.Utils.ClearStoreValue();
       console.log("exam id ", examId);
-      props.history.replace(`/exam_summary/${examId}`);
+      props.history.replace(`/exam_summary/${examId}`,  {
+        scoreDetails: scoreDetails,
+      });
     }
 
     if (error) {
@@ -126,6 +129,12 @@ const QuestionPanel = (props) => {
         score,
         scripts,
       };
+      setScoreDetails({
+        score,
+        scripts,
+        examId: examIdVariable,
+        totalQuestions: scripts.length,
+      })
       try {
         setSubmitting(!submitting);
         await examinationEndedFunction({

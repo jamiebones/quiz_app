@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import state from "../applicationState";
-import { useRecoilValue } from "recoil";
 import methods from "../methods";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, useLocation } from "react-router-dom";
 import store from "store";
 
 const ExamSummaryStyles = styled.div`
@@ -64,17 +62,14 @@ const disableF5 = (event) => {
 
 const ExamSummaryComponent = (props) => {
   const match = useRouteMatch("/exam_summary/:examId");
-  const questionsFromState = useRecoilValue(state.questionsState);
-  const questionsFromStore = store.get("examQuestions");
-  const questions =
-    questionsFromState.length > 0 ? questionsFromState : questionsFromStore;
-  const score = methods.ExamMarking(questions);
-  const total = questions.length;
-  const percentageScore = ((score / total) * 100).toFixed(2);
+  const location = useLocation();
+  const scoreDetails = location.state && location.state.scoreDetails;
+  const { score, totalQuestions } = scoreDetails || {};
+  const percentageScore = ((score / totalQuestions) * 100).toFixed(2);
   const grade = percentageScore >= 50 ? "Pass" : "Fail";
-
+  const currentUserJson = props && props.currentLoginUser;
+  const currentUser = currentUserJson && JSON.parse(currentUserJson)
   //clear the store and variables here
-
   const navigateToScriptPage = () => {
     props.history.push(`/examination_script/${match.params.examId}`);
   };
@@ -84,7 +79,6 @@ const ExamSummaryComponent = (props) => {
     methods.Utils.ClearStoreValue();
   }, []);
 
- 
   const onUnloadFunction = () => {
     alert("we are about starting the exam");
   };
@@ -96,15 +90,21 @@ const ExamSummaryComponent = (props) => {
             <div className="summaryBoard">
               <p className="text-center lead">Result Summary</p>
               <p className="user">
-                User: <span>304@t239.com</span>
+                Name:{" "}
+                <span>
+                  {currentUser &&
+                    currentUser.name &&
+                    currentUser.name.toUpperCase()}
+                </span>
               </p>
+              {console.log(currentUser)}
 
               <p className="score">
                 Score: <span>{score}</span>
               </p>
 
               <p className="total">
-                Total : <span>{total}</span>
+                Total : <span>{totalQuestions}</span>
               </p>
 
               <p className="percentage">

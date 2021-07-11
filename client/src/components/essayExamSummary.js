@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { useRouteMatch, useLocation } from "react-router-dom";
 import methods from "../methods";
 
-
-
 const ExamSummaryStyles = styled.div`
   .summaryDiv {
     display: flex;
@@ -52,13 +50,12 @@ const ExamSummaryStyles = styled.div`
   }
 `;
 
-
-
 const ExamSummaryComponent = (props) => {
+  const currentUserJson = props && props.currentLoginUser;
+  const currentUser = currentUserJson && JSON.parse(currentUserJson)
   const location = useLocation();
-  console.log("location data", location);
   const scoreDetails = location.state && location.state.scoreDetails;
-  const { score, totalQuestions, examId, user } = scoreDetails || {};
+  const { score, totalQuestions } = scoreDetails || {};
   const match = useRouteMatch("/exam_summary/essay/:examId");
   const total = totalQuestions;
   const percentageScore = ((score / total) * 100).toFixed(2);
@@ -75,7 +72,6 @@ const ExamSummaryComponent = (props) => {
     methods.Utils.ClearStoreValue();
   }, []);
 
- 
   return (
     <ExamSummaryStyles>
       <div className="row">
@@ -84,7 +80,8 @@ const ExamSummaryComponent = (props) => {
             <div className="summaryBoard">
               <p className="text-center lead">Result Summary</p>
               <p className="user">
-                Name : <span>{user && user.name && user.name.toUpperCase()}</span>
+                Name :{" "}
+                <span>{currentUser && currentUser.name.toUpperCase()}</span>
               </p>
 
               <p className="score">

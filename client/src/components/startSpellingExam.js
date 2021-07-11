@@ -264,7 +264,7 @@ const QuestionPanelSpelling = (props) => {
       //redirect here to the summary page
       setSubmitting(!submitting);
       //clear the store value
-      methods.Utils.ClearStoreValue();
+      //methods.Utils.ClearStoreValue();
       props.history.replace(`/exam_summary/spelling/${examIdValue}`, {
         scoreDetails: scoreDetails,
       });
@@ -292,7 +292,6 @@ const QuestionPanelSpelling = (props) => {
         score: total,
         totalQuestions: scripts.length,
         examId: examIdVariable,
-        user: user,
       });
       const submissionObject = {
         examTakenId: examIdVariable,

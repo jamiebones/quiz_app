@@ -1,4 +1,4 @@
-const calculateTotalScored = (questionArray) => {
+const calculateTotalScored = (questionArray=[]) => {
     let total = 0;
     for (let i = 0; i < questionArray.length; i++) {
       const answers = questionArray[i].answers;
