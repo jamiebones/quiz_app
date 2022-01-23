@@ -176,9 +176,11 @@ const CustomNavbarStyles = styled.div`
     .submenu-active .submenu {
       display: block;
       position: absolute;
-      left: 0;
-      top: 68px;
-      background: #111;
+      width: max-content;
+      padding: 0;
+      left: 0px;
+      top: 75px;
+      background: rgb(90 32 32);
     }
     .toggle {
       display: none;

@@ -28,7 +28,8 @@ const port = process.env.PORT || 8000;
 let uploadLink;
 if (process.env.NODE_ENV === "production") {
   uploadLink = createUploadLink({
-    uri: `https://${window.location.hostname}/graphql`, // Apollo Server is served from port 4000
+    //uri: `http://localhost`,
+    uri: `http://${window.location.hostname}/graphql`, // Apollo Server is served from port 4000
     headers: {
       "keep-alive": "true",
     },
@@ -80,6 +81,7 @@ const cleanTypeName = new ApolloLink((operation, forward) => {
   
   const omitTypename = (key, value) =>
     key === "__typename" ? undefined : value;
+    //hasupload shows that the sent mutation contain an image
   if (operation.variables && !operation.getContext().hasUpload) {
     operation.variables = JSON.parse(
       JSON.stringify(operation.variables),

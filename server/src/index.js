@@ -36,7 +36,7 @@ cluster.on("exit", (worker) => {
 async function StartUpServer() {
   const app = express();
   app.use(cors());
-  app.use(express.static(path.join(__dirname, "../uploads")));
+  //app.use(express.static(path.join(__dirname, "../uploads")));
   if (process.env.NODE_ENV === "production") {
     app.use(morgan("combined", { stream: config.winston.stream }));
   }

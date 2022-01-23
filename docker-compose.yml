@@ -75,7 +75,5 @@ services:
       - mongodb_cbt
     environment:
       ME_CONFIG_MONGODB_SERVER: mongodb_cbt
-      ME_CONFIG_MONGODB_ADMINUSERNAME: jamiebones
-      ME_CONFIG_MONGODB_ADMINPASSWORD: blazing147
       ME_CONFIG_BASICAUTH_USERNAME: jamiebones
       ME_CONFIG_BASICAUTH_PASSWORD: blazing147

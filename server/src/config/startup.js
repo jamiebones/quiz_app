@@ -8,22 +8,20 @@ const { DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD } = process.env;
 const initDataBase = async () => {
   let url;
   url = `mongodb://mongodb_cbt:27017/${DB_DATABASE}`;
-  const connection = await mongoose.connect(url, {
+  await mongoose.connect(url, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true,
     useCreateIndex: true,
     keepAlive: true,
   });
-  const conn = mongoose.connection;
-
   await _createAdminUser();
 };
 
 const _createAdminUser = async () => {
   try {
     const findAdmin = await models.User.findOne({
-      username: "jamiebones147@gmail.com",
+      username: "jamiebones147@gmail.com",  
     });
     console.log("find admin is ", findAdmin);
 
