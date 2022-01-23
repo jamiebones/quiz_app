@@ -28,7 +28,7 @@ const _createAdminUser = async () => {
     if (findAdmin) {
       console.log("admin is found");
     } else {
-      const hash = bcrypt.hashSync("blazing147", saltRounds);
+      const hash = bcrypt.hashSync("password123", saltRounds);
       const admin = {
         username: "jamiebones147@gmail.com",
         password: hash,
