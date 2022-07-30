@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CountDownTimer from "./countDownTimer";
-//import NewWindow from "react-new-window";
-import state from "../applicationState";
-import { useRecoilValue } from "recoil";
 import { useMutation } from "@apollo/client";
 import { SpellingExaminationEnded } from "../graphql/mutation";
 import store from "store";
 import methods from "../methods";
 import Modal from "react-modal";
 import { useParams, useNavigate } from "react-router-dom";
+import { useExamDetails } from "../context";
 import settings from "../config";
 
 const baseUrl = settings.API_URL;
@@ -211,40 +209,43 @@ const buildUpQuestions = (questionsArray = []) => {
 const QuestionPanelSpelling = (props) => {
   const { examId } = useParams();
   const navigate = useNavigate();
+  const {
+    duration,
+    examQuestions,
+    setExamQuestions,
+    examStarted,
+    setDuration,
+    setExamStarted,
+    setCurrentIndex,
+    setSkippedQuestion,
+  } = useExamDetails();
   const [examinationEndedFunction, examinationEndedResult] = useMutation(
     SpellingExaminationEnded
   );
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [examIdValue, setExamIdValue] = useState(null);
-  const examStarted = useRecoilValue(state.examStartedState);
+  const [questionBuilt, setQuestionBuilt] = useState(false);
   const questionsFromStore = store.get("examQuestions");
-  const examIdinStore = store.get("examId");
   const examStartedinStore = store.get("examStarted");
-  const [questions, setQuestionsData] = useState([]);
   const [scoreDetails, setScoreDetails] = useState(null);
-  const currentUser = useRecoilValue(state.currentLoginUserState);
-  const [user, setUser] = useState(null);
-  const storedData = store.get("questionData");
   const { examName, examType, examDuration } = store.get("examDetails");
-  
+
+  const questions = examQuestions.length ? examQuestions : questionsFromStore;
+  const timer = duration ? duration : examDuration;
+  const examHasStarted = examStarted ? examStarted : examStartedinStore;
 
   //effect to build up the questions
   useEffect(() => {
-    const questionData = buildUpQuestions(questionsFromStore);
-    setUser(currentUser);
-    setQuestionsData(questionData);
-    const storedData = store.get("questionData");
-    if (!storedData) {
-      store.set("questionData", questionData);
-    }
+    const questionData = buildUpQuestions(questions);
+    setExamQuestions(questionData);
+    store.set("examQuestions", questionData);
+    setQuestionBuilt(true);
   }, []);
 
   useEffect(() => {
     if (!examId) {
       navigate("/exam_start_page");
     }
-    setExamIdValue(examId);
   }, [examId]);
 
   useEffect(() => {
@@ -265,9 +266,15 @@ const QuestionPanelSpelling = (props) => {
       //redirect here to the summary page
       setSubmitting(!submitting);
       //clear the store value
-      //methods.Utils.ClearStoreValue();
-      props.history.replace(`/exam_summary/spelling/${examIdValue}`, {
-        scoreDetails: scoreDetails,
+      methods.Utils.ClearStoreValue();
+      //clear the context
+      setDuration(0);
+      setExamStarted(false);
+      setExamQuestions([]);
+      setCurrentIndex(0);
+      setSkippedQuestion([]);
+      navigate(`/exam_summary/spelling/${examId}`, {
+        state: { scoreDetails: scoreDetails },
       });
     }
 
@@ -283,19 +290,16 @@ const QuestionPanelSpelling = (props) => {
 
   const submitQuizHandler = async () => {
     //get the quiz answers and the other variables in the system
-    let examStartedVariable, examIdVariable;
-    examStartedVariable = examStarted ? examStarted : examStartedinStore;
-    examIdVariable = examId ? examId : examIdinStore;
-    if (examStartedVariable && examIdVariable) {
+    if (examHasStarted && examId) {
       //we are good we can gather things here
-      const { total, scripts } = methods.MarkSpellingExam(storedData);
+      const { total, scripts } = methods.MarkSpellingExam(questions);
       setScoreDetails({
         score: total,
         totalQuestions: scripts.length,
-        examId: examIdVariable,
+        examId: examId,
       });
       const submissionObject = {
-        examTakenId: examIdVariable,
+        examTakenId: examId,
         examFinished: true,
         timeExamEnded: new Date(),
         score: total,
@@ -321,13 +325,18 @@ const QuestionPanelSpelling = (props) => {
   const handleTextInputChange = ({ e, arrayPosition, wordPosition }) => {
     const value = e.target.value;
     if (value.length <= 1) {
+      const storedData = store.get("examQuestions");
       const cloneData = [...storedData];
-      const currentInput = cloneData[arrayPosition].wordArray[wordPosition];
+      const copyExamQuestions = [...examQuestions];
+      const questions = copyExamQuestions.length
+        ? copyExamQuestions
+        : cloneData;
+      const currentInput = questions[arrayPosition].wordArray[wordPosition];
       currentInput.value = value.toUpperCase();
-      cloneData[arrayPosition].wordArray[wordPosition] = currentInput;
+      questions[arrayPosition].wordArray[wordPosition] = currentInput;
       //save the data back into the purse
-      store.set("questionData", cloneData);
-      setQuestionsData(cloneData);
+      store.set("examQuestions", questions);
+      setExamQuestions(questions);
     }
   };
 
@@ -350,7 +359,7 @@ const QuestionPanelSpelling = (props) => {
               <p className="exam-text">
                 EXZMINATION TIME:
                 <span className="spanDetails">
-                  {methods.Utils.ConvertMinutesToHours(examDuration)}
+                  {methods.Utils.ConvertMinutesToHours(timer)}
                 </span>
               </p>
 
@@ -366,8 +375,8 @@ const QuestionPanelSpelling = (props) => {
             <div className="exam-div mb-4 container-shadow">
               <div className="card-body">
                 {errors && <p className="lead text-danger">{errors}</p>}
-                {storedData &&
-                  storedData.map(({ number, clue, wordArray }, ind) => {
+                {questionBuilt &&
+                  questions?.map(({ number, clue, wordArray }, ind) => {
                     return (
                       <div className="spelling-div" key={ind}>
                         <div className="input-row">

@@ -91,8 +91,16 @@ const EssayExamQuestionComponentStyles = styled.div`
 const EssayExamQuestionComponent = () => {
   const navigate = useNavigate();
   const { examId } = useParams();
-  const { examStarted, duration, examQuestions, setExamQuestions } =
-    useExamDetails();
+  const {
+    duration,
+    examQuestions,
+    setExamQuestions,
+    examStarted,
+    setDuration,
+    setExamStarted,
+    setCurrentIndex,
+    setSkippedQuestion,
+  } = useExamDetails();
   const [examinationEndedFunction, examinationEndedResult] = useMutation(
     EssayExaminationEnded
   );
@@ -140,6 +148,12 @@ const EssayExamQuestionComponent = () => {
       //redirect here to the summary page
       setSubmitting(!submitting);
       methods.Utils.ClearStoreValue();
+      //clear the context
+      setDuration(0);
+      setExamStarted(false);
+      setExamQuestions([]);
+      setCurrentIndex(0);
+      setSkippedQuestion([]);
       navigate(`/exam_summary/essay/${examId}`, {
         state: { scoreDetails: scoreDetails },
         replace: true,

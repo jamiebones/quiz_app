@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context";
 import methods from "../methods"
 
 
@@ -56,8 +57,7 @@ const ExamSummaryStyles = styled.div`
 const ExamSummaryComponent = (props) => {
   const location = useLocation();
   const navigate = useNavigate()
-  const currentUserJson = props && props.currentLoginUser;
-  const currentUser = currentUserJson && JSON.parse(currentUserJson)
+  const { currentLoginUser: currentUser } = useAuth();
   const scoreDetails = location.state && location.state.scoreDetails;
   const { score, totalQuestions } = scoreDetails || {};
   const { examId  } = useParams();
