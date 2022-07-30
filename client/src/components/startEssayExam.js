@@ -8,9 +8,10 @@ import { EssayExaminationEnded } from "../graphql/mutation";
 import store from "store";
 import methods from "../methods";
 import Modal from "react-modal";
-import { useRouteMatch, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import EssayQuestionComponent from "../common/essayQuestionComponent";
 import QuestionNumberDiv from "../common/questionNumberDiv";
+import {} from "react-router-dom";
 
 Modal.setAppElement("#root");
 
@@ -84,7 +85,8 @@ const EssayExamQuestionComponentStyles = styled.div`
 `;
 
 const EssayExamQuestionComponent = () => {
-  const match = useRouteMatch("/exam/short_essay/:examId");
+  const navigate = useNavigate();
+  const match = useParams("/exam/short_essay/:examId");
   const [examinationEndedFunction, examinationEndedResult] = useMutation(
     EssayExaminationEnded
   );
@@ -101,8 +103,6 @@ const EssayExamQuestionComponent = () => {
   const { examName, examType, examDuration } = store.get("examDetails");
   let examId = match.params.examId;
 
-  const history = useHistory();
-
   //effect to build up the questions
   useEffect(() => {
     const questionData = buildUpQuestions(questionsFromStore);
@@ -115,7 +115,7 @@ const EssayExamQuestionComponent = () => {
 
   useEffect(() => {
     if (!examId) {
-      history.push("/exam_start_page");
+      navigate("/exam_start_page");
     }
     setExamIdValue(examId);
   }, [examId]);
@@ -138,8 +138,9 @@ const EssayExamQuestionComponent = () => {
       //redirect here to the summary page
       setSubmitting(!submitting);
       methods.Utils.ClearStoreValue();
-      history.replace(`/exam_summary/essay/${examIdValue}`, {
-        scoreDetails: scoreDetails,
+      navigate(`/exam_summary/essay/${examIdValue}`, {
+        state: { scoreDetails: scoreDetails },
+        replace: true,
       });
     }
 

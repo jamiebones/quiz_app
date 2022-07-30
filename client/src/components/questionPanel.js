@@ -4,15 +4,14 @@ import QuestionButtonComponent from "./questionButtonsComponent";
 import QuestionsNumberDiv from "./questionsNumberDiv";
 import styled from "styled-components";
 import CountDownTimer from "./countDownTimer";
-//import NewWindow from "react-new-window";
-import state from "../applicationState";
-import { useRecoilValue } from "recoil";
 import { useMutation } from "@apollo/client";
 import { ExaminationEnded } from "../graphql/mutation";
 import store from "store";
 import methods from "../methods";
 import Modal from "react-modal";
-import { useRouteMatch } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useExamDetails } from "../context";
+
 Modal.setAppElement("#root");
 
 const customStyles = {
@@ -49,27 +48,31 @@ const disableButtons = (e) => {
 };
 
 const QuestionPanel = (props) => {
-  const match = useRouteMatch("/exam/multi_choice/:examId");
+  const { examId } = useParams();
   const [examinationEndedFunction, examinationEndedResult] =
     useMutation(ExaminationEnded);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [examIdValue, setExamIdValue] = useState(null);
+  const {
+    examStarted,
+    examQuestions: questions,
+    setDuration,
+    setExamStarted,
+    setExamQuestions,
+    setCurrentIndex,
+    setSkippedQuestion,
+  } = useExamDetails();
 
-  const examStarted = useRecoilValue(state.examStartedState);
-  const questions = useRecoilValue(state.questionsState);
   const questionsFromStore = store.get("examQuestions");
   const examIdinStore = store.get("examId");
   const examStartedinStore = store.get("examStarted");
-  const [scoreDetails, setScoreDetails ] = useState(null)
-
-  let examId = match.params.examId;
+  const [scoreDetails, setScoreDetails] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!examId) {
-      props.history.push("/exam_start_page");
+      navigate("/exam_start_page");
     }
-    setExamIdValue(examId);
   }, [examId]);
 
   useEffect(() => {
@@ -89,10 +92,16 @@ const QuestionPanel = (props) => {
     if (data) {
       //redirect here to the summary page
       setSubmitting(!submitting);
-      //methods.Utils.ClearStoreValue();
-      console.log("exam id ", examId);
-      props.history.replace(`/exam_summary/${examId}`,  {
-        scoreDetails: scoreDetails,
+      methods.Utils.ClearStoreValue();
+      //clear the context
+      setDuration(0);
+      setExamStarted(false);
+      setExamQuestions([]);
+      setCurrentIndex(0);
+      setSkippedQuestion([]);
+      navigate(`/exam_summary/${examId}`, {
+        state: { scoreDetails: scoreDetails },
+        replace: true,
       });
     }
 
@@ -134,7 +143,7 @@ const QuestionPanel = (props) => {
         scripts,
         examId: examIdVariable,
         totalQuestions: scripts.length,
-      })
+      });
       try {
         setSubmitting(!submitting);
         await examinationEndedFunction({

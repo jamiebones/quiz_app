@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
-import state from "../applicationState";
 import client from "../apolloClient";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context";
 import store from "store";
 
 const CustomNavbarStyles = styled.div`
@@ -191,14 +190,16 @@ const CustomNavbarStyles = styled.div`
   }
 `;
 
-const CustomNavbar = ({ currentLoginUser, authenticated }) => {
-  const [isAuth, setIsAuth] = useRecoilState(state.authState);
-  const [user, setcurrentLoginUser] = useRecoilState(
-    state.currentLoginUserState
-  );
-  const [token, setToken] = useRecoilState(state.authToken);
+const CustomNavbar = () => {
+  let navigate = useNavigate();
 
-  let history = useHistory();
+  const {
+    isAuth: authenticated,
+    setIsAuth,
+    currentLoginUser: user,
+    setcurrentLoginUser,
+    setToken,
+  } = useAuth();
 
   useEffect(() => {
     const toggle = document.querySelector(".toggle");
@@ -269,12 +270,12 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
     setToken("");
     store.clearAll();
     client.clearStore();
-    history.replace("/");
+    navigate("/");
   };
 
   const handleLogIn = (e) => {
     e.preventDefault();
-    history.push("/login");
+    navigate("/login");
   };
 
   return (
@@ -286,7 +287,7 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
           </li>
 
           {authenticated && user && user.userType == "super-admin" && (
-            <li className="item" onClick={() => history.push("/dashboard")}>
+            <li className="item" onClick={() => navigate("/dashboard")}>
               <a>Dashboard</a>
             </li>
           )}
@@ -297,12 +298,12 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
               <ul className="submenu">
                 <li
                   className="subitem"
-                  onClick={() => history.push("/create_user_account")}
+                  onClick={() => navigate("/create_user_account")}
                 >
                   <a>Create User Account</a>
                 </li>
 
-                <li className="subitem" onClick={() => history.push("/users")}>
+                <li className="subitem" onClick={() => navigate("/users")}>
                   <a>Users Account</a>
                 </li>
               </ul>
@@ -315,13 +316,13 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
               <ul className="submenu">
                 <li
                   className="subitem"
-                  onClick={() => history.push("/create_subject")}
+                  onClick={() => navigate("/create_subject")}
                 >
                   <a>Create Subject</a>
                 </li>
                 <li
                   className="subitem"
-                  onClick={() => history.push("/create_examination_schedule")}
+                  onClick={() => navigate("/create_examination_schedule")}
                 >
                   <a>Create Examination</a>
                 </li>
@@ -335,16 +336,14 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
               <ul className="submenu">
                 <li
                   className="subitem"
-                  onClick={() => history.push("/add_questions_examination")}
+                  onClick={() => navigate("/add_questions_examination")}
                 >
                   <a>Add Multi/Spelling Questions To Exam</a>
                 </li>
 
                 <li
                   className="subitem"
-                  onClick={() =>
-                    history.push("/add_essay_questions_examination")
-                  }
+                  onClick={() => navigate("/add_essay_questions_examination")}
                 >
                   <a>Add Essay Questions To Exam</a>
                 </li>
@@ -358,7 +357,7 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
               <ul className="submenu">
                 <li
                   className="subitem"
-                  onClick={() => history.push("/exam_results")}
+                  onClick={() => navigate("/exam_results")}
                 >
                   <a>Examination Result</a>
                 </li>
@@ -372,21 +371,21 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
               <ul className="submenu">
                 <li
                   className="subitem"
-                  onClick={() => history.push("/upload_questions")}
+                  onClick={() => navigate("/upload_questions")}
                 >
                   <a>Upload Questions</a>
                 </li>
 
                 <li
                   className="subitem"
-                  onClick={() => history.push("/activate_exams")}
+                  onClick={() => navigate("/activate_exams")}
                 >
                   <a>Activate Exam</a>
                 </li>
 
                 <li
                   className="subitem"
-                  onClick={() => history.push("/view_running_examination")}
+                  onClick={() => navigate("/view_running_examination")}
                 >
                   <a>Running Examination</a>
                 </li>
@@ -400,21 +399,21 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
               <ul className="submenu">
                 <li
                   className="subitem"
-                  onClick={() => history.push("/add_question")}
+                  onClick={() => navigate("/add_question")}
                 >
                   <a>Add Multi Choice Questions</a>
                 </li>
 
                 <li
                   className="subitem"
-                  onClick={() => history.push("/add_spelling_question")}
+                  onClick={() => navigate("/add_spelling_question")}
                 >
                   <a>Add Spelling Questions</a>
                 </li>
 
                 <li
                   className="subitem"
-                  onClick={() => history.push("/add_essay_question")}
+                  onClick={() => navigate("/add_essay_question")}
                 >
                   <a>Add Essay Questions</a>
                 </li>
@@ -428,21 +427,21 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
               <ul className="submenu">
                 <li
                   className="subitem"
-                  onClick={() => history.push("/load_multi_choice_question")}
+                  onClick={() => navigate("/load_multi_choice_question")}
                 >
                   <a>Load Multi Choice Questions</a>
                 </li>
 
                 <li
                   className="subitem"
-                  onClick={() => history.push("/load_spelling_question")}
+                  onClick={() => navigate("/load_spelling_question")}
                 >
                   <a>Load Spelling Questions</a>
                 </li>
 
                 <li
                   className="subitem"
-                  onClick={() => history.push("/load_essay_question")}
+                  onClick={() => navigate("/load_essay_question")}
                 >
                   <a>Load Essay Questions</a>
                 </li>
@@ -456,7 +455,7 @@ const CustomNavbar = ({ currentLoginUser, authenticated }) => {
               <ul className="submenu">
                 <li
                   className="subitem"
-                  onClick={() => history.push("/upload_media")}
+                  onClick={() => navigate("/upload_media")}
                 >
                   <a>Upload Media Files</a>
                 </li>

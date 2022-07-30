@@ -9,7 +9,7 @@ import { SpellingExaminationEnded } from "../graphql/mutation";
 import store from "store";
 import methods from "../methods";
 import Modal from "react-modal";
-import { useRouteMatch } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import settings from "../config";
 
 const baseUrl = settings.API_URL;
@@ -209,7 +209,8 @@ const buildUpQuestions = (questionsArray = []) => {
 };
 
 const QuestionPanelSpelling = (props) => {
-  const match = useRouteMatch("/exam/spelling/:examId");
+  const { examId } = useParams();
+  const navigate = useNavigate();
   const [examinationEndedFunction, examinationEndedResult] = useMutation(
     SpellingExaminationEnded
   );
@@ -226,7 +227,7 @@ const QuestionPanelSpelling = (props) => {
   const [user, setUser] = useState(null);
   const storedData = store.get("questionData");
   const { examName, examType, examDuration } = store.get("examDetails");
-  let examId = match.params.examId;
+  
 
   //effect to build up the questions
   useEffect(() => {
@@ -241,7 +242,7 @@ const QuestionPanelSpelling = (props) => {
 
   useEffect(() => {
     if (!examId) {
-      props.history.push("/exam_start_page");
+      navigate("/exam_start_page");
     }
     setExamIdValue(examId);
   }, [examId]);

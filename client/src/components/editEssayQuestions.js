@@ -13,7 +13,7 @@ import {
   ContentState,
   convertFromHTML,
 } from "draft-js";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AudioComponent from "../common/audioComponent";
 import VideoComponent from "../common/videoComponent";
 import ImageComponent from "../common/imageComponent";
@@ -53,6 +53,7 @@ const SaveEssayQuestionStyles = styled.div`
 `;
 
 const SaveEssayQuestionComponent = () => {
+  const navigate = useNavigate()
   const [essayQuestion, setQuestion] = useState(null);
   const [preview, setPreview] = useState("");
   const [text, setText] = useState("");
@@ -79,7 +80,6 @@ const SaveEssayQuestionComponent = () => {
   );
 
   const location = useLocation();
-  const history = useHistory();
   const questionData = location.state && location.state.questionData;
 
   useEffect(() => {
@@ -130,7 +130,7 @@ const SaveEssayQuestionComponent = () => {
     if (editQuestionResult.data) {
       window.alert("question edited successfully.");
       //make a redirect here
-      history.push("/load_essay_question");
+      navigate("/load_essay_question");
     }
   }, [editQuestionResult.data, editQuestionResult.error]);
 

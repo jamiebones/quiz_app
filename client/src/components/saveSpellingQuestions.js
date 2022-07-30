@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { GetDifferentExamination } from "../graphql/queries";
 import { SaveSpelling, EditSpelling } from "../graphql/mutation";
 import { useMutation, useLazyQuery } from "@apollo/client";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const SpellingQuestionStyles = styled.div`
@@ -52,6 +52,7 @@ const createInputBoxWithWord = (word) => {
 };
 
 const SaveSpellingQuestion = () => {
+  const navigate = useNavigate();
   const [inputArray, setArrayInput] = useState([]);
   const [wordLength, setWordLength] = useState("");
   const [inputLength, setInputLength] = useState(0);
@@ -73,7 +74,7 @@ const SaveSpellingQuestion = () => {
   const location = useLocation();
 
   //check if we are having an edit
-  const history = useHistory();
+  
   const question = location.state && location.state.question;
   const wordLengthFunction = () => {
     setInputLength(wordLength);
@@ -131,7 +132,7 @@ const SaveSpellingQuestion = () => {
       setCorrectSpelling("");
       setSpellingClue("");
       alert("edit was successful");
-      history.push("/load_spelling_question");
+      navigate("/load_spelling_question");
     }
 
     if (editSpellingResult.error) {

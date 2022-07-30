@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { useMutation, useQuery } from "@apollo/client";
 import { GetActiveExamination } from "../graphql/queries";
 import { StartExamination } from "../graphql/mutation";
-import { useRecoilState, useRecoilValue } from "recoil";
-import state from "../applicationState";
+import { useNavigate } from "react-router-dom";
+import { useAuth, useExamDetails } from "../context";
 import Loading from "../common/loading";
 import store from "store";
 import Modal from "react-modal";
@@ -28,17 +28,15 @@ const ActiveExamStyles = styled.div`
     background-color: #2a8e86;
     height: 300px;
     margin-bottom: 60px;
-    box-sizing :border-box;
+    box-sizing: border-box;
     box-shadow: 7px 7px 10px #2a9a87, -7px -7px 10px white;
     border-radius: 20px;
-
   }
-  .start-button{
+  .start-button {
     position: absolute;
     bottom: 37px;
     left: 34%;
     border-radius: 20px;
-    
   }
   p {
     font-size: 18px;
@@ -62,22 +60,24 @@ const convertMinutesToHours = (minutesToConvert) => {
   return `${hours} hours ${minutes} minutes`;
 };
 
-const ActiveExams = ({ history }) => {
+const ActiveExams = () => {
+  const navigate = useNavigate();
+  const { currentLoginUser } = useAuth();
+  const {
+    duration,
+    setDuration,
+    setExamStarted,
+    examQuestions,
+    setExamQuestions,
+  } = useExamDetails();
+
   const [activeExams, setActiveExams] = useState([]);
   const [errors, setError] = useState(null);
   const { loading, error, data } = useQuery(GetActiveExamination);
   const [processing, setProcessing] = useState(false);
-  const [examQuestions, setExamQuestions] = useRecoilState(
-    state.questionsState
-  );
-  const [duration, setDuration] = useRecoilState(state.examDurationState);
-  const currentLoginUser = useRecoilValue(state.currentLoginUserState);
-  const [examStarted, setExamStarted] = useRecoilState(
-    state.currentLoginUserState
-  );
-  const [startExaminationFunction, startExaminationResult] = useMutation(
-    StartExamination
-  );
+
+  const [startExaminationFunction, startExaminationResult] =
+    useMutation(StartExamination);
 
   const [examProcessing, setExamProcessing] = useState(false);
 
@@ -101,13 +101,13 @@ const ActiveExams = ({ history }) => {
         setExamProcessing(!examProcessing);
         switch (questionType) {
           case "multiple choice questions":
-            history.replace(`/exam/multi_choice/${examId}`);
+            navigate(`/exam/multi_choice/${examId}`, { replace: true });
             break;
           case "spelling examination":
-            history.replace(`/exam/spelling/${examId}`);
+            navigate(`/exam/spelling/${examId}`, { replace: true });
             break;
           case "short answer exam":
-            history.replace(`/exam/short_essay/${examId}`);
+            navigate(`/exam/short_essay/${examId}`, { replace: true });
             break;
           case "essay exam":
             break;
@@ -191,7 +191,9 @@ const ActiveExams = ({ history }) => {
           examDetails: examDetails,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log("Error starting examination", error);
+    }
   };
   return (
     <ActiveExamStyles>

@@ -5,7 +5,7 @@ import GenerateScripts from "./generateScripts";
 import SaveBulkSpellingQuestions from "./saveBulkSpellingQuestions";
 import MarkSpellingExam from "./markSpellingScripts";
 import MarkEssayExam from "./markEssayExamination";
-import SaveBulkEssayQuestions from "./saveBulkEssayQuestions"
+import SaveBulkEssayQuestions from "./saveBulkEssayQuestions";
 
 export default {
   bulkMethods,
@@ -15,5 +15,5 @@ export default {
   SaveBulkSpellingQuestions,
   SaveBulkEssayQuestions,
   MarkSpellingExam,
-  MarkEssayExam
+  MarkEssayExam,
 };

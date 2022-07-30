@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useRouteMatch, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import methods from "../methods";
 
 const ExamSummaryStyles = styled.div`
@@ -52,11 +52,11 @@ const ExamSummaryStyles = styled.div`
 
 const ExamSummaryComponent = (props) => {
   const currentUserJson = props && props.currentLoginUser;
-  const currentUser = currentUserJson && JSON.parse(currentUserJson)
+  const currentUser = currentUserJson && JSON.parse(currentUserJson);
   const location = useLocation();
   const scoreDetails = location.state && location.state.scoreDetails;
   const { score, totalQuestions } = scoreDetails || {};
-  const match = useRouteMatch("/exam_summary/essay/:examId");
+  const match = useParams("/exam_summary/essay/:examId");
   const total = totalQuestions;
   const percentageScore = ((score / total) * 100).toFixed(2);
   const grade = percentageScore >= 50 ? "Pass" : "Fail";

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useRouteMatch, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import methods from "../methods"
 
 
@@ -55,11 +55,12 @@ const ExamSummaryStyles = styled.div`
 
 const ExamSummaryComponent = (props) => {
   const location = useLocation();
+  const navigate = useNavigate()
   const currentUserJson = props && props.currentLoginUser;
   const currentUser = currentUserJson && JSON.parse(currentUserJson)
   const scoreDetails = location.state && location.state.scoreDetails;
-  const { score, totalQuestions, examId} = scoreDetails || {};
-  const match = useRouteMatch("/exam_summary/spelling/:examId");
+  const { score, totalQuestions } = scoreDetails || {};
+  const { examId  } = useParams();
   const total = totalQuestions;
   const percentageScore = ((score / total) * 100).toFixed(2);
   const grade = percentageScore >= 50 ? "Pass" : "Fail";
@@ -67,7 +68,7 @@ const ExamSummaryComponent = (props) => {
   //clear the store and variables here
 
   const navigateToScriptPage = () => {
-    props.history.push(`/spelling_examination_script/${match.params.examId}`);
+    navigate(`/spelling_examination_script/${examId}`);
   };
 
   useEffect(() => {
