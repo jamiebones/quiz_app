@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import state from "../applicationState";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useExamDetails } from "../context"
 import store from "store";
 
 const QuestionNumberDivStyles = styled.div`
@@ -79,13 +78,9 @@ const QuestionNumberDivStyles = styled.div`
 
 const QuestionsNumberDiv = () => {
   //GET THE TOTAL QUESTIONS HERE
-  const questionsFromState = useRecoilValue(state.questionsState);
-  const skipped = useRecoilValue(state.skippedQuestionsState);
-  const [, setCurrentIndex] = useRecoilState(state.currentIndexState);
-
+  const { skippedQuestion: skipped, setCurrentIndex, examQuestions } = useExamDetails()
   const questionsFromStore = store.get("examQuestions");
-
-  let questions = questionsFromState.length > 0 ? questionsFromState : questionsFromStore;
+  let questions = examQuestions?.length > 0 ? examQuestions : questionsFromStore;
   
 
   //get the others from store

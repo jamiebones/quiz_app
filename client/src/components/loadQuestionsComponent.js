@@ -6,6 +6,7 @@ import ShowQuestionComponent from "./showQuestionComponent";
 import Loading from "../common/loading";
 import styled from "styled-components";
 import EditButton from "./editButton";
+import { useNavigate } from "react-router-dom";
 
 const LoadQuestionsStyle = styled.div``;
 
@@ -17,6 +18,7 @@ const buttonsToDisplay = (total, numberPerPage) => {
 };
 
 const LoadQuestionsComponent = ({ history }) => {
+  const navigate = useNavigate();
   const [examType, setExamType] = useState([]);
   const [loadingData, setLoading] = useState(false);
   const [selectedExamId, setSelectedExamId] = useState("");
@@ -132,8 +134,8 @@ const LoadQuestionsComponent = ({ history }) => {
   };
 
   const handleButtonAction = (question) => {
-    history.push("/edit_question", {
-      question: question,
+    navigate("/edit_question", {
+      state: { question: question},
     });
   };
 

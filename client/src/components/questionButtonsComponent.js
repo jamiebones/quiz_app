@@ -1,8 +1,7 @@
 import React from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import state from "../applicationState";
 import styled from "styled-components";
 import store from "store";
+import { useExamDetails } from "../context";
 
 const QuestionButtonComponentStyles = styled.div`
   button {
@@ -11,18 +10,15 @@ const QuestionButtonComponentStyles = styled.div`
 `;
 
 const QuestionButtonComponent = ({ submitQuiz }) => {
-  const [currentIndex, setCurrentIndex] = useRecoilState(
-    state.currentIndexState
-  );
-
-  const setSkippedQuestion = useSetRecoilState(state.skippedQuestionsState);
-
-  const totalQuestionFromState = useRecoilValue(state.totalQuestionSelector);
-
+  const {
+    examQuestions,
+    currentIndex,
+    setCurrentIndex,
+    setSkippedQuestion,
+  } = useExamDetails();
   //get total questions from the stored questions
   const questionsTotalFromStore = store.get("totalQuestions");
-
-  let totalQuestion = totalQuestionFromState ? totalQuestionFromState : questionsTotalFromStore;
+  let totalQuestion = examQuestions.length ? examQuestions.length : questionsTotalFromStore;
 
   const handleSkippedQuestion = () => {
     setSkippedQuestion((skippedArray) => {

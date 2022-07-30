@@ -7,3 +7,4 @@ node_modules
 dockerfile.dev
 dockerfile.prod
 docker-compose.prod.yml
+docker-compose2.yml

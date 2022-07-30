@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import methods from "../methods";
-import { useRouteMatch, useLocation } from "react-router-dom";
-import store from "store";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context";
+
 
 const ExamSummaryStyles = styled.div`
   .summaryDiv {
@@ -60,18 +61,19 @@ const disableF5 = (event) => {
   }
 };
 
-const ExamSummaryComponent = (props) => {
-  const match = useRouteMatch("/exam_summary/:examId");
+const ExamSummaryComponent = () => {
+  const { examId } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
+  const { currentLoginUser: currentUser } = useAuth();
   const scoreDetails = location.state && location.state.scoreDetails;
   const { score, totalQuestions } = scoreDetails || {};
   const percentageScore = ((score / totalQuestions) * 100).toFixed(2);
   const grade = percentageScore >= 50 ? "Pass" : "Fail";
-  const currentUserJson = props && props.currentLoginUser;
-  const currentUser = currentUserJson && JSON.parse(currentUserJson)
+
   //clear the store and variables here
   const navigateToScriptPage = () => {
-    props.history.push(`/examination_script/${match.params.examId}`);
+    navigate(`/examination_script/${examId}`);
   };
 
   useEffect(() => {
@@ -92,12 +94,10 @@ const ExamSummaryComponent = (props) => {
               <p className="user">
                 Name:{" "}
                 <span>
-                  {currentUser &&
-                    currentUser.name &&
-                    currentUser.name.toUpperCase()}
+                  { currentUser?.name?.toUpperCase()}
                 </span>
               </p>
-              {console.log(currentUser)}
+          
 
               <p className="score">
                 Score: <span>{score}</span>

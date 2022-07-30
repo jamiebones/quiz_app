@@ -1,7 +1,6 @@
 import React from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
-import state from "../applicationState";
 import styled from "styled-components";
+import { useExamDetails } from "../context";
 
 import store from "store";
 
@@ -45,47 +44,46 @@ const QuestionComponentStyles = styled.div`
   }
 `;
 
+
+
 const QuestionComponent = () => {
-  const [quizQuestions, setQuestions] = useRecoilState(state.questionsState);
-
-  let currentQuestionFromState = useRecoilValue(state.currentQuestionState);
-
+  const { examQuestions, setExamQuestions, currentIndex } = useExamDetails();
   let questionsFromStore = store.get("examQuestions");
-
   let indexFromStore = store.get("currentIndex");
-  let indexFromState = useRecoilValue(state.currentIndexState);
-
-  let questionNumber = indexFromState ? indexFromState : indexFromStore;
-
-  let currentQuestion = currentQuestionFromState
-    ? currentQuestionFromState
+  let questionNumber = currentIndex ? currentIndex  : indexFromStore;
+  let currentQuestion = examQuestions[currentIndex]
+    ? examQuestions[currentIndex]
     : questionsFromStore[questionNumber];
+
   let question = currentQuestion;
+
   const handleAnswerSelected = (selectedIndex) => {
+    debugger
     //loop through questions and replace the
     //replace the one that there is an answer
     let questionFromStoreOrState =
-      quizQuestions.length > 0 ? quizQuestions : questionsFromStore;
+      examQuestions.length > 0 ? examQuestions : questionsFromStore;
 
     let presentQuestion = questionFromStoreOrState[questionNumber];
     let answersArray = [];
     for (let i = 0; i < presentQuestion.answers.length; i++) {
       let answerObj = presentQuestion.answers[i];
+      //clear previously selected answers;
+      let selectedAnswerObject = {};
       if (i == selectedIndex) {
-        let selectedAnswerObject = {};
         selectedAnswerObject.selected = true;
-        selectedAnswerObject.isCorrect = answerObj.isCorrect;
-        selectedAnswerObject.option = answerObj.option;
-        answersArray.push(selectedAnswerObject);
-        continue;
+      } else {
+        selectedAnswerObject.selected = false;
       }
-      answersArray.push(answerObj);
+      selectedAnswerObject.isCorrect = answerObj.isCorrect;
+      selectedAnswerObject.option = answerObj.option;
+      answersArray.push(selectedAnswerObject);
     }
     let copyOfCurrentQuestion = { ...presentQuestion };
     let copyOfQuizQuestions = [...questionFromStoreOrState];
     copyOfCurrentQuestion.answers = answersArray;
     copyOfQuizQuestions[questionNumber] = copyOfCurrentQuestion;
-    setQuestions(copyOfQuizQuestions);
+    setExamQuestions(copyOfQuizQuestions);
     store.set("examQuestions", copyOfQuizQuestions);
   };
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useLazyQuery } from "@apollo/client";
 import { GetCanidateExamResult } from "../graphql/queries";
-import { useRouteMatch } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import moment from "moment";
 import Loading from "../common/loading";
 import DisplayScriptComponent from "../common/displayScriptComponent";
@@ -53,7 +53,7 @@ const convertMinutesToHours = (minutesToConvert) => {
 };
 
 const DisplayQuizScriptComponent = () => {
-  const match = useRouteMatch("/examination_script/:examId");
+  const { examId } = useParams("/examination_script/:examId");
   const [processing, setProcessing] = useState(false);
   const [errors, setErrors] = useState(null);
   const [scripts, setScripts] = useState(null);
@@ -62,7 +62,7 @@ const DisplayQuizScriptComponent = () => {
     GetCanidateExamResult,
     {
       variables: {
-        examId: match.params.examId,
+        examId: examId,
       },
     }
   );

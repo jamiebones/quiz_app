@@ -4,7 +4,7 @@ import { useLazyQuery } from "@apollo/client";
 import { GetExaminationResult } from "../graphql/queries";
 import Loading from "../common/loading";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import methods from "../methods";
 import styled from "styled-components";
 
@@ -24,6 +24,7 @@ const ViewExamResultStyles = styled.div`
 `;
 
 const ViewExamResult = () => {
+  const navigate = useNavigate();
   const [examObj, setExamObj] = useState(null);
   const [examScheduleObj, setExamScheduleObj] = useState(null);
   const [errors, setErrors] = useState(null);
@@ -31,7 +32,7 @@ const ViewExamResult = () => {
   const [nodata, setNoData] = useState(null);
   const [processing, setProcessing] = useState(false);
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const [resultQuery, resultQueryData] = useLazyQuery(GetExaminationResult, {
     variables: {
@@ -86,7 +87,7 @@ const ViewExamResult = () => {
   }) => {
     switch (questionType) {
       case "multiple choice questions":
-        history.push(`/view_canidate_script`, {
+        navigate(`/view_canidate_script`, {
           scripts: {
             id,
             timeExamStarted,
@@ -100,7 +101,7 @@ const ViewExamResult = () => {
         break;
 
       case "spelling examination":
-        history.push(`/view_canidate_spelling_script`, {
+        navigate(`/view_canidate_spelling_script`, {
           scripts: {
             id,
             timeExamStarted,
@@ -112,19 +113,19 @@ const ViewExamResult = () => {
           },
         });
         break;
-        case "short answer exam":
-          history.push(`/view_canidate_essay_script`, {
-            scripts: {
-              id,
-              timeExamStarted,
-              examDetails,
-              canidateDetails,
-              timeExamEnded,
-              score,
-              scripts,
-            },
-          });
-          break;
+      case "short answer exam":
+        navigate(`/view_canidate_essay_script`, {
+          scripts: {
+            id,
+            timeExamStarted,
+            examDetails,
+            canidateDetails,
+            timeExamEnded,
+            score,
+            scripts,
+          },
+        });
+        break;
 
       default:
         break;

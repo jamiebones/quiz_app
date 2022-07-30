@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ApolloProvider } from "@apollo/client";
-import { useRecoilState } from "recoil";
-import state from "./applicationState";
+import { useAuth, ExamProvider } from "./context";
 import store from "store";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import apolloClient from "./apolloClient";
 
@@ -17,18 +11,12 @@ import apolloClient from "./apolloClient";
 
 import Navigation from "./components/navbar";
 
-import TryPage from "./components/try";
 import Footer from "./common/footer";
-
-import PublicRoute from "./components/publicRoute";
-
-import AuthorizedComponent from "./components/authorized";
-
-import { useHistory } from "react-router-dom";
 
 import Loadable from "react-loadable";
 import Loader from "./common/loadableLoader";
 import GlobalStyle from "./globalStyles";
+import { AuthorizedRoutes } from "./Routes";
 //import localStorage from "./localStorage";
 
 //loadable content start here start of code splitting by route
@@ -219,10 +207,15 @@ const AppStyles = styled.div`
 `;
 
 function App(props) {
-  const [isAuth, setIsAuth] = useRecoilState(state.authState);
-  const [currentLoginUser, setcurrentLoginUser] = useRecoilState(
-    state.currentLoginUserState
-  );
+  const {
+    isAuth,
+    setIsAuth,
+    currentLoginUser,
+    setcurrentLoginUser,
+    token,
+    setToken,
+  } = useAuth();
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -243,317 +236,219 @@ function App(props) {
   return (
     <ApolloProvider client={apolloClient}>
       <GlobalStyle />
-      <Router>
-        <AppStyles>
-          <Navigation
-            authenticated={isAuth}
-            currentLoginUser={currentLoginUser}
-            history={useHistory()}
-          />
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="mainComponent">
-                  <Switch>
-                    <React.Fragment>
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableRunningExamination}
-                        exact
-                        path="/view_running_examination"
-                      />
+      <ExamProvider>
+        <Router>
+          <AppStyles>
+            <Navigation
+              authenticated={isAuth}
+              currentLoginUser={currentLoginUser}
+            />
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="mainComponent">
+                    <Routes>
+                      {/** super-admin links start here  */}
 
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableViewCanidateExaminationScript}
-                        exact
-                        path="/view_canidate_script"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableViewCanidateSpellingScripts}
-                        exact
-                        path="/view_canidate_spelling_script"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableViewCanidateEssayScripts}
-                        exact
-                        path="/view_canidate_essay_script"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableUploadMedia}
-                        exact
-                        path="/upload_media"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableUsersPanel}
-                        exact
-                        path="/users"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableCreateUserAccount}
-                        exact
-                        path="/create_user_account"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableActivateExamSchedule}
-                        exact
-                        path="/activate_exams"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableCreateSubjectCourse}
-                        exact
-                        path="/create_subject"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["student"]}
-                        component={LoadableQuestionPanel}
-                        exact
-                        path="/exam/multi_choice/:examId"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["student"]}
-                        component={LoadableStartSpellingExam}
-                        exact
-                        path="/exam/spelling/:examId"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["student"]}
-                        component={LoadableStartEssayExam}
-                        exact
-                        path="/exam/short_essay/:examId"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableViewExamResult}
-                        exact
-                        path="/exam_results"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin", "student"]}
-                        component={LoadableDisplayQuizScriptComponent}
-                        exact
-                        path="/examination_script/:examId"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin", "student"]}
-                        component={LoadableDisplaySpellingQuizScriptComponent}
-                        exact
-                        path="/spelling_examination_script/:examId"
-                      />
-                      <AuthorizedComponent
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin", "student"]}
-                        component={LoadableDisplayEssayQuizScriptComponent}
-                        exact
-                        path="/essay_examination_script/:examId"
-                      />
-                      <Route exact path="/try" component={TryPage} />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin", "student"]}
-                        component={LoadableExamSummaryComponent}
-                        exact
-                        path="/exam_summary/:examId"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin", "student"]}
-                        component={LoadableSpellingExamSummary}
-                        exact
-                        path="/exam_summary/spelling/:examId"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin", "student"]}
-                        component={LoadableEssayExamSummary}
-                        exact
-                        path="/exam_summary/essay/:examId"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableUploadExaminationQuestion}
-                        exact
-                        path="/upload_questions"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableAddQuestion}
-                        exact
-                        path="/add_question"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableSaveSpellingQuestions}
-                        exact
-                        path="/add_spelling_question"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableSaveEssayQuestions}
-                        exact
-                        path="/add_essay_question"
-                      />
+                      <Route
+                        element={
+                          <AuthorizedRoutes authorizedRole={["super-admin"]} />
+                        }
+                      >
+                        <Route
+                          element={<LoadableRunningExamination />}
+                          path="/view_running_examination"
+                        />
+                        <Route
+                          element={<LoadableViewCanidateExaminationScript />}
+                          path="/view_canidate_script"
+                        />
+                        <Route
+                          element={<LoadableViewCanidateSpellingScripts />}
+                          path="/view_canidate_spelling_script"
+                        />
+                        <Route
+                          element={<LoadableViewCanidateEssayScripts />}
+                          path="/view_canidate_essay_script"
+                        />
 
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableEditEssayQuestion}
-                        exact
-                        path="/edit_essay_question"
-                      />
+                        <Route
+                          element={<LoadableUploadMedia />}
+                          path="/upload_media"
+                        />
+                        <Route element={<LoadableUsersPanel />} path="/users" />
 
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableLoadQuestionsComponent}
-                        exact
-                        path="/load_multi_choice_question"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableLoadSpellingQuestions}
-                        exact
-                        path="/load_spelling_question"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableLoadEssayQuestion}
-                        exact
-                        path="/load_essay_question"
-                      />
+                        <Route
+                          element={<LoadableCreateUserAccount />}
+                          path="/create_user_account"
+                        />
 
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableEditQuestionComponent}
-                        exact
-                        path="/edit_question"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableCreateExaminationSchedule}
-                        exact
-                        path="/create_examination_schedule"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableAddQuestionsToExaminationComponent}
-                        exact
-                        path="/add_questions_examination"
-                      />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["super-admin"]}
-                        component={LoadableAddEssayQuestionsToExam}
-                        exact
-                        path="/add_essay_questions_examination"
-                      />
-                      <PublicRoute
-                        component={LoadableLoginPage}
-                        {...props}
-                        path={"/login"}
-                        authenticated={isAuth}
-                        exact
-                      />
+                        <Route
+                          element={<LoadableActivateExamSchedule />}
+                          path="/activate_exams"
+                        />
+
+                        <Route
+                          element={<LoadableCreateSubjectCourse />}
+                          path="/create_subject"
+                        />
+
+                        <Route
+                          element={<LoadableViewExamResult />}
+                          path="/exam_results"
+                        />
+
+                        <Route
+                          element={<LoadableUploadExaminationQuestion />}
+                          path="/upload_questions"
+                        />
+                        <Route
+                          element={<LoadableAddQuestion />}
+                          path="/add_question"
+                        />
+                        <Route
+                          element={<LoadableSaveSpellingQuestions />}
+                          path="/add_spelling_question"
+                        />
+
+                        <Route
+                          element={<LoadableSaveEssayQuestions />}
+                          path="/add_essay_question"
+                        />
+
+                        <Route
+                          element={<LoadableEditEssayQuestion />}
+                          path="/edit_essay_question"
+                        />
+                        <Route
+                          element={<LoadableLoadQuestionsComponent />}
+                          path="/load_multi_choice_question"
+                        />
+                        <Route
+                          element={<LoadableLoadSpellingQuestions />}
+                          path="/load_spelling_question"
+                        />
+
+                        <Route
+                          element={<LoadableLoadEssayQuestion />}
+                          path="/load_essay_question"
+                        />
+
+                        <Route
+                          element={<LoadableEditQuestionComponent />}
+                          path="/edit_question"
+                        />
+
+                        <Route
+                          element={<LoadableCreateExaminationSchedule />}
+                          path="/create_examination_schedule"
+                        />
+
+                        <Route
+                          element={
+                            <LoadableAddQuestionsToExaminationComponent />
+                          }
+                          path="/add_questions_examination"
+                        />
+
+                        <Route
+                          element={<LoadableAddEssayQuestionsToExam />}
+                          path="/add_essay_questions_examination"
+                        />
+
+                        <Route
+                          element={<LoadableEditQuestionComponent />}
+                          path="/edit_question"
+                        />
+                      </Route>
+                      {/** super-admin links end here  */}
+
+                      {/** student links start here  */}
+
+                      <Route
+                        element={
+                          <AuthorizedRoutes authorizedRole={["student"]} />
+                        }
+                      >
+                        <Route
+                          element={<LoadableQuestionPanel />}
+                          path="/exam/multi_choice/:examId"
+                        />
+                        <Route
+                          element={<LoadableStartSpellingExam />}
+                          path="/exam/spelling/:examId"
+                        />
+
+                        <Route
+                          element={<LoadableStartEssayExam />}
+                          path="/exam/short_essay/:examId"
+                        />
+                        <Route
+                          element={<LoadableViewCanidateEssayScripts />}
+                          path="/view_canidate_essay_script"
+                        />
+
+                        <Route
+                          element={<LoadableActiveExaminationPage />}
+                          path="/exam_start_page"
+                        />
+                      </Route>
+                      {/** student links end here  */}
+
+                      {/** super-admin and student links start here  */}
+                      <Route
+                        element={
+                          <AuthorizedRoutes
+                            authorizedRole={["super-admin", "student"]}
+                          />
+                        }
+                      >
+                        <Route
+                          element={<LoadableDisplayQuizScriptComponent />}
+                          path="/examination_script/:examId"
+                        />
+                        <Route
+                          element={
+                            <LoadableDisplaySpellingQuizScriptComponent />
+                          }
+                          path="/spelling_examination_script/:examId"
+                        />
+                        <Route
+                          element={<LoadableDisplayEssayQuizScriptComponent />}
+                          path="/essay_examination_script/:examId"
+                        />
+
+                        <Route
+                          element={<LoadableExamSummaryComponent />}
+                          path="/exam_summary/:examId"
+                        />
+
+                        <Route
+                          element={<LoadableSpellingExamSummary />}
+                          path="/exam_summary/spelling/:examId"
+                        />
+
+                        <Route
+                          element={<LoadableEssayExamSummary />}
+                          path="/exam_summary/essay/:examId"
+                        />
+                      </Route>
+                      {/** super-admin and student links end here  */}
+                      <Route element={<LoadableLoginPage />} path={"/login"} />
                       <Route
                         exact
                         path="/dashboard"
-                        component={LoadableDashboard}
+                        element={<LoadableDashboard />}
                       />
-                      <AuthorizedComponent
-                        loading={loading}
-                        currentLoginUser={currentLoginUser}
-                        authenticated={isAuth}
-                        authorizedRole={["student"]}
-                        component={LoadableActiveExaminationPage}
-                        exact
-                        path="/exam_start_page"
-                      />
-                    </React.Fragment>
-                  </Switch>
-                  <Footer />
+                    </Routes>
+                    <Footer />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </AppStyles>
-      </Router>
+          </AppStyles>
+        </Router>
+      </ExamProvider>
     </ApolloProvider>
   );
 }

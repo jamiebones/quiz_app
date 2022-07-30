@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useLazyQuery } from "@apollo/client";
 import { LoginUser } from "../graphql/queries";
-import state from "../applicationState";
-import { useRecoilState } from "recoil";
+import { useAuth } from "../context";
 import store from "store";
 import Logo from "../assets/images/eruditelogo.png";
+import { useNavigate } from "react-router-dom";
 const LoginStyle = styled.div`
   .login-container {
     height: 500px;
@@ -52,20 +52,21 @@ const LoginStyle = styled.div`
   }
 `;
 
-const Login = (props) => {
-  const [isAuth, setAuthState] = useRecoilState(state.authState);
-  const [currentLoginUser, setcurrentLoginUser] = useRecoilState(
-    state.currentLoginUserState
-  );
-  const [token, setToken] = useRecoilState(state.authToken);
+const Login = () => {
+  const {
+    isAuth,
+    setIsAuth,
+    setcurrentLoginUser,
+    token,
+    setToken,
+  } = useAuth();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  useEffect(() => {
-    //check if the person is authenticated already
-  }, []);
+ 
 
   const [loginUserFunction, loginUserResult] = useLazyQuery(LoginUser, {
     variables: {
@@ -96,15 +97,15 @@ const Login = (props) => {
           "currentLoginUser",
           JSON.stringify({ id, username, userType, name })
         );
-        setAuthState(true);
+        setIsAuth(true);
         setcurrentLoginUser({ id, username, userType, name });
         setToken(token);
         setSubmitted(false);
 
         if (userType === "super-admin") {
-          props.history.push("/dashboard");
+          navigate("/dashboard");
         } else if (userType === "student") {
-          props.history.push("/exam_start_page");
+          navigate("/exam_start_page");
         }
       }
     }

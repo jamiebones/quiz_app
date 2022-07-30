@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useCountDown from "react-countdown-hook";
 import styled from "styled-components";
-import state from "../applicationState";
-import { useRecoilValue } from "recoil";
+import { useExamDetails } from "../context";
 import store from "store";
 
 const CountDownTimerStyles = styled.div`
@@ -17,7 +16,7 @@ const CountDownTimerStyles = styled.div`
 `;
 
 const CountDownTimer = ({ submitQuiz }) => {
-  const duration = useRecoilValue(state.examDurationState);
+  const { duration, setDuration } = useExamDetails();
   const [timeRemaining, setTimeRemaining] = useState(null);
   const [timerStarted, setTimerStarted] = useState(false);
   const timerFromStore = store.get("timer");
@@ -28,6 +27,7 @@ const CountDownTimer = ({ submitQuiz }) => {
 
   useEffect(() => {
     store.set("timer", timeLeft);
+    //setDuration(timeLeft)
     if (timerStarted && timeLeft == 0) {
       submitQuiz();
     }
