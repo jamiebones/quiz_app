@@ -3,7 +3,7 @@ import styled from "styled-components";
 import methods from "../methods";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
-import store from "store";
+
 
 const ExamSummaryStyles = styled.div`
   .summaryDiv {
@@ -61,7 +61,7 @@ const disableF5 = (event) => {
   }
 };
 
-const ExamSummaryComponent = (props) => {
+const ExamSummaryComponent = () => {
   const { examId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
