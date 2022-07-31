@@ -41,24 +41,24 @@ const QuestionNumberDivStyles = styled.div`
   }
 
   .code {
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 50px;
     margin: 5px;
     color: white;
   }
 
   .numberCode {
     border: 2px solid #c0c0c0;
-    width: 50%;
+    width: 100%;
     padding: 5px;
-    float: right;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-around;
     background-color: #0a1b1b;
   }
   .numberCode p {
-    align-self: center;
     font-size: 16px;
     color: #fff;
-    padding-left: 30px;
   }
 
   .colorAnswered {
@@ -73,6 +73,9 @@ const QuestionNumberDivStyles = styled.div`
   }
   .colorDiv {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+ 
   }
 `;
 

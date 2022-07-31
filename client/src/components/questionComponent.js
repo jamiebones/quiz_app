@@ -7,6 +7,7 @@ import store from "store";
 const QuestionComponentStyles = styled.div`
   .question {
     font-size: 20px;
+    
   }
 
   .question span {
@@ -37,7 +38,8 @@ const QuestionComponentStyles = styled.div`
   .question-panel {
     display: flex;
     padding: 10px;
-    font-size: 16px;
+    font-size: 24px;
+    background-color: #c0c0c0;
   }
   hr {
     border-width: 5px;
@@ -58,7 +60,6 @@ const QuestionComponent = () => {
   let question = currentQuestion;
 
   const handleAnswerSelected = (selectedIndex) => {
-    debugger
     //loop through questions and replace the
     //replace the one that there is an answer
     let questionFromStoreOrState =
