@@ -76,7 +76,6 @@ const authLink = setContext((_, { headers, ...rest }) => {
 });
 
 //this is to remove __typename field from the mutation
-//this is to remove __typename field from the mutation
 const cleanTypeName = new ApolloLink((operation, forward) => {
   
   const omitTypename = (key, value) =>
