@@ -6,8 +6,8 @@ let saltRounds = 10;
 const { DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD } = process.env;
 
 const initDataBase = async () => {
-  let url;
-  url = `mongodb://mongodb_cbt:27017/${DB_DATABASE}`;
+  let url = `mongodb://mongodb_cbt:27017/${DB_DATABASE}`;
+
   await mongoose.connect(url, {
     useNewUrlParser: true,
     useFindAndModify: false,
@@ -15,13 +15,13 @@ const initDataBase = async () => {
     useCreateIndex: true,
     keepAlive: true,
   });
-  await _createAdminUser();
+  await createAdminUser();
 };
 
-const _createAdminUser = async () => {
+const createAdminUser = async () => {
   try {
     const findAdmin = await models.User.findOne({
-      username: "jamiebones147@gmail.com",  
+      username: "jamiebones147@gmail.com",
     });
     console.log("find admin is ", findAdmin);
 
@@ -45,4 +45,4 @@ const _createAdminUser = async () => {
   }
 };
 
-export default initDataBase;
+export default { initDataBase, createAdminUser };

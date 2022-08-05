@@ -8,8 +8,8 @@
     "dev": "nodemon --exec babel-node --inspect=0.0.0.0 src/index.js",
     "prod": "node --exec babel-node src/index.js",
     "build": "npm run clean && babel ./src --out-dir dist",
-    "clean": "rm -rf ./dist && mkdir dist"
-  
+    "clean": "rm -rf ./dist && mkdir dist",
+    "test": "nyc mocha --require @babel/register --recursive --exit ./src/test"
   },
   "keywords": [
     "CBT"
@@ -17,6 +17,7 @@
   "author": "Osikhena James Oshomah",
   "license": "ISC",
   "dependencies": {
+    "@babel/register": "^7.18.9",
     "apollo-server": "^2.19.2",
     "apollo-server-express": "^2.19.2",
     "app-root-path": "^3.0.0",
@@ -33,6 +34,7 @@
     "graphql-redis-subscriptions": "^2.2.2",
     "graphql-resolvers": "^0.4.2",
     "graphql-subscriptions": "^1.1.0",
+    "graphql-upload": "^11.0.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongodb": "^3.6.0",
@@ -45,13 +47,19 @@
     "react-icons": "^3.11.0",
     "util": "^0.12.3",
     "uuid": "^8.2.0",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "xlsx": "^0.16.9"
   },
   "devDependencies": {
+    "@babel/cli": "^7.13.16",
     "@babel/core": "^7.10.5",
     "@babel/node": "^7.10.5",
-    "@babel/cli": "^7.13.16",
     "@babel/preset-env": "^7.10.4",
-    "nodemon": "^2.0.4"
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.4",
+    "nyc": "^15.1.0",
+    "sinon": "^14.0.0",
+    "supertest": "^6.2.4"
   }
 }

@@ -39,13 +39,13 @@ describe("Quiz examination test ", function () {
   });
 
   beforeEach(async () => {
-    //clear the database
-    
+    //create an admin user
+    await createAdminUser();
   })
 
   afterEach(async () => {
     //clear the user collection after each run
-    //await models.User.remove({})
+    await models.User.remove({})
 
   })
 
@@ -65,7 +65,6 @@ describe("Quiz examination test ", function () {
   describe("User functionality test", function() {
 
     it("check and create an admin user", async () => {
-       await createAdminUser();
        const findAdmin = await models.User.findOne();
        expect(findAdmin).to.not.equal(null)
     });

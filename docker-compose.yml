@@ -38,6 +38,7 @@ services:
       DB_USER: jamiebones
       DB_DATABASE: CBT_Database
       DB_PASSWORD: blazing147
+      NODE_ENV: test
 
   mongodb_cbt:
     hostname: mongodb_cbt
