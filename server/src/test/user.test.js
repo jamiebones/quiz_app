@@ -2,7 +2,7 @@ import { expect } from "chai";
 import http from "http";
 import supertest from "supertest";
 import mongoose from "mongoose";
-import models from "../models"
+import models from "../models";
 //import our express server and Apollo Server
 
 import { expressApp, apolloServer } from "../startup";
@@ -41,35 +41,32 @@ describe("Quiz examination test ", function () {
   beforeEach(async () => {
     //create an admin user
     await createAdminUser();
-  })
+  });
 
   afterEach(async () => {
     //clear the user collection after each run
-    await models.User.remove({})
-
-  })
+    await models.User.deleteMany({});
+  });
 
   after(async () => {
     //stop the server here
     await server.stop();
     dbConnection.connection.db.dropDatabase();
     dbConnection.disconnect();
-    console.log("database connection closed")
-
+    console.log("database connection closed");
   });
 
   it("it will start up very well", async () => {
     expect(2).to.equal(2);
   });
 
-  describe("User functionality test", function() {
-
+  describe("User functionality test", function () {
     it("check and create an admin user", async () => {
-       const findAdmin = await models.User.findOne();
-       expect(findAdmin).to.not.equal(null)
+      const findAdmin = await models.User.findOne();
+      expect(findAdmin).to.not.equal(null);
     });
 
-    it("check should return the users and user status",  (done) => {
+    it("check should return the users and user status", (done) => {
       const active = true;
       const queryData = `{usersByStatus(status: ${active}, offset: 0 ){
         users {
@@ -81,16 +78,18 @@ describe("Quiz examination test ", function () {
           active
         }
         totalUsersByStatus
-      }}`
-      request.post('?').send(
-        {
-          query: queryData
-        }
-      ).expect(200).end((err, res) => {
-        if (err) return done(err);
-        expect(res.body.data.usersByStatus.users).to.be.an('array')
-        done()
-      })
+      }}`;
+      request
+        .post("?")
+        .send({
+          query: queryData,
+        })
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.data.usersByStatus.users).to.be.an("array");
+          done();
+        });
     });
 
     it("should be able to login in the user", (done) => {
@@ -109,18 +108,22 @@ describe("Quiz examination test ", function () {
           type
         }
        
-      }}`
-      
-      request.post('?').send(
-        {
-          query: loginData
-        }
-      ).expect(200).end((err, res) => {
-        if (err) return done(err);
-        expect(res.body.data.loginUser.username).to.be.equal("jamiebones147@gmail.com")
-        expect(res.body.data.loginUser.token).to.not.equal(null);
-        done()
-      })
+      }}`;
+
+      request
+        .post("?")
+        .send({
+          query: loginData,
+        })
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.data.loginUser.username).to.be.equal(
+            "jamiebones147@gmail.com"
+          );
+          expect(res.body.data.loginUser.token).to.not.equal(null);
+          done();
+        });
     });
 
     it("should not login the user in but show an error message", (done) => {
@@ -139,23 +142,30 @@ describe("Quiz examination test ", function () {
           type
         }
        
-      }}`
-      
-      request.post('?').send(
-        {
-          query: loginData
-        }
-      ).expect(200).end((err, res) => {
-        if (err) return done(err);
-        expect(res.body.data.loginUser.message).to.be.equal("Incorrect credentials")
-        done()
-      })
+      }}`;
+
+      request
+        .post("?")
+        .send({
+          query: loginData,
+        })
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.data.loginUser.message).to.be.equal(
+            "Incorrect credentials"
+          );
+          done();
+        });
     });
 
     it("it should not login because account is inactive", (done) => {
-      const query = models.User.updateOne({username: "jamiebones147@gmail.com"}, {$set: {active: false}});
+      const query = models.User.updateOne(
+        { username: "jamiebones147@gmail.com" },
+        { $set: { active: false } }
+      );
 
-      query.exec().then(()=> {
+      query.exec().then(() => {
         const loginData = `{loginUser(username: "jamiebones147@gmail.com", password: "password123"){
           ... on User {
              username
@@ -171,23 +181,63 @@ describe("Quiz examination test ", function () {
             type
           }
          
-        }}`
-        
-        request.post('?').send(
-          {
-            query: loginData
-          }
-        ).expect(200).end((err, res) => {
-          if (err) return done(err);
-          expect(res.body.data.loginUser.message).to.be.equal("Login unsuccessful because your account is inactive. Please contact admin")
-          done()
+        }}`;
+
+        request
+          .post("?")
+          .send({
+            query: loginData,
+          })
+          .expect(200)
+          .end((err, res) => {
+            if (err) return done(err);
+            expect(res.body.data.loginUser.message).to.be.equal(
+              "Login unsuccessful because your account is inactive. Please contact admin"
+            );
+            done();
+          });
+      });
+    });
+
+    it("should be able to create a student account", async () => {
+      const loginData = `{loginUser(username: "jamiebones147@gmail.com", password: "password123"){
+      ... on User {
+         token
+         id
+      }
+      ... on Error {
+        message
+        type
+      }
+     
+    }}`;
+
+      let req = await request.post("?").send({
+        query: loginData,
+      });
+
+      expect(req.statusCode).to.be.equal(200);
+      const token = req.body.data.loginUser.token;
+      const data = `mutation {createUser(username: "jamiebones", password: "password", 
+                                    userType: "student", name: "John Doe", active: true){
+
+                            ... on User {
+                                username
+                              }
+                            ... on Error {
+                                message
+                            }
+                       }
+                  }`;
+
+      req = await request
+        .post("?")
+        .set("Authorization", "Bearer " + token)
+        .send({
+          query: data,
         })
-      })
-
-    
-    })
-
-
-
-  })
+      expect(req.statusCode).to.be.equal(200);
+      expect(req.body.data.createUser.username).to.not.equal(null);
+    });
+  });
 });

@@ -101,6 +101,7 @@ export default {
       { models, user }
     ) => {
       try {
+  
         if (!user) {
           return {
             type: "NotLogginIn",
@@ -108,12 +109,14 @@ export default {
           };
         }
 
+
         if (user.userType !== "super-admin") {
           return {
             type: "DontHavePriveledgeToCreateAccount",
             message: "only admins can create account",
           };
         }
+      
         const userAccount = await models.User.findOne({
           username: username.toLowerCase(),
         });

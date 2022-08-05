@@ -8,3 +8,6 @@ dockerfile.dev
 dockerfile.prod
 docker-compose.prod.yml
 docker-compose2.yml
+docker-compose-test.yml
+/server/.nyc_output
+/server/logs
