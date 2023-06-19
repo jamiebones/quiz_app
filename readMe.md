@@ -15,5 +15,5 @@ The application runs on http://localhost:3001
 
 To login as admin, use the following credentials:
 
-email : jamiebones147@gmail.com
-password: password123
+email : admin@admin.com
+password: password

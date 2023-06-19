@@ -3,7 +3,9 @@ import models from "../models";
 import bcrypt from "bcrypt";
 let saltRounds = 10;
 
-const { DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD } = process.env;
+const { DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
+
+console.log("the DB database is ", DB_DATABASE)
 
 const initDataBase = async () => {
   let url = `mongodb://mongodb_cbt:27017/${DB_DATABASE}`;
@@ -21,16 +23,16 @@ const initDataBase = async () => {
 const createAdminUser = async () => {
   try {
     const findAdmin = await models.User.findOne({
-      username: "jamiebones147@gmail.com",
+      username: ADMIN_EMAIL,
     });
     console.log("find admin is ", findAdmin);
 
     if (findAdmin) {
       console.log("admin is found");
     } else {
-      const hash = bcrypt.hashSync("password123", saltRounds);
+      const hash = bcrypt.hashSync(ADMIN_PASSWORD, saltRounds);
       const admin = {
-        username: "jamiebones147@gmail.com",
+        username: ADMIN_EMAIL,
         password: hash,
         name: "James Oshomah",
         active: true,

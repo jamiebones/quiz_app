@@ -1,17 +1,53 @@
-import schema from "../schema";
+import typeDefs from "../schema";
 import resolvers from "../resolvers";
 import {
   ApolloServer,
   AuthenticationError,
   UserInputError,
 } from "apollo-server-express";
+import { createServer } from "http";
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
+import { execute, subscribe } from "graphql";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+
 import models from "../models";
 import config from "../config";
 
-const createApolloServer = function (app) {
-  const server = new ApolloServer({
-    typeDefs: schema,
+const createApolloServer = async function (app) {
+  const httpServer = createServer(app);
+  const schema = makeExecutableSchema({
+    typeDefs,
     resolvers,
+  });
+
+  const subscriptionServer = new WebSocketServer({
+    server: httpServer,
+    path: "/graphql",
+    context: { text: "I am Context" },
+  });
+
+  const serverCleanup = useServer(
+    { schema, execute, subscribe },
+    subscriptionServer
+  );
+
+  const server = new ApolloServer({
+    schema,
+    introspection: true,
+    playground: true,
+    csrfPrevention: true,
+    plugins: [
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
     formatError(err) {
       if (err instanceof AuthenticationError) {
         console.log("err", err);
@@ -51,7 +87,15 @@ const createApolloServer = function (app) {
     },
   });
 
-  return server;
+  await server.start();
+
+  server.applyMiddleware({
+    app,
+  });
+
+  httpServer.listen({ port: 9000 }, () => {
+    console.log("Apollo Server on http://localhost:9000/graphql");
+  });
 };
 
 export default createApolloServer;

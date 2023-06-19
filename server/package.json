@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
-    "dev": "nodemon --exec babel-node --inspect=0.0.0.0 src/index.js",
+    "dev": "nodemon --legacy-watch --exec babel-node --inspect=0.0.0.0 src/index.js",
     "prod": "node --exec babel-node src/index.js",
     "build": "npm run clean && babel ./src --out-dir dist",
     "clean": "rm -rf ./dist && mkdir dist",
@@ -18,8 +18,8 @@
   "license": "ISC",
   "dependencies": {
     "@babel/register": "^7.18.9",
-    "apollo-server": "^2.19.2",
-    "apollo-server-express": "^2.19.2",
+    "@graphql-tools/schema": "^9.0.1",
+    "apollo-server": "^3.10.2",
     "app-root-path": "^3.0.0",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
@@ -29,12 +29,15 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "formidable": "^1.2.2",
-    "graphql": "^15.3.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-redis-subscriptions": "^2.2.2",
-    "graphql-resolvers": "^0.4.2",
-    "graphql-subscriptions": "^1.1.0",
     "graphql-upload": "^11.0.0",
+    "google-auth-library": "^8.8.0",
+    "graphql": "^16.6.0",
+    "graphql-request": "^5.2.0",
+    "graphql-resolvers": "^0.4.2",
+    "graphql-subscriptions": "^2.0.0",
+    "graphql-ws": "^5.10.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongodb": "^3.6.0",
@@ -48,7 +51,8 @@
     "util": "^0.12.3",
     "uuid": "^8.2.0",
     "winston": "^3.3.3",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.16.9",
+    "ws": "^8.8.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",

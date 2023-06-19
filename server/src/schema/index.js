@@ -10,7 +10,7 @@ import EssayExamQuestionSchema from "./essayExamQuestion";
 
 const linkSchema = gql`
   scalar Date
-  #scalar Upload
+  scalar Upload
   type Query {
     _: Boolean
   }

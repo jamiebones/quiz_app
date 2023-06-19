@@ -38,8 +38,9 @@ services:
       DB_USER: jamiebones
       DB_DATABASE: CBT_Database
       DB_PASSWORD: blazing147
+      ADMIN_EMAIL: admin@admin.com
+      ADMIN_PASSWORD: password
       NODE_ENV: test
-
   mongodb_cbt:
     hostname: mongodb_cbt
     container_name: mongodb_cbt
@@ -49,9 +50,6 @@ services:
     ports:
       - 27017:27017
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: jamiebones
-      MONGO_INITDB_ROOT_PASSWORD: blazing147
     entrypoint:
       [
         "/usr/bin/mongod",
@@ -59,22 +57,12 @@ services:
         "--journal",
         "--dbpath",
         "/data/db",
-        "--enableMajorityReadConcern",
-        "false",
       ]
     volumes:
-      - $HOME/cbt_data/mongodb_cbt:/data/db # This is where your volume will persist. e.g. VOLUME-DIR = ./volumes/mongodb
-      - $HOME/cbt_data/mongodb_cbt_configdb:/data/configdb
-
-  mongo-express_cbt:
-    image: mongo-express
-    container_name: mongo-express_cbt
-    restart: always
-    ports:
-      - 8081:8081
-    depends_on:
-      - mongodb_cbt
-    environment:
-      ME_CONFIG_MONGODB_SERVER: mongodb_cbt
-      ME_CONFIG_BASICAUTH_USERNAME: jamiebones
-      ME_CONFIG_BASICAUTH_PASSWORD: blazing147
+      #- $HOME/cbt_data/mongodb_cbt:/data/db # This is where your volume will persist. e.g. VOLUME-DIR = ./volumes/mongodb
+      #- $HOME/cbt_data/mongodb_cbt_configdb:/data/configdb
+      - appData:/data/db
+volumes:
+  appData:
+    
+  
