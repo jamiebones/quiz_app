@@ -12,10 +12,12 @@ The application was built with React, Apollo, GraphQL, Docker, Express, Node and
 * Run docker-compose up -d
 
 ## To Run Test
-* List all the running container by running => ```docker ps```;
-* Log into the terminal using the image name or id of the api_server => 
+* List all the running container by running => 
+* ```docker ps```
+* Log into the terminal using the image name or id of the api_server 
 * ```docker exec -it <container_name_or_id> sh```
-* When in the terminal run; => ```npm run test``` ( test are minimal now)
+* When in the terminal run => ( test are minimal now)
+* ```npm run test``` 
   
 
 The application runs on http://localhost:3001
