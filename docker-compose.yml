@@ -24,9 +24,9 @@ services:
       context: ./server
       dockerfile: dockerfile.dev
     volumes:
+      - "./server/:/app"
       - /app/node_modules
-      - ./server:/app
-      - $HOME/uploads:/app/uploads
+      - ./uploads:/app/uploads
     depends_on:
       - mongodb_cbt
     restart: always
@@ -40,7 +40,10 @@ services:
       DB_PASSWORD: blazing147
       ADMIN_EMAIL: admin@admin.com
       ADMIN_PASSWORD: password
-      NODE_ENV: test
+      NODE_ENV: dev
+    links:
+      - mongodb_cbt
+
   mongodb_cbt:
     hostname: mongodb_cbt
     container_name: mongodb_cbt
@@ -49,7 +52,7 @@ services:
       - 27017
     ports:
       - 27017:27017
-    restart: always
+    restart: unless-stopped
     entrypoint:
       [
         "/usr/bin/mongod",
@@ -59,8 +62,6 @@ services:
         "/data/db",
       ]
     volumes:
-      #- $HOME/cbt_data/mongodb_cbt:/data/db # This is where your volume will persist. e.g. VOLUME-DIR = ./volumes/mongodb
-      #- $HOME/cbt_data/mongodb_cbt_configdb:/data/configdb
       - appData:/data/db
 volumes:
   appData:

@@ -1,7 +1,7 @@
-import isAuth from "./isAuth";
-import keys from "./keys";
-import configStart from "./startup";
-import winston from "./winston";
+import isAuth from "./isAuth.js";
+import keys from "./keys.js";
+import configStart from "./startup.js";
+import winston from "./winston.js";
 
 
 

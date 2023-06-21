@@ -1,5 +1,6 @@
 {
   "name": "cbt_software",
+  "type": "module",
   "version": "1.0.0",
   "description": "a software for taking computer based examination",
   "main": "index.js",
@@ -8,5 +9,6 @@
   },
   "author": "Osikhena James Oshomah",
   "license": "ISC"
+
  
 }

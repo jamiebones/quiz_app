@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import config from "../config";
+import config from "../config/index.js";
 import uploadFile from "../middleware/uploadFile";
 const morgan = require("morgan");
 

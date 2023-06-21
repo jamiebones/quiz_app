@@ -1,24 +1,28 @@
 import { expect } from "chai";
-import http from "http";
 import supertest from "supertest";
 import mongoose from "mongoose";
 import models from "../models";
-//import our express server and Apollo Server
 
 import { expressApp, apolloServer } from "../startup";
 import configIndex from "../config";
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const { createAdminUser } = configIndex;
 
-let server;
+let appServer;
 let dbConnection;
 
 const baseUrl = "http://localhost:7000/graphql";
 const request = supertest(baseUrl);
 describe("Quiz examination test ", function () {
+  this.timeout(10000);
   before(async () => {
     //set up the testing infrastruture
     //set up the database connection here
+  
     let url = `mongodb://mongodb_cbt:27017/test`;
     dbConnection = await mongoose.connect(url, {
       useNewUrlParser: true,
@@ -29,13 +33,13 @@ describe("Quiz examination test ", function () {
     });
 
     const app = expressApp();
-    server = apolloServer();
-    server.applyMiddleware({ app, path: "/graphql" });
-    const httpServer = http.createServer(app);
-    server.installSubscriptionHandlers(httpServer);
+    const { server, httpServer } = await apolloServer(app);
+    appServer = server
+    appServer.applyMiddleware({ app, path: "/graphql" });
     httpServer.listen({ port: 7000 }, () => {
-      console.log("Apollo Server on http://localhost:7000/graphql");
+      console.log("Apollo Server started on http://localhost:7000/graphql");
     });
+    
   });
 
   beforeEach(async () => {
@@ -50,7 +54,7 @@ describe("Quiz examination test ", function () {
 
   after(async () => {
     //stop the server here
-    await server.stop();
+    await appServer.stop();
     dbConnection.connection.db.dropDatabase();
     dbConnection.disconnect();
     console.log("database connection closed");
@@ -93,7 +97,7 @@ describe("Quiz examination test ", function () {
     });
 
     it("should be able to login in the user", (done) => {
-      const loginData = `{loginUser(username: "jamiebones147@gmail.com", password: "password123"){
+      const loginData = `{loginUser(username: "admin@admin.com", password: "password"){
         ... on User {
            username
            username
@@ -119,7 +123,7 @@ describe("Quiz examination test ", function () {
         .end((err, res) => {
           if (err) return done(err);
           expect(res.body.data.loginUser.username).to.be.equal(
-            "jamiebones147@gmail.com"
+            "admin@admin.com"
           );
           expect(res.body.data.loginUser.token).to.not.equal(null);
           done();
@@ -127,7 +131,7 @@ describe("Quiz examination test ", function () {
     });
 
     it("should not login the user in but show an error message", (done) => {
-      const loginData = `{loginUser(username: "jamiebones147@gmail.com", password: "password1ee23"){
+      const loginData = `{loginUser(username: "admin@admin.com", password: "password1ee23"){
         ... on User {
            username
            username
@@ -161,12 +165,12 @@ describe("Quiz examination test ", function () {
 
     it("it should not login because account is inactive", (done) => {
       const query = models.User.updateOne(
-        { username: "jamiebones147@gmail.com" },
+        { username: "admin@admin.com" },
         { $set: { active: false } }
       );
 
       query.exec().then(() => {
-        const loginData = `{loginUser(username: "jamiebones147@gmail.com", password: "password123"){
+        const loginData = `{loginUser(username: "admin@admin.com", password: "password"){
           ... on User {
              username
              username
@@ -200,7 +204,7 @@ describe("Quiz examination test ", function () {
     });
 
     it("should be able to create a student account", async () => {
-      const loginData = `{loginUser(username: "jamiebones147@gmail.com", password: "password123"){
+      const loginData = `{loginUser(username: "admin@admin.com", password: "password"){
       ... on User {
          token
          id

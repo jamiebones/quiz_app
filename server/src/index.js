@@ -1,10 +1,9 @@
-import { expressApp, apolloServer } from "./startup";
-import configIndex from "./config";
+import { expressApp, apolloServer } from "./startup/index.js";
+import configIndex from "./config/index.js";
 import cluster from "cluster";
 import os from "os";
 
-
-const { initDataBase } = configIndex;
+const { initDataBase, createAdminUser } = configIndex;
 
 if (cluster.isPrimary) {
   const cpuCount = os.cpus().length;
@@ -22,12 +21,26 @@ cluster.on("exit", (worker) => {
 });
 
 async function StartUpServer() {
-  await initDataBase();
+  //start the database
+  try {
+    await initDataBase();
 
-  const app = expressApp();
-  apolloServer(app);
+    await createAdminUser();
+    //initialize the express app
+    const app = expressApp();
+    const { server, httpServer } = await apolloServer(app);
+    server.applyMiddleware({
+      app,
+    });
 
-  process.on("uncaughtException", function (err) {
-    console.log("Uncaught Error: ", err);
-  });
+    httpServer.listen({ port: 9000 }, () => {
+      console.log("Apollo Server on http://localhost:9000/graphql");
+    });
+
+    process.on("uncaughtException", function (err) {
+      console.log("Uncaught Error: ", err);
+    });
+  } catch (error) {
+    console.log("error on start-up ", error);
+  }
 }

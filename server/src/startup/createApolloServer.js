@@ -24,7 +24,7 @@ const createApolloServer = async function (app) {
   const subscriptionServer = new WebSocketServer({
     server: httpServer,
     path: "/graphql",
-    context: { text: "I am Context" },
+    context: { text: "I am Contex" },
   });
 
   const serverCleanup = useServer(
@@ -89,13 +89,7 @@ const createApolloServer = async function (app) {
 
   await server.start();
 
-  server.applyMiddleware({
-    app,
-  });
-
-  httpServer.listen({ port: 9000 }, () => {
-    console.log("Apollo Server on http://localhost:9000/graphql");
-  });
+  return { server, httpServer };
 };
 
 export default createApolloServer;

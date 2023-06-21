@@ -3,13 +3,21 @@ import models from "../models";
 import bcrypt from "bcrypt";
 let saltRounds = 10;
 
-const { DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
+const {
+  NODE_ENV,
+  DB_HOST,
+  DB_PORT,
+  DB_USER,
+  DB_DATABASE,
+  DB_PASSWORD,
+  ADMIN_EMAIL,
+  ADMIN_PASSWORD,
+} = process.env;
 
-console.log("the DB database is ", DB_DATABASE)
+console.log("the DB database is : ", DB_DATABASE);
 
 const initDataBase = async () => {
   let url = `mongodb://mongodb_cbt:27017/${DB_DATABASE}`;
-
   await mongoose.connect(url, {
     useNewUrlParser: true,
     useFindAndModify: false,
@@ -17,7 +25,6 @@ const initDataBase = async () => {
     useCreateIndex: true,
     keepAlive: true,
   });
-  await createAdminUser();
 };
 
 const createAdminUser = async () => {
@@ -34,7 +41,7 @@ const createAdminUser = async () => {
       const admin = {
         username: ADMIN_EMAIL,
         password: hash,
-        name: "James Oshomah",
+        name: "Jamie",
         active: true,
         userType: "super-admin",
       };

@@ -1,9 +1,0 @@
-docker/
-.env
-node_modules
-/client/node_modules
-/server/node_modules
-.vscode
-dockerfile.dev
-dockerfile.prod
-/server/.nyc_output

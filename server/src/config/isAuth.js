@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import keys from "./keys";
+import keys from "./keys.js";
 
 export default (req) => {
   //const token = req.headers.authorization || "";
